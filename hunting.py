@@ -1,7 +1,7 @@
 from turtle import pen
 from unicodedata import name
 from shodan import Shodan
-import vt
+import vt, requests, json
 
 global_kql = 1
 global_list = 1
@@ -9,7 +9,7 @@ gloabal_sigmaIocRule ="""
 title: Auto-Generated IOC Rule
 id:
 status: experimental
-description: Detects artifacts related to IOC
+description: Artifacts Related to IOC
 author: SOC Companion
 date: 
 references: 
@@ -18,15 +18,50 @@ logsource:
     service:
 detection:
     selection:
-        ParentImage|endswith:
-            - ReplaceMe
-        Image|endswith:
-            - ReplaceMe
-        Hashes|contains:
-            MD5=
-            SHA1=
-            SHA256=
-
+        ParentImageSHA256ReplaceMe:
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+    selection2:
+        ImageReplaceMe:
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+            - 'ImageReplaceMe'
+    selection3:
+        HashesReplaceMe:
+            - 'IOCMD5ReplaceMe'
+            - 'IOCSHA1ReplaceMe'
+            - 'IOCSHA256ReplaceMe'
+    selection4:
+        TargetFileHashReplaceMe:
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+    condition: 1 of selection*
+    falsepositives:
+        - unknown
+    tags:
 """
 
 def shodan():
@@ -40,45 +75,62 @@ def shodan():
             print(ipinfo)
             ipv4(ioc)
 
-def vt():
-    import vt, requests, json
-    objectAttrs = ["md5", "sha1", "sha256", "names"]
+def virusTotal():
     #client = vt.Client(input("VTKEY: "))
-    client = vt.Client("")
-    file = client.get_object("/files/163351e912ba5f7ca674f6017be509eb502be223032b93d89ae538ddc92df9fc")
-    md5 = file.get("md5")
-    sha1 = file.get("sha1")
-    sha256 = file.get("sha256")
-    names = file.get("names")
-    #print(names)
-    print("---------------- IOC NAMES & HASHES --------------------")
-    names = str(names).replace("[", "(").replace("]", ")").replace(" '", " @\"").replace("'", "\"")
-    print("search in (DeviceProcessEvents, DeviceFileEvents) MD5 =~ {md5} or SHA1 =~ {sha1} or SHA256 =~ {sha256}")
-    
-
-    #for objectAttr in objectAttrs:
-        #print(objectAttr)
-        #if objectAttr == "names":
-         #   if len(result) > 1:
-          #      print("NAMES:")
-           #     for name in result:
-            #        print("- " + str(name))
-            #elif len(result) == 1:
-             #   print("NAME: "+ str(result).strip())
-        #if objectAttr != "names":
-         #   print(str(objectAttr).upper() + ": " + str(file.get(objectAttr)))
-    url = "https://www.virustotal.com/api/v3/files/163351e912ba5f7ca674f6017be509eb502be223032b93d89ae538ddc92df9fc/dropped_files?limit=100"
-    headers = {
+    apiKey = ""
+    client = vt.Client(apiKey)
+    hash = "79128b28776eb3fcae5fe10aa06d7215c22df325751afebdbe0049a3010256ce"
+    file = client.get_object("/files/" + hash)
+    MD5 = file.get("md5")
+    SHA1 = file.get("sha1")
+    SHA256 = file.get("sha256")
+    NAMES = file.get("names")
+    SIGMA = gloabal_sigmaIocRule
+    if len(NAMES) > 0:
+        for NAME in NAMES:
+            SIGMA = SIGMA.replace("- 'ImageReplaceMe'", str("- \'"+ str(NAME) + "\'"), 1)
+        SIGMA = SIGMA.replace(" ImageReplaceMe:", " Image:")
+    if MD5:
+        SIGMA = SIGMA.replace("'IOCMD5ReplaceMe'", MD5)
+        SIGMA = SIGMA.replace("HashesReplaceMe", "Hashes")
+    if SHA1:
+        SIGMA = SIGMA.replace("'IOCSHA1ReplaceMe'", SHA1)
+        SIGMA = SIGMA.replace("HashesReplaceMe", "Hashes")
+    if SHA256:
+        SIGMA = SIGMA.replace("'IOCSHA256ReplaceMe'", SHA256)
+        SIGMA = SIGMA.replace("HashesReplaceMe", "Hashes")
+    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/dropped_files?limit=100"
+    HEADERS = {
     "accept": "application/json",
-    "x-apikey": ""
+    "x-apikey": apiKey
     }
-    response = requests.get(url, headers=headers)
-    j = json.loads(str(response.text))
-    hashes = []
-    print("------------------- DROPPED FILES (SHA256) -----------------------")
+    RESPONSE = requests.get(URL, headers=HEADERS)
+    j = json.loads(str(RESPONSE.text))
+    DROPPED_FILE_HASHES = []
     for i in range(0,int(j["meta"]["count"])):
-        hashes.append(j["data"][int(i)]["id"])
-    hashes = str(hashes).replace("[", "(").replace("'", "\"").replace("]", ")")
-    print("search in (DeviceFileEvents, DeviceProcessEvents) InitiatingProcessSHA256 in~ " + str(hashes) + " or SHA256 in~ " + str(hashes))
+        DROPPED_FILE_HASHES.append(j["data"][int(i)]["id"])
+    if len(DROPPED_FILE_HASHES) > 0:
+        for HASH in DROPPED_FILE_HASHES:
+            SIGMA = SIGMA.replace("'TargetFileHashReplaceMe'", HASH, 1)
+        SIGMA = SIGMA.replace("TargetFileHashReplaceMe:", "TargetFileHash:")
+    
+    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/execution_parents?limit=100"
+    HEADERS = {
+    "accept": "application/json",
+    "x-apikey": apiKey
+    }
+    RESPONSE = requests.get(URL, headers=HEADERS)
+    j = json.loads(str(RESPONSE.text))
+    EXECUTION_PARENTS = []
+    for i in range(0,int(j["meta"]["count"])):
+        EXECUTION_PARENTS.append(j["data"][int(i)]["id"])
+    if len(EXECUTION_PARENTS) > 0:
+        for HASH in EXECUTION_PARENTS:
+            SIGMA = SIGMA.replace("'ParentImageSHA256ReplaceMe'", HASH, 1)
+        SIGMA = SIGMA.replace("ParentImageSHA256ReplaceMe:", "ParentImageSHA256:")
 
-vt()
+    for line in SIGMA.splitlines():
+        if "ReplaceMe" not in line:
+            print(line)
+
+virusTotal()
