@@ -58,6 +58,32 @@ detection:
             - 'TargetFileHashReplaceMe'
             - 'TargetFileHashReplaceMe'
             - 'TargetFileHashReplaceMe'
+    selection5:
+        ContactedDomainReplaceMe:
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+    selection6:
+        ContactedIPsReplaceMe:
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
     condition: 1 of selection*
     falsepositives:
         - unknown
@@ -128,6 +154,37 @@ def virusTotal():
         for HASH in EXECUTION_PARENTS:
             SIGMA = SIGMA.replace("'ParentImageSHA256ReplaceMe'", HASH, 1)
         SIGMA = SIGMA.replace("ParentImageSHA256ReplaceMe:", "ParentImageSHA256:")
+
+
+    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/contacted_domains?limit=100"
+    HEADERS = {
+    "accept": "application/json",
+    "x-apikey": apiKey
+    }
+    RESPONSE = requests.get(URL, headers=HEADERS)
+    j = json.loads(str(RESPONSE.text))
+    CONTACTED_DOMAINS = []
+    for i in range(0,int(j["meta"]["count"])):
+        CONTACTED_DOMAINS.append(j["data"][int(i)]["id"])
+    if len(CONTACTED_DOMAINS) > 0:
+        for DOMAIN in CONTACTED_DOMAINS:
+            SIGMA = SIGMA.replace("'ContactedDomainReplaceMe'", "\"" + DOMAIN + "\"", 1)
+        SIGMA = SIGMA.replace("ContactedDomainReplaceMe:", "Domain:")
+
+    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/contacted_ips?limit=100"
+    HEADERS = {
+    "accept": "application/json",
+    "x-apikey": apiKey
+    }
+    RESPONSE = requests.get(URL, headers=HEADERS)
+    j = json.loads(str(RESPONSE.text))
+    CONTACTED_IPS = []
+    for i in range(0,int(j["meta"]["count"])):
+        CONTACTED_IPS.append(j["data"][int(i)]["id"])
+    if len(CONTACTED_IPS) > 0:
+        for IP in CONTACTED_IPS:
+            SIGMA = SIGMA.replace("'ContactedIPsReplaceMe'", "\"" + IP + "\"", 1)
+        SIGMA = SIGMA.replace("ContactedIPsReplaceMe:", "ContactedIPs:")
 
     for line in SIGMA.splitlines():
         if "ReplaceMe" not in line:
