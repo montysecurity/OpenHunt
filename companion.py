@@ -1,11 +1,35 @@
 from turtle import pen
 from unicodedata import name
 from shodan import Shodan
-import vt, requests, json
+import vt, requests, json, re, argparse
 
-global_kql = 1
-global_list = 1
-gloabal_sigmaIocRule ="""
+parser = argparse.ArgumentParser(description="SOC Companion")
+parser.add_argument("-K", "--key", type=str, help="VirusTotal API Key")
+parser.add_argument("-I", "--ioc", type=str, help="IOC value")
+parser.add_argument("-pi", "--parent-images", type=str, help="Rename the ParentImageSHA256 field", default="ParentImageSHA256")
+parser.add_argument("-in", "--image-names", type=str, help="Rename the Image field", default="ImageNames")
+parser.add_argument("-ih", "--image-hashes", type=str, help="Rename the Image field", default="ImageHashes")
+parser.add_argument("-tf", "--target-files", type=str, help="Rename the TargetFileHash field", default="TargetFileHash")
+parser.add_argument("-cd", "--contacted-domains", type=str, help="Rename the ContactedDomains field", default="ContactedDomains")
+parser.add_argument("-ci", "--contacted-ips", type=str, help="Rename the ContactedIPs field", default="ContactedIPs")
+parser.add_argument("-rf", "--referrer-files", type=str, help="Rename the ReferrerFiles field", default="ReferrerFiles")
+parser.add_argument("-cf", "--communicating-files", type=str, help="Rename the CommunicatingFiles field", default="CommunicatingFiles")
+parser.add_argument("-df", "--downloaded-files", type=str, help="Rename the DownloadedFiles field", default="DownloadedFiles")
+
+args = parser.parse_args()
+VT_API_KEY = args.key
+IOC = args.ioc
+global_PI = args.parent_images
+global_IN = args.image_names
+global_IH = args.image_hashes
+global_TF = args.target_files
+global_CD = args.contacted_domains
+global_CI = args.contacted_ips
+global_RF = args.referrer_files
+global_CF = args.communicating_files
+global_DF = args.downloaded_files
+
+GLOBAL_SIGMA_TEMPLATE ="""
 title: Auto-Generated IOC Rule
 id:
 status: experimental
@@ -17,7 +41,7 @@ logsource:
     product:
     service:
 detection:
-    selection:
+    selectionReplaceMe:
         ParentImageSHA256ReplaceMe:
             - 'ParentImageSHA256ReplaceMe'
             - 'ParentImageSHA256ReplaceMe'
@@ -29,24 +53,25 @@ detection:
             - 'ParentImageSHA256ReplaceMe'
             - 'ParentImageSHA256ReplaceMe'
             - 'ParentImageSHA256ReplaceMe'
-    selection2:
-        ImageReplaceMe:
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-            - 'ImageReplaceMe'
-    selection3:
-        HashesReplaceMe:
+    selection2ReplaceMe:
+        ImageNameReplaceMe:
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+    selection3ReplaceMe:
+        ImageHashesReplaceMe:
             - 'IOCMD5ReplaceMe'
             - 'IOCSHA1ReplaceMe'
             - 'IOCSHA256ReplaceMe'
-    selection4:
+    selection4ReplaceMe:
         TargetFileHashReplaceMe:
             - 'TargetFileHashReplaceMe'
             - 'TargetFileHashReplaceMe'
@@ -58,7 +83,8 @@ detection:
             - 'TargetFileHashReplaceMe'
             - 'TargetFileHashReplaceMe'
             - 'TargetFileHashReplaceMe'
-    selection5:
+            - 'TargetFileHashReplaceMe'
+    selection5ReplaceMe:
         ContactedDomainReplaceMe:
             - 'ContactedDomainReplaceMe'
             - 'ContactedDomainReplaceMe'
@@ -70,8 +96,7 @@ detection:
             - 'ContactedDomainReplaceMe'
             - 'ContactedDomainReplaceMe'
             - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-    selection6:
+    selection6ReplaceMe:
         ContactedIPsReplaceMe:
             - 'ContactedIPsReplaceMe'
             - 'ContactedIPsReplaceMe'
@@ -83,7 +108,42 @@ detection:
             - 'ContactedIPsReplaceMe'
             - 'ContactedIPsReplaceMe'
             - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
+    selection7ReplaceMe:
+        ReferrerFilesReplaceMe:
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+    selection8ReplaceMe:
+        CommunicatingFilesReplaceMe:
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+    selection9ReplaceMe:
+        DownloadedFilesReplaceMe:
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
     condition: 1 of selection*
     falsepositives:
         - unknown
@@ -91,103 +151,118 @@ detection:
 """
 
 def shodan():
-        api = Shodan(str(input("Shodan API Key: ")))
-        print(api)
+        IOC = "120.48.107.143"
+        #IOC = "8.8.8.8"
+        API = Shodan("")
+        j = json.loads(str(API.host(IOC)))
+        if "146473198" in str(j):
+            print("Device Has a Cobalt Strike SSL Serial Number")
+            print(j["data"])
 
-        ioc = str(input("IOC: "))
+def virusTotal(VT_API_KEY, IOC):
+    API_KEY = VT_API_KEY
+    CLIENT = vt.Client(API_KEY)
+    SIGMA = GLOBAL_SIGMA_TEMPLATE
+    if (len(IOC) == 32 or len(IOC) == 40 or len(IOC) == 64) and "." not in IOC:
+        HASH = IOC
+        FILE = CLIENT.get_object("/files/" + HASH)
+        MD5 = FILE.get("md5")
+        SHA1 = FILE.get("sha1")
+        SHA256 = FILE.get("sha256")
+        NAMES = FILE.get("names")
+        if len(NAMES) > 0:
+            for NAME in NAMES:
+                SIGMA = SIGMA.replace("'ImageNameReplaceMe'", str(NAME), 1)
+                SIGMA = SIGMA.replace("ImageNameReplaceMe:", " ImageName:")
+                SIGMA = SIGMA.replace("selection2ReplaceMe", "selection2")
+        if MD5:
+            SIGMA = SIGMA.replace("'IOCMD5ReplaceMe'", MD5)
+            SIGMA = SIGMA.replace("ImageHashesReplaceMe", global_IH)
+            SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
+        if SHA1:
+            SIGMA = SIGMA.replace("'IOCSHA1ReplaceMe'", SHA1)
+            SIGMA = SIGMA.replace("ImageHashesReplaceMe", global_IH)
+            SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
+        if SHA256:
+            SIGMA = SIGMA.replace("'IOCSHA256ReplaceMe'", SHA256)
+            SIGMA = SIGMA.replace("ImageHashesReplaceMe", global_IH)
+            SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
+        RELATIONSHIPS = ["dropped_files", "execution_parents", "contacted_domains", "contacted_ips"]
+        for RELATIONSHIP in RELATIONSHIPS:
+            URL = "https://www.virustotal.com/api/v3/files/" + HASH + "/" + RELATIONSHIP + "?limit=100"
+            HEADERS = {
+                "accept": "application/json",
+                "x-apikey": API_KEY
+            }
+            RESPONSE = requests.get(URL, headers=HEADERS)
+            JSON_RESPONSE = json.loads(str(RESPONSE.text))
+            RELATIONSHIP_VALUES = []
+            MAX = int(JSON_RESPONSE["meta"]["count"])
+            if MAX > 10:
+                print("More than 10 results for " + RELATIONSHIP + ", stopping at 10")
+                MAX = 9
+            for i in range(0,MAX):
+                RELATIONSHIP_VALUES.append(JSON_RESPONSE["data"][int(i)]["id"])
+            if len(RELATIONSHIP_VALUES) > 0:
+                for RELATIONSHIP_VALUE in RELATIONSHIP_VALUES:
+                    if RELATIONSHIP == "dropped_files":
+                        SIGMA = SIGMA.replace("TargetFileHashReplaceMe:", str(global_TF) + ":")
+                        SIGMA = SIGMA.replace("selection4ReplaceMe", "selection4")
+                        SIGMA = SIGMA.replace("'TargetFileHashReplaceMe'", RELATIONSHIP_VALUE, 1)
+                    if RELATIONSHIP == "execution_parents":
+                        SIGMA = SIGMA.replace("ParentImageSHA256ReplaceMe:", str(global_PI) + ":")
+                        SIGMA = SIGMA.replace("selectionReplaceMe", "selection")
+                        SIGMA = SIGMA.replace("'ParentImageSHA256ReplaceMe'", RELATIONSHIP_VALUE, 1)
+                    if RELATIONSHIP == "contacted_domains":
+                        SIGMA = SIGMA.replace("ContactedDomainReplaceMe:", str(global_CD) + ":")
+                        SIGMA = SIGMA.replace("selection5ReplaceMe", "selection5")
+                        SIGMA = SIGMA.replace("'ContactedDomainReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
+                    if RELATIONSHIP == "contacted_ips":
+                        SIGMA = SIGMA.replace("ContactedIPsReplaceMe:", str(global_CI) + ":")
+                        SIGMA = SIGMA.replace("selection6ReplaceMe", "selection6")
+                        SIGMA = SIGMA.replace("'ContactedIPsReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
+        for LINE in SIGMA.splitlines():
+            if "ReplaceMe" not in LINE:
+                print(LINE)
+    else:
+        # downloaded_files requires Premium
+        RELATIONSHIPS = ["referrer_files", "communicating_files"]
+        if re.search('[a-zA-Z]', IOC):
+            TYPE = "domains"
+        else:
+            TYPE = "ip_addresses"
+        for RELATIONSHIP in RELATIONSHIPS:
+            URL = "https://www.virustotal.com/api/v3/" + TYPE + "/" + IOC + "/" + RELATIONSHIP + "?limit=40"
+            HEADERS = {
+                "accept": "application/json",
+                "x-apikey": API_KEY
+            }
+            RESPONSE = requests.get(URL, headers=HEADERS)
+            JSON_RESPONSE = json.loads(str(RESPONSE.text))
+            RELATIONSHIP_VALUES = []
+            MAX = int(JSON_RESPONSE["meta"]["count"])
+            if MAX > 10:
+                print("More than 10 results for " + RELATIONSHIP + ", stopping at 10")
+                MAX = 9
+            for i in range(0,MAX):
+                RELATIONSHIP_VALUES.append(JSON_RESPONSE["data"][int(i)]["id"])
+            if len(RELATIONSHIP_VALUES) > 0:
+                for RELATIONSHIP_VALUE in RELATIONSHIP_VALUES:
+                    if RELATIONSHIP == "referrer_files":
+                        SIGMA = SIGMA.replace("ReferrerFilesReplaceMe:", str(global_RF) + ":")
+                        SIGMA = SIGMA.replace("selection7ReplaceMe", "selection7")
+                        SIGMA = SIGMA.replace("'ReferrerFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
+                    if RELATIONSHIP == "communicating_files":
+                        SIGMA = SIGMA.replace("CommunicatingFilesReplaceMe:", str(global_CF) + ":")
+                        SIGMA = SIGMA.replace("selection8ReplaceMe", "selection8")
+                        SIGMA = SIGMA.replace("'CommunicatingFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
+                    if RELATIONSHIP == "downloaded_files":
+                        SIGMA = SIGMA.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
+                        SIGMA = SIGMA.replace("selection9ReplaceMe", "selection9")
+                        SIGMA = SIGMA.replace("'DownloadedFilesReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
+        for LINE in SIGMA.splitlines():
+            if "ReplaceMe" not in LINE:
+                print(LINE)
 
-        def ipv4(ioc):
-            ipinfo = api.host(ioc)
-            print(ipinfo)
-            ipv4(ioc)
-
-def virusTotal():
-    #client = vt.Client(input("VTKEY: "))
-    apiKey = ""
-    client = vt.Client(apiKey)
-    hash = "79128b28776eb3fcae5fe10aa06d7215c22df325751afebdbe0049a3010256ce"
-    file = client.get_object("/files/" + hash)
-    MD5 = file.get("md5")
-    SHA1 = file.get("sha1")
-    SHA256 = file.get("sha256")
-    NAMES = file.get("names")
-    SIGMA = gloabal_sigmaIocRule
-    if len(NAMES) > 0:
-        for NAME in NAMES:
-            SIGMA = SIGMA.replace("- 'ImageReplaceMe'", str("- \'"+ str(NAME) + "\'"), 1)
-        SIGMA = SIGMA.replace(" ImageReplaceMe:", " Image:")
-    if MD5:
-        SIGMA = SIGMA.replace("'IOCMD5ReplaceMe'", MD5)
-        SIGMA = SIGMA.replace("HashesReplaceMe", "Hashes")
-    if SHA1:
-        SIGMA = SIGMA.replace("'IOCSHA1ReplaceMe'", SHA1)
-        SIGMA = SIGMA.replace("HashesReplaceMe", "Hashes")
-    if SHA256:
-        SIGMA = SIGMA.replace("'IOCSHA256ReplaceMe'", SHA256)
-        SIGMA = SIGMA.replace("HashesReplaceMe", "Hashes")
-    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/dropped_files?limit=100"
-    HEADERS = {
-    "accept": "application/json",
-    "x-apikey": apiKey
-    }
-    RESPONSE = requests.get(URL, headers=HEADERS)
-    j = json.loads(str(RESPONSE.text))
-    DROPPED_FILE_HASHES = []
-    for i in range(0,int(j["meta"]["count"])):
-        DROPPED_FILE_HASHES.append(j["data"][int(i)]["id"])
-    if len(DROPPED_FILE_HASHES) > 0:
-        for HASH in DROPPED_FILE_HASHES:
-            SIGMA = SIGMA.replace("'TargetFileHashReplaceMe'", HASH, 1)
-        SIGMA = SIGMA.replace("TargetFileHashReplaceMe:", "TargetFileHash:")
-    
-    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/execution_parents?limit=100"
-    HEADERS = {
-    "accept": "application/json",
-    "x-apikey": apiKey
-    }
-    RESPONSE = requests.get(URL, headers=HEADERS)
-    j = json.loads(str(RESPONSE.text))
-    EXECUTION_PARENTS = []
-    for i in range(0,int(j["meta"]["count"])):
-        EXECUTION_PARENTS.append(j["data"][int(i)]["id"])
-    if len(EXECUTION_PARENTS) > 0:
-        for HASH in EXECUTION_PARENTS:
-            SIGMA = SIGMA.replace("'ParentImageSHA256ReplaceMe'", HASH, 1)
-        SIGMA = SIGMA.replace("ParentImageSHA256ReplaceMe:", "ParentImageSHA256:")
-
-
-    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/contacted_domains?limit=100"
-    HEADERS = {
-    "accept": "application/json",
-    "x-apikey": apiKey
-    }
-    RESPONSE = requests.get(URL, headers=HEADERS)
-    j = json.loads(str(RESPONSE.text))
-    CONTACTED_DOMAINS = []
-    for i in range(0,int(j["meta"]["count"])):
-        CONTACTED_DOMAINS.append(j["data"][int(i)]["id"])
-    if len(CONTACTED_DOMAINS) > 0:
-        for DOMAIN in CONTACTED_DOMAINS:
-            SIGMA = SIGMA.replace("'ContactedDomainReplaceMe'", "\"" + DOMAIN + "\"", 1)
-        SIGMA = SIGMA.replace("ContactedDomainReplaceMe:", "Domain:")
-
-    URL = "https://www.virustotal.com/api/v3/files/" + hash + "/contacted_ips?limit=100"
-    HEADERS = {
-    "accept": "application/json",
-    "x-apikey": apiKey
-    }
-    RESPONSE = requests.get(URL, headers=HEADERS)
-    j = json.loads(str(RESPONSE.text))
-    CONTACTED_IPS = []
-    for i in range(0,int(j["meta"]["count"])):
-        CONTACTED_IPS.append(j["data"][int(i)]["id"])
-    if len(CONTACTED_IPS) > 0:
-        for IP in CONTACTED_IPS:
-            SIGMA = SIGMA.replace("'ContactedIPsReplaceMe'", "\"" + IP + "\"", 1)
-        SIGMA = SIGMA.replace("ContactedIPsReplaceMe:", "ContactedIPs:")
-
-    for line in SIGMA.splitlines():
-        if "ReplaceMe" not in line:
-            print(line)
-
-virusTotal()
+#virusTotal(VT_API_KEY, IOC)
+shodan()
