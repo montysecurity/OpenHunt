@@ -1,5 +1,6 @@
 from turtle import pen
 from unicodedata import name
+from xmlrpc.client import APPLICATION_ERROR
 from shodan import Shodan
 import vt, requests, json, re, argparse
 
@@ -150,19 +151,28 @@ detection:
     tags:
 """
 
-def shodan():
-        IOC = "120.48.107.143"
+def shodan(IOC):
+        #IOC = "120.48.107.143"
         #IOC = "8.8.8.8"
         API = Shodan("")
-        j = json.loads(str(API.host(IOC)))
-        if "146473198" in str(j):
-            print("Device Has a Cobalt Strike SSL Serial Number")
-            print(j["data"])
+        try:
+            j = API.host(IOC)
+        except:
+            return 0
+
+        if "146473198" in str(j): #SSL Seral Number
+            return 1
+        if "2007783223" in str(j): # SSL Hash
+            return 1
+        if "Cobalt Strike Beacon" in str(j): # Device Product Name
+            return 1
+        return 0
 
 def virusTotal(VT_API_KEY, IOC):
     API_KEY = VT_API_KEY
     CLIENT = vt.Client(API_KEY)
     SIGMA = GLOBAL_SIGMA_TEMPLATE
+    CS_SERVERS = []
     if (len(IOC) == 32 or len(IOC) == 40 or len(IOC) == 64) and "." not in IOC:
         HASH = IOC
         FILE = CLIENT.get_object("/files/" + HASH)
@@ -218,12 +228,19 @@ def virusTotal(VT_API_KEY, IOC):
                         SIGMA = SIGMA.replace("selection5ReplaceMe", "selection5")
                         SIGMA = SIGMA.replace("'ContactedDomainReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
                     if RELATIONSHIP == "contacted_ips":
+                        if shodan(RELATIONSHIP_VALUE) == 1:
+                            CS_SERVERS.append(RELATIONSHIP_VALUE)
                         SIGMA = SIGMA.replace("ContactedIPsReplaceMe:", str(global_CI) + ":")
                         SIGMA = SIGMA.replace("selection6ReplaceMe", "selection6")
                         SIGMA = SIGMA.replace("'ContactedIPsReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
         for LINE in SIGMA.splitlines():
             if "ReplaceMe" not in LINE:
                 print(LINE)
+        print()
+        if len(CS_SERVERS)> 0:
+            print("This hash contacts the following IPs, which are believed to be Cobalt Strike servers")
+            for CS_SERVER in CS_SERVERS:
+                print("- " + CS_SERVER)
     else:
         # downloaded_files requires Premium
         RELATIONSHIPS = ["referrer_files", "communicating_files"]
@@ -262,7 +279,10 @@ def virusTotal(VT_API_KEY, IOC):
                         SIGMA = SIGMA.replace("'DownloadedFilesReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
         for LINE in SIGMA.splitlines():
             if "ReplaceMe" not in LINE:
-                print(LINE)
+               print(LINE)
+        print()
+        if shodan(IOC) == 1:
+            print("The IOC you submitted is believed to be a Cobalt Strike Server")
 
-#virusTotal(VT_API_KEY, IOC)
-shodan()
+virusTotal(VT_API_KEY, IOC)
+#shodan(IOC)
