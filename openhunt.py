@@ -422,10 +422,10 @@ def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
                         SIGMA = SIGMA.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
                         SIGMA = SIGMA.replace("selection9ReplaceMe", "selection9")
                         SIGMA = SIGMA.replace("'DownloadedFilesReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
-    #for LINE in SIGMA.splitlines():
-    #    if "ReplaceMe" not in LINE:
-    #       print(LINE)
-    #print()
+    for LINE in SIGMA.splitlines():
+        if "ReplaceMe" not in LINE:
+           print(LINE)
+    print()
     if len(CS_SERVERS)> 0:
         for CS_SERVER in CS_SERVERS:
             print(CS_SERVER)

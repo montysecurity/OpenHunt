@@ -17,7 +17,7 @@ OpenHunt runs in two different modes (`-m, --mode`). One is called `ttp` and the
 
 ### TTP Mode
 
-The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it download the current MITRE STIX data to `groups.csv` and then parse it for all TTPs used by groups affiliated to the Country provided and prints them out along with a count of how many threat groups are seen using that Technique. 
+The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it downloads the current MITRE STIX data to `groups.csv` and then parses it for all TTPs used by groups affiliated to the Country provided and prints them out along with a count of how many threat groups are seen using that Technique. 
 
 It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above.
 
@@ -39,6 +39,14 @@ Fingerprints Supported:
 - Cobalt Strike Servers
 
 If the field names in the Sigma rule do no match the field names in your SIEM/EDR/XDR platform then you can rename them (see `python openhunt.py -h`)
+
+#### Examples
+
+`python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 58.33.204.180`
+
+#### Limitations
+
+- Max of 10 values per relationship
 
 ## Credit and Thank You Notes
 
