@@ -17,7 +17,7 @@ OpenHunt runs in two different modes (`-m, --mode`). One is called `ttp` and the
 
 ### TTP Mode
 
-The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it parses the current MITRE STIX data for all TTPs used by groups affiliated to that Country and prints them out along with a count of how many threat groups are seen using that Technique. It will write the info to a `groups.csv`.
+The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it download the current MITRE STIX data to `groups.csv` and then parse it for all TTPs used by groups affiliated to the Country provided and prints them out along with a count of how many threat groups are seen using that Technique. 
 
 It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above.
 
