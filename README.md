@@ -7,21 +7,27 @@ Create SIGMA rules using OSINT gathered on provided IOCs
 - VirusTotal API Key
 - Shodan API Key
 
+## Install
+
+`pip install -r requirements.txt`
+
 ## Usage
 
 OpenHunt runs in two different modes (`-m, --mode`). One is called `ttp` and the other is `ioc`.
 
 ### TTP Mode
 
-The main functionality of this was ported from [thisht MITRE ATT&CK script](tps://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it parses the current MITRE STIX data for all TTPs used by groups affiliated to that Country and prints them out along with a count of how many threat groups are seen using that Technique.
+The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it parses the current MITRE STIX data for all TTPs used by groups affiliated to that Country and prints them out along with a count of how many threat groups are seen using that Technique. It will write the info to a `groups.csv`.
 
 It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above.
 
 #### Examples
 
 `python .\openhunt.py -m ttp -c russia`
+- Pulls current MITRE info on Russia
 
 `python .\openhunt.py -m ttp -c russia -f .\groups.csv`
+- References local file that ships with the repo
 
 ## IOC Mode
 
@@ -36,5 +42,5 @@ If the field names in the Sigma rule do no match the field names in your SIEM/ED
 
 ## Credit and Thank You Notes
 
-- [MITRE](/mitre-attack/attack-scripts/) for their research and ATT&CK scripts 
+- [MITRE](https://github.com/mitre-attack/attack-scripts/) for their research and ATT&CK scripts 
 - [Bank Security on Medium](https://bank-security.medium.com/hunting-cobalt-strike-servers-385c5bedda7b) for their work on Cobalt Strike fingerprints
