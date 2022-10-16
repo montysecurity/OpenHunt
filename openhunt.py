@@ -308,7 +308,11 @@ def mitre(COUNTRY, LIMIT):
                 writer.writerows(rowdicts)
         
         TTPS = []
-        COUNTRY_VALUE = COUNTRY
+        if COUNTRY:
+            COUNTRY_VALUE = COUNTRY
+        else:
+            print("Missing Country, -c")
+            exit()
         GROUPS = []
         if COUNTRY_VALUE.lower() == "all":
             with open(filename, newline='', encoding='utf-8') as csvfile:
