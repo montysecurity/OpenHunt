@@ -163,7 +163,7 @@ detection:
 """
 
 def mitre(COUNTRY, LIMIT):
-    # Adapted from hTTPS://github.com/mitre-attack/attack-scripts
+    # Adapted from https://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
         # Establish TAXII2 Collection instance for Enterprise ATT&CK collection
@@ -171,7 +171,7 @@ def mitre(COUNTRY, LIMIT):
             "enterprise_attack": "95ecc380-afe9-11e4-9b6c-751b66dd541e",
             "mobile_attack": "2f669986-b40b-4423-b720-4396ca6a462b"
         }
-        collection_url = "hTTPS://cti-taxii.mitre.org/stix/collections/95ecc380-afe9-11e4-9b6c-751b66dd541e/"
+        collection_url = "https://cti-taxii.mitre.org/stix/collections/95ecc380-afe9-11e4-9b6c-751b66dd541e/"
         collection = Collection(collection_url)
         taxii_ds = TAXIICollectionSource(collection)
 
@@ -275,7 +275,7 @@ def mitre(COUNTRY, LIMIT):
 
 
     def main(COUNTRY, LIMIT):
-        # Source: hTTPS://attack.mitre.org/groups/
+        # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
         AFFILIATIONS = {
             "Russia": ["ALLANITE", "APT28", "APT29", "Dragonfly", "Gamaredon Group", "Indrik Spider", "Sandworm Team", "TEMP.Veles", "Turla", "Wizard Spider", "ZIRCONIUM"],
@@ -372,7 +372,7 @@ def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
             SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
         RELATIONSHIPS = ["dropped_files", "execution_parents", "contacted_domains", "contacted_ips"]
         for RELATIONSHIP in RELATIONSHIPS:
-            URL = "hTTPS://www.virustotal.com/api/v3/files/" + HASH + "/" + RELATIONSHIP + "?limit=100"
+            URL = "https://www.virustotal.com/api/v3/files/" + HASH + "/" + RELATIONSHIP + "?limit=100"
             HEADERS = {
                 "accept": "application/json",
                 "x-apikey": API_KEY
@@ -420,7 +420,7 @@ def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
                 if "Cobalt Strike" in C2_STATUS:
                     CS_SERVERS.append(str(C2_STATUS))
         for RELATIONSHIP in RELATIONSHIPS:
-            URL = "hTTPS://www.virustotal.com/api/v3/" + TYPE + "/" + IOC + "/" + RELATIONSHIP + "?limit=40"
+            URL = "https://www.virustotal.com/api/v3/" + TYPE + "/" + IOC + "/" + RELATIONSHIP + "?limit=40"
             HEADERS = {
                 "accept": "application/json",
                 "x-apikey": API_KEY
