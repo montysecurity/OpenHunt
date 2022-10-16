@@ -23,11 +23,10 @@ parser.add_argument("-cf", "--communicating-files", type=str, help="Rename the C
 parser.add_argument("-df", "--downloaded-files", type=str, help="Rename the DownloadedFiles field", default="DownloadedFiles")
 
 args = parser.parse_args()
-MODE = args.mode
-TTP_FILE = args.file
-VT_API_KEY = args.virustotal_api_key
-SHODAN_API_KEY = args.shodan_api_key
-IOC = args.ioc
+mode = args.mode
+virustotal_api_key = args.virustotal_api_key
+shodan_api_key = args.shodan_api_key
+ioc = args.ioc
 global_PI = args.parent_images
 global_IN = args.image_names
 global_IH = args.image_hashes
@@ -37,11 +36,11 @@ global_CI = args.contacted_ips
 global_RF = args.referrer_files
 global_CF = args.communicating_files
 global_DF = args.downloaded_files
-LIMIT = args.limit
-COUNTRY = args.country
-CSV_FILE = args.file
+limit = args.limit
+country_from_input = args.country
+filename = args.file
 
-GLOBAL_SIGMA_TEMPLATE ="""
+sigma_template ="""
 title: Auto-Generated IOC Rule
 id:
 status: experimental
@@ -162,7 +161,7 @@ detection:
     tags:
 """
 
-def mitre(COUNTRY, LIMIT):
+def mitre(country_from_input, limit, filename):
     # Adapted from https://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
@@ -274,10 +273,15 @@ def mitre(COUNTRY, LIMIT):
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
 
-    def main(COUNTRY, LIMIT):
+    def main(country_from_input, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
-        AFFILIATIONS = {
+        if country_from_input == None:
+            print("Missing Country, -c")
+            exit()
+        groups = []
+        ttps = []
+        affiliations = {
             "Russia": ["ALLANITE", "APT28", "APT29", "Dragonfly", "Gamaredon Group", "Indrik Spider", "Sandworm Team", "TEMP.Veles", "Turla", "Wizard Spider", "ZIRCONIUM"],
             "China": ["admin@338", "APT1", "APT12", "APT16", "APT17", "APT19", "APT3", "APT30", "APT41", "Aquatic Panda", "Axiom", "BlackTech", "BRONZE BUTLER", "Chimera", "Deep Panda", "Elderwood", "GALLIUM", "HAFNIUM", "IndigoZebra", "Ke3chang", "Leviathan", "menuPass", "Moafee", "Mofang", "Mustang Panda", "Naikon", "Operation Wocao", "PittyTiger", "Putter Panda", "Rocke", "Suckfly", "TA459", "Threat Group-3390", "Tonto Team", "Winnti Group"],
             "Iran": ["Ajax Security Team", "APT33", "APT39", "Cleaver", "CopyKittens", "Fox Kitten", "Group5", "Leafminer", "Magic Hound", "MuddyWater", "OilRig", "Silent Librarian"],
@@ -290,9 +294,7 @@ def mitre(COUNTRY, LIMIT):
             "Unknown": ["APT18", "APT-C-36", "BackdoorDiplomacy", "BlackOasis", "Blue Mockingbird", "Bouncing Golf", "Carbanak", "Cobalt Group", "Confucius", "CostaRicto", "DarkHydrus", "DarkVishnya", "DragonOK", "Dust Storm", "Equation", "Evilnum", "Ferocious Kitten", "FIN10", "FIN4", "FIN5", "FIN6", "FIN7", "FIN8", "Frankenstein", "Gallmaker", "GCMAN", "GOLD SOUTHFIELD", "HEXANE", "Honeybee", "Inception", "LazyScripter", "Lotus Blossom", "Machete", "Molerats", "NEODYMIUM", "Night Dragon", "Nomadic Octopus", "Orangeworm", "Patchwork", "PLATINUM", "Poseidon Group", "PROMETHIUM", "Rancor", "RTM", "Scarlet Mimic", "Sharpshooter", "Sidewinder", "Silence", "Sowbug", "Stealth Falcon", "Strider", "TA505", "TA551", "TeamTNT", "The White Company", "Threat Group-1314", "Thrip", "Tropic Trooper", "Whitefly", "Windigo", "Windshift", "WIRTE"]
         }
 
-        if CSV_FILE:
-            filename = CSV_FILE
-        else:
+        if filename == None:
             data_source = build_taxii_source()
             source_name = "mitre-attack"
             filename = "groups.csv"
@@ -300,169 +302,160 @@ def mitre(COUNTRY, LIMIT):
             relationship_type = "uses"
             type_filter = "intrusion-set"
             sorting_keys = ("TID", "GID")
-            rowdicts = do_mapping(data_source, fieldnames, relationship_type, type_filter, source_name, sorting_keys, None)
-
+            rowdicts = do_mapping(data_source, fieldnames, relationship_type, type_filter, source_name, sorting_keys, None)            
+            
             with io.open(filename, "w", newline="", encoding="utf-8") as csvfile:
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(rowdicts)
-        
-        TTPS = []
-        if COUNTRY:
-            COUNTRY_VALUE = COUNTRY
-        else:
-            print("Missing Country, -c")
-            exit()
-        GROUPS = []
-        if COUNTRY_VALUE.lower() == "all":
+
+        if country_from_input.lower() == "all":
             with open(filename, newline='', encoding='utf-8') as csvfile:
                 for row in csv.reader(csvfile):
-                    TTPS.append(row[1])
+                    ttps.append(row[1])
         else:
-            for COUNTRY in AFFILIATIONS:
-                if COUNTRY.lower() == COUNTRY_VALUE.lower():
-                    for GROUP in AFFILIATIONS[COUNTRY]:
-                        GROUPS.append(GROUP)
+            for country in affiliations:
+                if country.lower() == country_from_input.lower():
+                    for group in affiliations[country]:
+                        groups.append(group)
             with open(filename, newline='', encoding='utf-8') as csvfile:
                 for row in csv.reader(csvfile):
-                    for GROUP in GROUPS:
-                        if GROUP.lower() == row[3].lower():
-                            TTPS.append(row[1])
-        for element in Counter(TTPS).most_common(LIMIT):
+                    for group in groups:
+                        if group.lower() == row[3].lower():
+                            ttps.append(row[1])
+        for element in Counter(ttps).most_common(limit):
             print(str(element).strip("('").strip(")").replace("',", ":"))
 
-    main(COUNTRY, LIMIT)
+    main(country_from_input, limit, filename)
 
-def shodan(IOC, SHODAN_API_KEY):
-        API = Shodan(SHODAN_API_KEY)
-        CS_SIGNATURES = {"SSL Serial Number": "146473198", "SSL Hash": "2007783223", "Product Name": "Cobalt Strike Beacon", "SSL SHA256": "87F2085C32B6A2CC709B365F55873E207A9CAA10BFFECF2FD16D3CF9D94D390C", "Port 50050 open": "50050", "SSL JARM": "07d14d16d21d21d00042d41d00041de5fb3038104f457d92ba02e9311512c2"}
+def shodan(ioc, shodan_api_key):
+        api = Shodan(shodan_api_key)
+        cobalt_strike_sigantures = {"SSL Serial Number": "146473198", "SSL Hash": "2007783223", "Product Name": "Cobalt Strike Beacon", "SSL sha256": "87F2085C32B6A2CC709B365F55873E207A9CAA10BFFECF2FD16D3CF9D94D390C", "Port 50050 open": "50050", "SSL JARM": "07d14d16d21d21d00042d41d00041de5fb3038104f457d92ba02e9311512c2"}
         try:
-            j = API.host(IOC)
+            j = api.host(ioc)
         except:
             return 0
         
-        for CS_SIGNATURE in CS_SIGNATURES:
-            if CS_SIGNATURES[CS_SIGNATURE] in str(j):
-                return str(IOC + " is believed to be a Cobalt Strike Server because of its " + CS_SIGNATURE)
+        for signature in cobalt_strike_sigantures:
+            if cobalt_strike_sigantures[signature] in str(j):
+                return str(ioc + " is believed to be a Cobalt Strike Server because of its " + signature)
 
-def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
-    API_KEY = VT_API_KEY
-    CLIENT = vt.Client(API_KEY)
-    SIGMA = GLOBAL_SIGMA_TEMPLATE
-    CS_SERVERS = []
-    if (len(IOC) == 32 or len(IOC) == 40 or len(IOC) == 64) and "." not in IOC:
-        HASH = IOC
-        FILE = CLIENT.get_object("/files/" + HASH)
-        MD5 = FILE.get("md5")
-        SHA1 = FILE.get("sha1")
-        SHA256 = FILE.get("sha256")
-        NAMES = FILE.get("names")
-        if len(NAMES) > 0:
-            for NAME in NAMES:
-                SIGMA = SIGMA.replace("'ImageNameReplaceMe'", str(NAME), 1)
-                SIGMA = SIGMA.replace("ImageNameReplaceMe:", " ImageName:")
-                SIGMA = SIGMA.replace("selection2ReplaceMe", "selection2")
-        if MD5:
-            SIGMA = SIGMA.replace("'IOCMD5ReplaceMe'", MD5)
-            SIGMA = SIGMA.replace("ImageHashesReplaceMe", global_IH)
-            SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
-        if SHA1:
-            SIGMA = SIGMA.replace("'IOCSHA1ReplaceMe'", SHA1)
-            SIGMA = SIGMA.replace("ImageHashesReplaceMe", global_IH)
-            SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
-        if SHA256:
-            SIGMA = SIGMA.replace("'IOCSHA256ReplaceMe'", SHA256)
-            SIGMA = SIGMA.replace("ImageHashesReplaceMe", global_IH)
-            SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
-        RELATIONSHIPS = ["dropped_files", "execution_parents", "contacted_domains", "contacted_ips"]
-        for RELATIONSHIP in RELATIONSHIPS:
-            URL = "https://www.virustotal.com/api/v3/files/" + HASH + "/" + RELATIONSHIP + "?limit=100"
-            HEADERS = {
+def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
+    client = vt.Client(virustotal_api_key)
+    cobalt_strike_servers = []
+    if (len(ioc) == 32 or len(ioc) == 40 or len(ioc) == 64) and "." not in ioc:
+        hash = ioc
+        file = client.get_object("/files/" + hash)
+        md5 = file.get("md5")
+        sha1 = file.get("sha1")
+        sha256 = file.get("sha256")
+        names = file.get("names")
+        if len(names) > 0:
+            for NAME in names:
+                sigma_template = sigma_template.replace("'ImageNameReplaceMe'", str(NAME), 1)
+                sigma_template = sigma_template.replace("ImageNameReplaceMe:", " ImageName:")
+                sigma_template = sigma_template.replace("selection2ReplaceMe", "selection2")
+        if md5:
+            sigma_template = sigma_template.replace("'IOCMD5ReplaceMe'", md5)
+            sigma_template = sigma_template.replace("ImageHashesReplaceMe", global_IH)
+            sigma_template = sigma_template.replace("selection3ReplaceMe", "selection3")
+        if sha1:
+            sigma_template = sigma_template.replace("'IOCSHA1ReplaceMe'", sha1)
+            sigma_template = sigma_template.replace("ImageHashesReplaceMe", global_IH)
+            sigma_template = sigma_template.replace("selection3ReplaceMe", "selection3")
+        if sha256:
+            sigma_template = sigma_template.replace("'IOCSHA256ReplaceMe'", sha256)
+            sigma_template = sigma_template.replace("ImageHashesReplaceMe", global_IH)
+            sigma_template = sigma_template.replace("selection3ReplaceMe", "selection3")
+        virustotal_relationships = ["dropped_files", "execution_parents", "contacted_domains", "contacted_ips"]
+        for relationship in virustotal_relationships:
+            url = "https://www.virustotal.com/api/v3/files/" + hash + "/" + relationship + "?limit=100"
+            headers = {
                 "accept": "application/json",
-                "x-apikey": API_KEY
+                "x-apikey": virustotal_api_key
             }
-            RESPONSE = requests.get(URL, headers=HEADERS)
-            JSON_RESPONSE = json.loads(str(RESPONSE.text))
-            RELATIONSHIP_VALUES = []
-            MAX = int(JSON_RESPONSE["meta"]["count"])
-            if MAX > 10:
-                print("More than 10 results for " + RELATIONSHIP + ", stopping at 10")
-                MAX = 9
-            for i in range(0,MAX):
-                RELATIONSHIP_VALUES.append(JSON_RESPONSE["data"][int(i)]["id"])
-            if len(RELATIONSHIP_VALUES) > 0:
-                for RELATIONSHIP_VALUE in RELATIONSHIP_VALUES:
-                    if RELATIONSHIP == "dropped_files":
-                        SIGMA = SIGMA.replace("TargetFileHashReplaceMe:", str(global_TF) + ":")
-                        SIGMA = SIGMA.replace("selection4ReplaceMe", "selection4")
-                        SIGMA = SIGMA.replace("'TargetFileHashReplaceMe'", RELATIONSHIP_VALUE, 1)
-                    if RELATIONSHIP == "execution_parents":
-                        SIGMA = SIGMA.replace("ParentImageSHA256ReplaceMe:", str(global_PI) + ":")
-                        SIGMA = SIGMA.replace("selectionReplaceMe", "selection")
-                        SIGMA = SIGMA.replace("'ParentImageSHA256ReplaceMe'", RELATIONSHIP_VALUE, 1)
-                    if RELATIONSHIP == "contacted_domains":
-                        SIGMA = SIGMA.replace("ContactedDomainReplaceMe:", str(global_CD) + ":")
-                        SIGMA = SIGMA.replace("selection5ReplaceMe", "selection5")
-                        SIGMA = SIGMA.replace("'ContactedDomainReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
-                    if RELATIONSHIP == "contacted_ips":
-                        C2_STATUS = shodan(RELATIONSHIP_VALUE, SHODAN_API_KEY)
-                        if C2_STATUS != None and C2_STATUS != 0:
-                            if "Cobalt Strike" in C2_STATUS:
-                                CS_SERVERS.append(str(C2_STATUS))
-                        SIGMA = SIGMA.replace("ContactedIPsReplaceMe:", str(global_CI) + ":")
-                        SIGMA = SIGMA.replace("selection6ReplaceMe", "selection6")
-                        SIGMA = SIGMA.replace("'ContactedIPsReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
+            response = requests.get(url, headers=headers)
+            json_response = json.loads(str(response.text))
+            relationship_values = []
+            count_of_values = int(json_response["meta"]["count"])
+            if count_of_values > 10:
+                print("More than 10 results for " + relationship + ", stopping at 10")
+                count_of_values = 9
+            for i in range(0,count_of_values):
+                relationship_values.append(json_response["data"][int(i)]["id"])
+            if len(relationship_values) > 0:
+                for value in relationship_values:
+                    if relationship == "dropped_files":
+                        sigma_template = sigma_template.replace("TargetFileHashReplaceMe:", str(global_TF) + ":")
+                        sigma_template = sigma_template.replace("selection4ReplaceMe", "selection4")
+                        sigma_template = sigma_template.replace("'TargetFileHashReplaceMe'", value, 1)
+                    if relationship == "execution_parents":
+                        sigma_template = sigma_template.replace("ParentImageSHA256ReplaceMe:", str(global_PI) + ":")
+                        sigma_template = sigma_template.replace("selectionReplaceMe", "selection")
+                        sigma_template = sigma_template.replace("'ParentImageSHA256ReplaceMe'", value, 1)
+                    if relationship == "contacted_domains":
+                        sigma_template = sigma_template.replace("ContactedDomainReplaceMe:", str(global_CD) + ":")
+                        sigma_template = sigma_template.replace("selection5ReplaceMe", "selection5")
+                        sigma_template = sigma_template.replace("'ContactedDomainReplaceMe'", "\"" + value + "\"", 1)
+                    if relationship == "contacted_ips":
+                        c2_status = shodan(value, shodan_api_key)
+                        if c2_status != None and c2_status != 0:
+                            if "Cobalt Strike" in c2_status:
+                                cobalt_strike_servers.append(str(c2_status))
+                        sigma_template = sigma_template.replace("ContactedIPsReplaceMe:", str(global_CI) + ":")
+                        sigma_template = sigma_template.replace("selection6ReplaceMe", "selection6")
+                        sigma_template = sigma_template.replace("'ContactedIPsReplaceMe'", "\"" + value + "\"", 1)
     else:
         # downloaded_files requires Premium
-        RELATIONSHIPS = ["referrer_files", "communicating_files"]
-        if re.search('[a-zA-Z]', IOC):
-            TYPE = "domains"
+        virustotal_relationships = ["referrer_files", "communicating_files"]
+        if re.search('[a-zA-Z]', ioc):
+            type = "domains"
         else:
-            TYPE = "ip_addresses"
-            C2_STATUS = shodan(IOC, SHODAN_API_KEY)
-            if C2_STATUS != None and C2_STATUS != 0:
-                if "Cobalt Strike" in C2_STATUS:
-                    CS_SERVERS.append(str(C2_STATUS))
-        for RELATIONSHIP in RELATIONSHIPS:
-            URL = "https://www.virustotal.com/api/v3/" + TYPE + "/" + IOC + "/" + RELATIONSHIP + "?limit=40"
-            HEADERS = {
+            type = "ip_addresses"
+            c2_status = shodan(ioc, shodan_api_key)
+            if c2_status != None and c2_status != 0:
+                if "Cobalt Strike" in c2_status:
+                    cobalt_strike_servers.append(str(c2_status))
+        for relationship in virustotal_relationships:
+            url = "https://www.virustotal.com/api/v3/" + type + "/" + ioc + "/" + relationship + "?limit=40"
+            headers = {
                 "accept": "application/json",
-                "x-apikey": API_KEY
+                "x-apikey": virustotal_api_key
             }
-            RESPONSE = requests.get(URL, headers=HEADERS)
-            JSON_RESPONSE = json.loads(str(RESPONSE.text))
-            RELATIONSHIP_VALUES = []
-            MAX = int(JSON_RESPONSE["meta"]["count"])
-            if MAX > 10:
-                print("More than 10 results for " + RELATIONSHIP + ", stopping at 10")
-                MAX = 9
-            for i in range(0,MAX):
-                RELATIONSHIP_VALUES.append(JSON_RESPONSE["data"][int(i)]["id"])
-            if len(RELATIONSHIP_VALUES) > 0:
-                for RELATIONSHIP_VALUE in RELATIONSHIP_VALUES:
-                    if RELATIONSHIP == "referrer_files":
-                        SIGMA = SIGMA.replace("ReferrerFilesReplaceMe:", str(global_RF) + ":")
-                        SIGMA = SIGMA.replace("selection7ReplaceMe", "selection7")
-                        SIGMA = SIGMA.replace("'ReferrerFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
-                    if RELATIONSHIP == "communicating_files":
-                        SIGMA = SIGMA.replace("CommunicatingFilesReplaceMe:", str(global_CF) + ":")
-                        SIGMA = SIGMA.replace("selection8ReplaceMe", "selection8")
-                        SIGMA = SIGMA.replace("'CommunicatingFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
-                    if RELATIONSHIP == "downloaded_files":
-                        SIGMA = SIGMA.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
-                        SIGMA = SIGMA.replace("selection9ReplaceMe", "selection9")
-                        SIGMA = SIGMA.replace("'DownloadedFilesReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
-    for LINE in SIGMA.splitlines():
-        if "ReplaceMe" not in LINE:
-           print(LINE)
+            response = requests.get(url, headers=headers)
+            json_response = json.loads(str(response.text))
+            relationship_values = []
+            count_of_values = int(json_response["meta"]["count"])
+            if count_of_values > 10:
+                print("More than 10 results for " + relationship + ", stopping at 10")
+                count_of_values = 9
+            for i in range(0,count_of_values):
+                relationship_values.append(json_response["data"][int(i)]["id"])
+            if len(relationship_values) > 0:
+                for RELATIONSHIP_VALUE in relationship_values:
+                    if relationship == "referrer_files":
+                        sigma_template = sigma_template.replace("ReferrerFilesReplaceMe:", str(global_RF) + ":")
+                        sigma_template = sigma_template.replace("selection7ReplaceMe", "selection7")
+                        sigma_template = sigma_template.replace("'ReferrerFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
+                    if relationship == "communicating_files":
+                        sigma_template = sigma_template.replace("CommunicatingFilesReplaceMe:", str(global_CF) + ":")
+                        sigma_template = sigma_template.replace("selection8ReplaceMe", "selection8")
+                        sigma_template = sigma_template.replace("'CommunicatingFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
+                    if relationship == "downloaded_files":
+                        sigma_template = sigma_template.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
+                        sigma_template = sigma_template.replace("selection9ReplaceMe", "selection9")
+                        sigma_template = sigma_template.replace("'DownloadedFilesReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
+    for line in sigma_template.splitlines():
+        if "ReplaceMe" not in line:
+           print(line)
     print()
-    if len(CS_SERVERS)> 0:
-        for CS_SERVER in CS_SERVERS:
-            print(CS_SERVER)
+    if len(cobalt_strike_servers)> 0:
+        for server in cobalt_strike_servers:
+            print(server)
 
-if MODE == "ioc":
-    virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC)
-elif MODE == "ttp":
-    mitre(COUNTRY, LIMIT)
+if mode == "ioc":
+    virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template)
+elif mode == "ttp":
+    mitre(country_from_input, limit, filename)
 else:
     print("Incorrect mode")
