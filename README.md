@@ -1,7 +1,5 @@
 # OpenHunt
 
-Create SIGMA rules using OSINT gathered on provided IOCs
-
 ## Requirements
 
 - VirusTotal API Key
@@ -21,13 +19,36 @@ The main functionality of this was ported from [this MITRE ATT&CK script](https:
 
 It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above.
 
+#### Countries Supported
+
+The countries you can search for are the ones listed in the [MITRE Groups](https://attack.mitre.org/groups/) info
+
+- Russia
+- China
+- Iran
+- South Korea
+- North Korea
+- Nigeria
+- Vietnam
+- Lebanon
+- Pakistan
+
+##### Special Cases
+
+- Unknown
+- All
+
 #### Examples
 
 `python .\openhunt.py -m ttp -c russia`
-- Pulls current MITRE info on Russia
+- Pulls top 10 most common techniques attributed to Russia affiliated actors using live MITRE info 
 
 `python .\openhunt.py -m ttp -c russia -f .\groups.csv`
 - References local file that ships with the repo
+
+`python .\openhunt.py -m ttp -c russia -f .\groups.csv --limit 20`
+- Pulls top 20 most common instead of top 10 (default)
+- `--limit` is also compatible with live info (omit `-f, --file`)
 
 ## IOC Mode
 

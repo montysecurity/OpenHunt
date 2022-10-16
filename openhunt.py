@@ -1,12 +1,14 @@
 from shodan import Shodan
 from stix2 import TAXIICollectionSource, MemorySource, Filter
 from taxii2client.v20 import Collection
+from collections import Counter
 import vt, requests, json, re, argparse, csv, io, tqdm
 
 parser = argparse.ArgumentParser(description="SOC Companion")
 parser.add_argument("-m", "--mode", type=str, help="TTP or IOC")
-parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPs insteald of exporting MITRE current info")
+parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPS insteald of exporting MITRE current info")
 parser.add_argument("-c", "--country", type=str, help="Country to focus on in TTP file")
+parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
 parser.add_argument("-vt", "--virustotal-api-key", type=str, help="VirusTotal API Key")
 parser.add_argument("-s", "--shodan-api-key", type=str, help="Shodan API Key")
 parser.add_argument("-i", "--ioc", type=str, help="IOC value")
@@ -35,6 +37,7 @@ global_CI = args.contacted_ips
 global_RF = args.referrer_files
 global_CF = args.communicating_files
 global_DF = args.downloaded_files
+LIMIT = args.limit
 COUNTRY = args.country
 CSV_FILE = args.file
 
@@ -159,8 +162,8 @@ detection:
     tags:
 """
 
-def mitre(TTP_FILE, COUNTRY):
-    # Adapted from https://github.com/mitre-attack/attack-scripts
+def mitre(COUNTRY, LIMIT):
+    # Adapted from hTTPS://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
         # Establish TAXII2 Collection instance for Enterprise ATT&CK collection
@@ -168,7 +171,7 @@ def mitre(TTP_FILE, COUNTRY):
             "enterprise_attack": "95ecc380-afe9-11e4-9b6c-751b66dd541e",
             "mobile_attack": "2f669986-b40b-4423-b720-4396ca6a462b"
         }
-        collection_url = "https://cti-taxii.mitre.org/stix/collections/95ecc380-afe9-11e4-9b6c-751b66dd541e/"
+        collection_url = "hTTPS://cti-taxii.mitre.org/stix/collections/95ecc380-afe9-11e4-9b6c-751b66dd541e/"
         collection = Collection(collection_url)
         taxii_ds = TAXIICollectionSource(collection)
 
@@ -271,8 +274,22 @@ def mitre(TTP_FILE, COUNTRY):
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
 
-    def main(COUNTRY):
-        RUSSIA = ["ALLANITE", "Andariel", "APT28", "APT29"]
+    def main(COUNTRY, LIMIT):
+        # Source: hTTPS://attack.mitre.org/groups/
+        # 133 Groups on 10/15/2022
+        AFFILIATIONS = {
+            "Russia": ["ALLANITE", "APT28", "APT29", "Dragonfly", "Gamaredon Group", "Indrik Spider", "Sandworm Team", "TEMP.Veles", "Turla", "Wizard Spider", "ZIRCONIUM"],
+            "China": ["admin@338", "APT1", "APT12", "APT16", "APT17", "APT19", "APT3", "APT30", "APT41", "Aquatic Panda", "Axiom", "BlackTech", "BRONZE BUTLER", "Chimera", "Deep Panda", "Elderwood", "GALLIUM", "HAFNIUM", "IndigoZebra", "Ke3chang", "Leviathan", "menuPass", "Moafee", "Mofang", "Mustang Panda", "Naikon", "Operation Wocao", "PittyTiger", "Putter Panda", "Rocke", "Suckfly", "TA459", "Threat Group-3390", "Tonto Team", "Winnti Group"],
+            "Iran": ["Ajax Security Team", "APT33", "APT39", "Cleaver", "CopyKittens", "Fox Kitten", "Group5", "Leafminer", "Magic Hound", "MuddyWater", "OilRig", "Silent Librarian"],
+            "North Korea": ["Andariel", "APT37", "APT38", "Kimsuky", "Lazarus Group"],
+            "South Korea": ["Darkhotel", "Higaisa"],
+            "Nigeria": ["SilverTerrier"],
+            "Vietnam": ["APT32"],
+            "Lebanon": ["Dark Caracal", "Volatile Cedar"],
+            "Pakistan": ["Gorgon Group", "Transparent Tribe"],
+            "Unknown": ["APT18", "APT-C-36", "BackdoorDiplomacy", "BlackOasis", "Blue Mockingbird", "Bouncing Golf", "Carbanak", "Cobalt Group", "Confucius", "CostaRicto", "DarkHydrus", "DarkVishnya", "DragonOK", "Dust Storm", "Equation", "Evilnum", "Ferocious Kitten", "FIN10", "FIN4", "FIN5", "FIN6", "FIN7", "FIN8", "Frankenstein", "Gallmaker", "GCMAN", "GOLD SOUTHFIELD", "HEXANE", "Honeybee", "Inception", "LazyScripter", "Lotus Blossom", "Machete", "Molerats", "NEODYMIUM", "Night Dragon", "Nomadic Octopus", "Orangeworm", "Patchwork", "PLATINUM", "Poseidon Group", "PROMETHIUM", "Rancor", "RTM", "Scarlet Mimic", "Sharpshooter", "Sidewinder", "Silence", "Sowbug", "Stealth Falcon", "Strider", "TA505", "TA551", "TeamTNT", "The White Company", "Threat Group-1314", "Thrip", "Tropic Trooper", "Whitefly", "Windigo", "Windshift", "WIRTE"]
+        }
+
         if CSV_FILE:
             filename = CSV_FILE
         else:
@@ -290,18 +307,27 @@ def mitre(TTP_FILE, COUNTRY):
                 writer.writeheader()
                 writer.writerows(rowdicts)
         
-        ttps = []
-        with open(filename, newline='', encoding='utf-8') as csvfile:
-            for row in csv.reader(csvfile):
-                if COUNTRY == "Russia":
-                    for group in RUSSIA:
-                        if row[3] == group:
-                            ttps.append(row[1])
-        tmp = set(ttps)
-        
-        for ttp in tmp:
-            print(ttp +  ": " + str(ttps.count(ttp)))
-    main(COUNTRY)
+        TTPS = []
+        COUNTRY_VALUE = COUNTRY
+        GROUPS = []
+        if COUNTRY_VALUE.lower() == "all":
+            with open(filename, newline='', encoding='utf-8') as csvfile:
+                for row in csv.reader(csvfile):
+                    TTPS.append(row[1])
+        else:
+            for COUNTRY in AFFILIATIONS:
+                if COUNTRY.lower() == COUNTRY_VALUE.lower():
+                    for GROUP in AFFILIATIONS[COUNTRY]:
+                        GROUPS.append(GROUP)
+            with open(filename, newline='', encoding='utf-8') as csvfile:
+                for row in csv.reader(csvfile):
+                    for GROUP in GROUPS:
+                        if GROUP.lower() == row[3].lower():
+                            TTPS.append(row[1])
+        for element in Counter(TTPS).most_common(LIMIT):
+            print(str(element).strip("('").strip(")").replace("',", ":"))
+
+    main(COUNTRY, LIMIT)
 
 def shodan(IOC, SHODAN_API_KEY):
         API = Shodan(SHODAN_API_KEY)
@@ -346,7 +372,7 @@ def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
             SIGMA = SIGMA.replace("selection3ReplaceMe", "selection3")
         RELATIONSHIPS = ["dropped_files", "execution_parents", "contacted_domains", "contacted_ips"]
         for RELATIONSHIP in RELATIONSHIPS:
-            URL = "https://www.virustotal.com/api/v3/files/" + HASH + "/" + RELATIONSHIP + "?limit=100"
+            URL = "hTTPS://www.virustotal.com/api/v3/files/" + HASH + "/" + RELATIONSHIP + "?limit=100"
             HEADERS = {
                 "accept": "application/json",
                 "x-apikey": API_KEY
@@ -394,7 +420,7 @@ def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
                 if "Cobalt Strike" in C2_STATUS:
                     CS_SERVERS.append(str(C2_STATUS))
         for RELATIONSHIP in RELATIONSHIPS:
-            URL = "https://www.virustotal.com/api/v3/" + TYPE + "/" + IOC + "/" + RELATIONSHIP + "?limit=40"
+            URL = "hTTPS://www.virustotal.com/api/v3/" + TYPE + "/" + IOC + "/" + RELATIONSHIP + "?limit=40"
             HEADERS = {
                 "accept": "application/json",
                 "x-apikey": API_KEY
@@ -433,6 +459,6 @@ def virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC):
 if MODE == "ioc":
     virusTotal(VT_API_KEY, SHODAN_API_KEY, IOC)
 elif MODE == "ttp":
-    mitre(TTP_FILE, COUNTRY)
+    mitre(COUNTRY, LIMIT)
 else:
     print("Incorrect mode")
