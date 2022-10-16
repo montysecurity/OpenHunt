@@ -54,7 +54,7 @@ For each IP address seen in the SIGMA rule (whether the IOC itself or a relation
 Fingerprints Supported:
 - Cobalt Strike Servers
 
-If the field names in the Sigma rule do no match the field names in your SIEM/EDR/XDR platform then you can rename them (see `python openhunt.py -h`)
+If the field names in the Sigma rule do not match the field names in your SIEM/EDR/XDR platform then you can rename them (see `python openhunt.py -h`)
 
 #### Requirements
 
