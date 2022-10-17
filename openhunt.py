@@ -1,4 +1,3 @@
-from doctest import master
 from shodan import Shodan
 from stix2 import TAXIICollectionSource, MemorySource, Filter
 from taxii2client.v20 import Collection
@@ -8,8 +7,8 @@ import vt, requests, json, re, argparse, csv, io, tqdm
 parser = argparse.ArgumentParser(description="SOC Companion")
 parser.add_argument("-m", "--mode", type=str, help="TTP or IOC")
 parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPS insteald of exporting MITRE current info")
-parser.add_argument("-c", "--country", type=str, help="Country to focus on in TTP file")
-parser.add_argument("--filter", action="append", type=str, help="Focus on TTPs of groups that target a specific country/sector")
+parser.add_argument("--origin", action="append", type=str, help="Filter on the threat actors' affiliation or country of origin")
+parser.add_argument("--target", action="append", type=str, help="Filter on the threat actors' targets")
 parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
 parser.add_argument("-vt", "--virustotal-api-key", type=str, help="VirusTotal API Key")
 parser.add_argument("-s", "--shodan-api-key", type=str, help="Shodan API Key")
@@ -39,9 +38,9 @@ global_RF = args.referrer_files
 global_CF = args.communicating_files
 global_DF = args.downloaded_files
 limit = args.limit
-attribution_country_input = args.country
+affiliations_from_input = args.origin
 filename = args.file
-filters_from_input = args.filter
+target_countries_or_sectors_from_input = args.target
 
 sigma_template ="""
 title: Auto-Generated IOC Rule
@@ -164,7 +163,7 @@ detection:
     tags:
 """
 
-def mitre(attribution_country_input, target, limit, filename):
+def mitre(affiliations_from_input, target, limit, filename):
     # Adapted from https://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
@@ -276,10 +275,11 @@ def mitre(attribution_country_input, target, limit, filename):
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
 
-    def main(attribution_country_input, filters_from_input, limit, filename):
+    def main(affiliations_from_input, target_countries_or_sectors_from_input, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
         groups = []
+        master_group_set = []
         ttps = []
         affiliations = {
             "Russia": ["ALLANITE", "APT28", "APT29", "Dragonfly", "Gamaredon Group", "Indrik Spider", "Sandworm Team", "TEMP.Veles", "Turla", "Wizard Spider", "ZIRCONIUM"],
@@ -395,27 +395,26 @@ def mitre(attribution_country_input, target, limit, filename):
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(rowdicts)
-        if attribution_country_input and filters_from_input == None:
-            if attribution_country_input.lower() == "all":
+        if affiliations_from_input and target_countries_or_sectors_from_input == None:
+            if affiliations_from_input.lower() == "all":
                 with open(filename, newline='', encoding='utf-8') as csvfile:
                     for row in csv.reader(csvfile):
                         ttps.append(row[1])
             else:
                 for country in affiliations:
-                    if country.lower() == attribution_country_input.lower():
+                    if country.lower() == affiliations_from_input.lower():
                         for group in affiliations[country]:
                             groups.append(group)
-        elif len(filters_from_input) > 0 and attribution_country_input == None:
-            desired_number_of_matches = len(filters_from_input)
+        elif len(target_countries_or_sectors_from_input) > 0 and affiliations_from_input == None:
+            desired_number_of_matches = len(target_countries_or_sectors_from_input)
             for i in range(0, desired_number_of_matches):
                 for target in targets:
-                    if str(filters_from_input[i]).lower() in target.lower():
+                    if str(target_countries_or_sectors_from_input[i]).lower() in target.lower():
                         groups.append(targets[target])
             master_group = []
             for group_list in groups:
                 for group in group_list:
                     master_group.append(group)
-            master_group_set = []
             for group in master_group:
                 if master_group.count(group) == desired_number_of_matches:
                     master_group_set.append(group)
@@ -423,6 +422,20 @@ def mitre(attribution_country_input, target, limit, filename):
             for group in set(master_group_set):
                 print("- "+ group)
             groups = master_group_set
+        elif len(target_countries_or_sectors_from_input) > 0 and len(affiliations_from_input) > 0:
+            for affiliation_from_input in affiliations_from_input:
+                for affiliation in affiliations:
+                    if affiliation.lower() == affiliation_from_input.lower():
+                        for target_country_or_sector_from_input in target_countries_or_sectors_from_input:
+                            for group in affiliations[affiliation]:
+                                for group2 in targets[target_country_or_sector_from_input]:
+                                    if group == group2:
+                                        print("Origin: " + affiliation_from_input)
+                                        print("Target: " + target_country_or_sector_from_input)
+                                        print("Group: " + group)
+                                        master_group_set.append(group)
+                                        print()
+            groups = set(master_group_set)
         else:
             print("Invalid option")
             exit()
@@ -435,7 +448,7 @@ def mitre(attribution_country_input, target, limit, filename):
         for element in Counter(ttps).most_common(limit):
                 print(str(element).strip("('").strip(")").replace("',", ":"))
 
-    main(attribution_country_input, filters_from_input, limit, filename)
+    main(affiliations_from_input, target_countries_or_sectors_from_input, limit, filename)
 
 def shodan(ioc, shodan_api_key):
         api = Shodan(shodan_api_key)
@@ -541,19 +554,19 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
             for i in range(0,count_of_values):
                 relationship_values.append(json_response["data"][int(i)]["id"])
             if len(relationship_values) > 0:
-                for RELATIONSHIP_VALUE in relationship_values:
+                for relationship_value in relationship_values:
                     if relationship == "referrer_files":
                         sigma_template = sigma_template.replace("ReferrerFilesReplaceMe:", str(global_RF) + ":")
                         sigma_template = sigma_template.replace("selection7ReplaceMe", "selection7")
-                        sigma_template = sigma_template.replace("'ReferrerFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
+                        sigma_template = sigma_template.replace("'ReferrerFilesReplaceMe'", relationship_value, 1)
                     if relationship == "communicating_files":
                         sigma_template = sigma_template.replace("CommunicatingFilesReplaceMe:", str(global_CF) + ":")
                         sigma_template = sigma_template.replace("selection8ReplaceMe", "selection8")
-                        sigma_template = sigma_template.replace("'CommunicatingFilesReplaceMe'", RELATIONSHIP_VALUE, 1)
+                        sigma_template = sigma_template.replace("'CommunicatingFilesReplaceMe'", relationship_value, 1)
                     if relationship == "downloaded_files":
                         sigma_template = sigma_template.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
                         sigma_template = sigma_template.replace("selection9ReplaceMe", "selection9")
-                        sigma_template = sigma_template.replace("'DownloadedFilesReplaceMe'", "\"" + RELATIONSHIP_VALUE + "\"", 1)
+                        sigma_template = sigma_template.replace("'DownloadedFilesReplaceMe'", "\"" + relationship_value + "\"", 1)
     for line in sigma_template.splitlines():
         if "ReplaceMe" not in line:
            print(line)
@@ -565,6 +578,6 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
 if mode == "ioc":
     virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template)
 elif mode == "ttp":
-    mitre(attribution_country_input, filters_from_input, limit, filename)
+    mitre(affiliations_from_input, target_countries_or_sectors_from_input, limit, filename)
 else:
     print("Incorrect mode")
