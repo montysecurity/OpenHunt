@@ -1,3 +1,4 @@
+from doctest import master
 from shodan import Shodan
 from stix2 import TAXIICollectionSource, MemorySource, Filter
 from taxii2client.v20 import Collection
@@ -8,7 +9,7 @@ parser = argparse.ArgumentParser(description="SOC Companion")
 parser.add_argument("-m", "--mode", type=str, help="TTP or IOC")
 parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPS insteald of exporting MITRE current info")
 parser.add_argument("-c", "--country", type=str, help="Country to focus on in TTP file")
-parser.add_argument("-t", "--target", type=str, help="Focus on TTPs of groups that target a specific country/sector")
+parser.add_argument("--filter", action="append", type=str, help="Focus on TTPs of groups that target a specific country/sector")
 parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
 parser.add_argument("-vt", "--virustotal-api-key", type=str, help="VirusTotal API Key")
 parser.add_argument("-s", "--shodan-api-key", type=str, help="Shodan API Key")
@@ -38,9 +39,9 @@ global_RF = args.referrer_files
 global_CF = args.communicating_files
 global_DF = args.downloaded_files
 limit = args.limit
-country_from_input = args.country
+attribution_country_input = args.country
 filename = args.file
-target_from_input = args.target
+filters_from_input = args.filter
 
 sigma_template ="""
 title: Auto-Generated IOC Rule
@@ -163,7 +164,7 @@ detection:
     tags:
 """
 
-def mitre(country_from_input, target, limit, filename):
+def mitre(attribution_country_input, target, limit, filename):
     # Adapted from https://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
@@ -275,7 +276,7 @@ def mitre(country_from_input, target, limit, filename):
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
 
-    def main(country_from_input, target_from_input, limit, filename):
+    def main(attribution_country_input, filters_from_input, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
         groups = []
@@ -294,16 +295,16 @@ def mitre(country_from_input, target, limit, filename):
         }
         targets = {
             # Countries/Regions
-            # Stopped at Honeybee
-            "Africa": ["APT39", "BackdoorDiplomacy", "CostaRicto", "Fox Kitten"],
+            # Stopped at IndigoZebra
+            "Africa": ["APT39", "BackdoorDiplomacy", "CostaRicto", "Fox Kitten", "Inception"],
             "Argentina": ["Honeybee"],
             "Australia": ["CostaRicto", "Fox Kitten"],
-            "Asia": ["PLATINUM", "APT29", "APT32", "APT39", "BackdoorDiplomacy", "BlackTech", "CostaRicto", "Darkhotel", "Dust Storm"],
+            "Asia": ["PLATINUM", "APT29", "APT32", "APT39", "BackdoorDiplomacy", "BlackTech", "CostaRicto", "Darkhotel", "Dust Storm", "Inception", "IndigoZebra"],
             "Cambodia": ["APT32"],
             "Canada": ["Honeybee"],
             "China": ["APT37", "Higaisa"],
             "Columbia": ["APT-C-36"],
-            "Europe": ["APT29", "APT39", "BackdoorDiplomacy", "CostaRicto", "DarkVishnya", "Dust Storm", "Fox Kitten"],
+            "Europe": ["APT29", "APT39", "BackdoorDiplomacy", "CostaRicto", "DarkVishnya", "Dust Storm", "Fox Kitten", "Inception"],
             "Germany": ["CopyKittens"],
             "Hong Kong": ["Tropic Trooper", "APT3", "BlackTech"],
             "India": ["APT37"],
@@ -314,7 +315,7 @@ def mitre(country_from_input, target, limit, filename):
             "Jordan": ["CopyKittens"],
             "Kuwait": ["APT37", "HEXANE"],
             "Laos": ["APT32"],
-            "Middle East": ["OilRig", "APT29", "APT37", "BackdoorDiplomacy", "Bouncing Golf", "DarkHydrus", "Fox Kitten", "Gallmaker", "HEXANE"],
+            "Middle East": ["OilRig", "APT29", "APT37", "BackdoorDiplomacy", "Bouncing Golf", "DarkHydrus", "Fox Kitten", "Gallmaker", "HEXANE", "Inception"],
             "Nepal": ["APT37"],
             "North America": ["APT29", "APT39", "CostaRicto", "FIN10", "Fox Kitten"],
             "Philippines": ["Tropic Trooper", "APT32"],
@@ -322,8 +323,8 @@ def mitre(country_from_input, target, limit, filename):
             "Poland": ["Higaisa"],
             "Romania": ["APT37"],
             "United Kingdom": ["ALLANITE", "Gorgon Group"],
-            "United States": ["HAFNIUM", "ALLANITE", "Ajax Security Team", "APT17", "APT28", "APT3", "APT33", "BlackTech", "CopyKittens", "Dust Storm", "Elderwood", "FIN7", "Gorgon Group", "HAFNIUM"],
-            "Russia": ["Silence", "APT37", "Gorgon Group", "Higaisa"],
+            "United States": ["HAFNIUM", "ALLANITE", "Ajax Security Team", "APT17", "APT28", "APT3", "APT33", "BlackTech", "CopyKittens", "Dust Storm", "Elderwood", "FIN7", "Gorgon Group", "Inception"],
+            "Russia": ["Silence", "APT37", "Gorgon Group", "Higaisa", "Inception"],
             "Saudia Arabia": ["APT33", "CopyKittens"],
             "Singapore": ["Honeybee"],
             "Spain": ["Gorgon Group"],
@@ -345,7 +346,7 @@ def mitre(country_from_input, target, limit, filename):
             "Energy": ["APT33"],
             "Engineering": ["BlackTech", "Fox Kitten"],
             "Financial": ["APT-C-36", "Carbanak", "CostaRicto", "OilRig", "Silence", "admin@338", "APT19", "APT38", "BlackTech", "Cobalt Group", "CostaRicto", "DarkVishnya", "Deep Panda", "FIN4", "GCMAN"],
-            "Government": ["Machete", "OilRig", "PLATINUM", "APT12", "APT18", "APT19", "Andariel", "APT28", "APT32", "Aquatic Panda", "Axiom", "BackdoorDiplomacy", "BRONZE BUTLER", "Confucius", "DarkHydrus", "Deep Panda", "Dragonfly", "Elderwood", "Fox Kitten", "Gallmaker", "Gorgon Group", "Higaisa"],
+            "Government": ["Machete", "OilRig", "PLATINUM", "APT12", "APT18", "APT19", "Andariel", "APT28", "APT32", "Aquatic Panda", "Axiom", "BackdoorDiplomacy", "BRONZE BUTLER", "Confucius", "DarkHydrus", "Deep Panda", "Dragonfly", "Elderwood", "Fox Kitten", "Gallmaker", "Gorgon Group", "Higaisa", "Inception", "IndigoZebra"],
             "Healthcare": ["Tropic Trooper", "APT18", "APT19", "APT41", "Deep Panda", "FIN4", "Fox Kitten"],
             "Human Rights":["APT18", "Elderwood"],
             "Humanitarian Aid": ["Honeybee"],
@@ -394,20 +395,34 @@ def mitre(country_from_input, target, limit, filename):
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(rowdicts)
-        if country_from_input and target_from_input == None:
-            if country_from_input.lower() == "all":
+        if attribution_country_input and filters_from_input == None:
+            if attribution_country_input.lower() == "all":
                 with open(filename, newline='', encoding='utf-8') as csvfile:
                     for row in csv.reader(csvfile):
                         ttps.append(row[1])
             else:
                 for country in affiliations:
-                    if country.lower() == country_from_input.lower():
+                    if country.lower() == attribution_country_input.lower():
                         for group in affiliations[country]:
                             groups.append(group)
-        elif target_from_input and country_from_input == None:
-            for target in targets:
-                if target.lower() == target_from_input.lower():
-                    groups = targets[target]        
+        elif len(filters_from_input) > 0 and attribution_country_input == None:
+            desired_number_of_matches = len(filters_from_input)
+            for i in range(0, desired_number_of_matches):
+                for target in targets:
+                    if str(filters_from_input[i]).lower() in target.lower():
+                        groups.append(targets[target])
+            master_group = []
+            for group_list in groups:
+                for group in group_list:
+                    master_group.append(group)
+            master_group_set = []
+            for group in master_group:
+                if master_group.count(group) == desired_number_of_matches:
+                    master_group_set.append(group)
+            print(str(len(set(master_group_set))) + " groups match that filter")
+            for group in set(master_group_set):
+                print("- "+ group)
+            groups = master_group_set
         else:
             print("Invalid option")
             exit()
@@ -420,7 +435,7 @@ def mitre(country_from_input, target, limit, filename):
         for element in Counter(ttps).most_common(limit):
                 print(str(element).strip("('").strip(")").replace("',", ":"))
 
-    main(country_from_input, target_from_input, limit, filename)
+    main(attribution_country_input, filters_from_input, limit, filename)
 
 def shodan(ioc, shodan_api_key):
         api = Shodan(shodan_api_key)
@@ -550,6 +565,6 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
 if mode == "ioc":
     virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template)
 elif mode == "ttp":
-    mitre(country_from_input, target_from_input, limit, filename)
+    mitre(attribution_country_input, filters_from_input, limit, filename)
 else:
     print("Incorrect mode")

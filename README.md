@@ -44,7 +44,7 @@ The countries you can search for are the ones listed in the [MITRE Groups](https
 
 #### TTPs by Target
 
-This works very similiarly to `TTPs by Country`. However, instead of looking at the groups by country of origin/affiliation, it only pulls the TTPs for groups that target the country/sector provided with `-t, --target`.
+This works very similiarly to `TTPs by Country`. However, instead of looking at the groups by country of origin/affiliation, it only pulls the TTPs for groups that target the country/sector provided with `--filter`.
 
 ##### Targets Supported
 
@@ -120,11 +120,23 @@ This works very similiarly to `TTPs by Country`. However, instead of looking at 
 - Pulls top 20 most common instead of top 10 (default)
 - `--limit` is also compatible with live info (omit `-f, --file`)
 
-`python .\openhunt.py -m ttp -t energy -f .\groups.csv`
+`python .\openhunt.py -m ttp --filter energy -f .\groups.csv`
 - Pulls top 10 techniques seen used by groups targeting the energy sector
 
-`python .\openhunt.py -m ttp -t asia -f .\groups.csv`
+`python .\openhunt.py -m ttp --filter asia -f .\groups.csv`
 - Pulls top 10 techniques seen used by groups targeting companies/organizations in Asia
+
+`python .\openhunt.py -m ttp --filter "United States" --filter Russia --filter Government -f .\groups.csv`
+- Pulls top 10 techniques seen used by groups targeting United States-based, Russia-based, and Government related targets
+
+#### Combining Filters
+
+The filters may not be intuitive at first.
+
+For example, take the command above `python .\openhunt.py -m ttp --filter "United States" --filter Russia --filter Government -f .\groups.csv`. In plain English, this filter means "show me all groups that target any organization in the United States, any organization in Russia, and Government targets in any country".This is different from saying they target "United States and Russian Government" entities.
+
+I plan on implementing a way to strictly combine filters later so you can ask it to show only groups that target specific sectors of specific countries.
+
 
 ## IOC Mode
 
