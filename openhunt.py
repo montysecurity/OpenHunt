@@ -8,6 +8,7 @@ parser = argparse.ArgumentParser(description="SOC Companion")
 parser.add_argument("-m", "--mode", type=str, help="TTP or IOC")
 parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPS insteald of exporting MITRE current info")
 parser.add_argument("-c", "--country", type=str, help="Country to focus on in TTP file")
+parser.add_argument("-t", "--target", type=str, help="Focus on TTPs of groups that target a specific country/sector")
 parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
 parser.add_argument("-vt", "--virustotal-api-key", type=str, help="VirusTotal API Key")
 parser.add_argument("-s", "--shodan-api-key", type=str, help="Shodan API Key")
@@ -39,6 +40,7 @@ global_DF = args.downloaded_files
 limit = args.limit
 country_from_input = args.country
 filename = args.file
+target_from_input = args.target
 
 sigma_template ="""
 title: Auto-Generated IOC Rule
@@ -161,7 +163,7 @@ detection:
     tags:
 """
 
-def mitre(country_from_input, limit, filename):
+def mitre(country_from_input, target, limit, filename):
     # Adapted from https://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
@@ -273,12 +275,9 @@ def mitre(country_from_input, limit, filename):
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
 
-    def main(country_from_input, limit, filename):
+    def main(country_from_input, target_from_input, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
-        if country_from_input == None:
-            print("Missing Country, -c")
-            exit()
         groups = []
         ttps = []
         affiliations = {
@@ -292,6 +291,72 @@ def mitre(country_from_input, limit, filename):
             "Lebanon": ["Dark Caracal", "Volatile Cedar"],
             "Pakistan": ["Gorgon Group", "Transparent Tribe"],
             "Unknown": ["APT18", "APT-C-36", "BackdoorDiplomacy", "BlackOasis", "Blue Mockingbird", "Bouncing Golf", "Carbanak", "Cobalt Group", "Confucius", "CostaRicto", "DarkHydrus", "DarkVishnya", "DragonOK", "Dust Storm", "Equation", "Evilnum", "Ferocious Kitten", "FIN10", "FIN4", "FIN5", "FIN6", "FIN7", "FIN8", "Frankenstein", "Gallmaker", "GCMAN", "GOLD SOUTHFIELD", "HEXANE", "Honeybee", "Inception", "LazyScripter", "Lotus Blossom", "Machete", "Molerats", "NEODYMIUM", "Night Dragon", "Nomadic Octopus", "Orangeworm", "Patchwork", "PLATINUM", "Poseidon Group", "PROMETHIUM", "Rancor", "RTM", "Scarlet Mimic", "Sharpshooter", "Sidewinder", "Silence", "Sowbug", "Stealth Falcon", "Strider", "TA505", "TA551", "TeamTNT", "The White Company", "Threat Group-1314", "Thrip", "Tropic Trooper", "Whitefly", "Windigo", "Windshift", "WIRTE"]
+        }
+        targets = {
+            # Countries/Regions
+            # Stopped at DragonOK
+            "Africa": ["APT39", "BackdoorDiplomacy", "CostaRicto"],
+            "Australia": ["CostaRicto"],
+            "Asia": ["PLATINUM", "APT29", "APT32", "APT39", "BackdoorDiplomacy", "BlackTech", "CostaRicto", "Darkhotel"],
+            "Cambodia": ["APT32"],
+            "China": ["APT37"],
+            "Columbia": ["APT-C-36"],
+            "Europe": ["APT29", "APT39", "BackdoorDiplomacy", "CostaRicto", "DarkVishnya"],
+            "Germany": ["CopyKittens"],
+            "Hong Kong": ["Tropic Trooper", "APT3", "BlackTech"],
+            "India": ["APT37"],
+            "Iran": ["APT39"],
+            "Isreal": ["CopyKittens"],
+            "Japan": ["BRONZE BUTLER", "APT16", "APT37", "BlackTech", "DragonOK"],
+            "Jordan": ["CopyKittens"],
+            "Kuwait": ["APT37"],
+            "Laos": ["APT32"],
+            "Middle East": ["OilRig", "APT29", "APT37", "BackdoorDiplomacy", "Bouncing Golf", "DarkHydrus"],
+            "Nepal": ["APT37"],
+            "North America": ["APT29", "APT39", "CostaRicto"],
+            "Philippines": ["Tropic Trooper", "APT32"],
+            "Romania": ["APT37"],
+            "United Kingdom": ["ALLANITE"],
+            "United States": ["HAFNIUM", "ALLANITE", "Ajax Security Team", "APT17", "APT28", "APT3", "APT33", "BlackTech", "CopyKittens"],
+            "Russia": ["Silence", "APT37"],
+            "Saudia Arabia": ["APT33", "CopyKittens"],
+            "South America": ["CostaRicto"],
+            "South Korea": ["Andariel", "APT33", "APT37"],
+            "Taiwan": ["Tropic Trooper", "APT16", "BlackTech", "Chimera"],
+            "Turkey": ["PROMETHIUM", "CopyKittens"],
+            "Vietnam": ["APT32", "APT37"],
+            #Sectors
+            "Aerospace": ["Axiom"],
+            "Aviation": ["APT33", "Chimera", "Dragonfly"],
+            "Biotechnology": ["BRONZE BUTLER"],
+            "Chemical": ["BRONZE BUTLER"],
+            "Construction": ["BlackTech"],
+            "Defense": ["Machete", "APT19", "Ajax Security Team", "Andariel", "APT17", "APT28", "Axiom", "Confucius", "Deep Panda", "Dragonfly"],
+            "Education": ["SilverTerrier", "APT39", "DarkHydrus"],
+            "Electronics": ["BlackTech", "BRONZE BUTLER"],
+            "Energy": ["APT33"],
+            "Engineering": ["BlackTech"],
+            "Financial": ["APT-C-36", "Carbanak", "CostaRicto", "OilRig", "Silence", "admin@338", "APT19", "APT38", "BlackTech", "Cobalt Group", "CostaRicto", "DarkVishnya", "Deep Panda"],
+            "Government": ["Machete", "OilRig", "PLATINUM", "APT12", "APT18", "APT19", "Andariel", "APT28", "APT32", "Aquatic Panda", "Axiom", "BackdoorDiplomacy", "BRONZE BUTLER", "Confucius", "DarkHydrus", "Deep Panda", "Dragonfly"],
+            "Healthcare": ["Tropic Trooper", "APT18", "APT19", "APT41", "Deep Panda"],
+            "Human Rights":["APT18"],
+            "Humanitarian Aid": ["Honeybee"],
+            "Hospitality": ["APT39"],
+            "Law": ["APT17", "APT19"],
+            "Manufacturing": ["APT-C-36", "SilverTerrier", "APT18", "APT19", "Axiom", "BRONZE BUTLER"],
+            "Media": ["APT12", "APT32", "BlackOasis", "BlackTech", "Chimera"],
+            "Mining": ["APT17"],
+            "Petroleum": ["APT-C-36"],
+            "Semiconductor": ["Chimera"],
+            "Technology": ["SilverTerrier", "Tropic Trooper", "APT12", "APT18", "APT17", "APT19", "APT29", "APT41", "Aquatic Panda", "Chimera"],
+            "Telecommunications": ["Machete", "APT19", "APT29", "APT39", "APT41", "Aquatic Panda", "Deep Panda"],
+            "Transportation": ["Tropic Trooper"],
+            "Travel": ["APT39"],
+            "Infrastructure": ["ALLANITE", "Dragonfly"],
+            "Video Game": ["APT41"],
+            #Misc.
+            "High Profile Persons": ["Confucius", "Darkhotel"],
+
         }
 
         if filename == None:
@@ -308,25 +373,33 @@ def mitre(country_from_input, limit, filename):
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(rowdicts)
-
-        if country_from_input.lower() == "all":
-            with open(filename, newline='', encoding='utf-8') as csvfile:
-                for row in csv.reader(csvfile):
-                    ttps.append(row[1])
+        if country_from_input and target_from_input == None:
+            if country_from_input.lower() == "all":
+                with open(filename, newline='', encoding='utf-8') as csvfile:
+                    for row in csv.reader(csvfile):
+                        ttps.append(row[1])
+            else:
+                for country in affiliations:
+                    if country.lower() == country_from_input.lower():
+                        for group in affiliations[country]:
+                            groups.append(group)
+        elif target_from_input and country_from_input == None:
+            for target in targets:
+                if target.lower() == target_from_input.lower():
+                    groups = targets[target]        
         else:
-            for country in affiliations:
-                if country.lower() == country_from_input.lower():
-                    for group in affiliations[country]:
-                        groups.append(group)
-            with open(filename, newline='', encoding='utf-8') as csvfile:
-                for row in csv.reader(csvfile):
-                    for group in groups:
-                        if group.lower() == row[3].lower():
-                            ttps.append(row[1])
+            print("Invalid option")
+            exit()
+        
+        with open(filename, newline='', encoding='utf-8') as csvfile:
+            for row in csv.reader(csvfile):
+                for group in groups:
+                    if group.lower() == row[3].lower():
+                        ttps.append(row[1])
         for element in Counter(ttps).most_common(limit):
-            print(str(element).strip("('").strip(")").replace("',", ":"))
+                print(str(element).strip("('").strip(")").replace("',", ":"))
 
-    main(country_from_input, limit, filename)
+    main(country_from_input, target_from_input, limit, filename)
 
 def shodan(ioc, shodan_api_key):
         api = Shodan(shodan_api_key)
@@ -456,6 +529,6 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
 if mode == "ioc":
     virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template)
 elif mode == "ttp":
-    mitre(country_from_input, limit, filename)
+    mitre(country_from_input, target_from_input, limit, filename)
 else:
     print("Incorrect mode")

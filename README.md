@@ -1,5 +1,7 @@
 # OpenHunt
 
+OpenHunt is designed to aid in lead-driven and lead-less threat hunting. It can be used to identify the moast common techniques used by groups associated with a specific country. It can also be used to collect information from VirusTotal and Shodan for a given IOC. 
+
 ## Install
 
 `pip install -r requirements.txt`
@@ -10,11 +12,13 @@ OpenHunt runs in two different modes (`-m, --mode`). One is called `ttp` and the
 
 ### TTP Mode
 
+#### TTPs by Country
+
 The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a Country with `-c, --country` it downloads the current MITRE STIX data to `groups.csv` and then parses it for all TTPs used by groups affiliated to the country provided and prints them out along with a count of how many threat groups are seen using that Technique. 
 
 It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above.
 
-#### Countries Supported
+##### Countries Supported
 
 The countries you can search for are the ones listed in the [MITRE Groups](https://attack.mitre.org/groups/) info
 
@@ -28,10 +32,14 @@ The countries you can search for are the ones listed in the [MITRE Groups](https
 - Lebanon
 - Pakistan
 
-##### Special Cases
+###### Special Cases
 
 - Unknown
 - All
+
+#### TTPs by Target
+
+This works very similiarly to `TTPs by Country`. However, instead of looking at the groups by country of origin/affiliation, it only pulls the TTPs for groups that target the country/sector provided with `-t, --target`.
 
 #### Examples
 
@@ -68,6 +76,7 @@ If the field names in the Sigma rule do not match the field names in your SIEM/E
 #### Limitations
 
 - Max of 10 values per relationship
+- For domains and IPs, the `downloaded_files` relationship is not implemented because it requires a Premium API key
 
 ## Credit and Thank You Notes
 
