@@ -1,6 +1,11 @@
 # OpenHunt
 
-OpenHunt is designed to aid in lead-driven and lead-less threat hunting. It can be used to identify the moast common techniques used by groups associated with a specific country. It can also be used to collect information from VirusTotal and Shodan for a given IOC. 
+OpenHunt is designed to aid in lead-driven and lead-less threat hunting. Here are some example use cases:
+- List top 10 most common techniques used by Chinese threat actors (Source: MITRE)
+- List top 20 techniques used against the aerospace industry (Source: MITRE)
+- Create Sigma rule to hunt for dropped files/contacted domains of a given file hash (Source: VirusTotal)
+- Create Sigma rule to hunt for referral and communcating file of a domain/ip (Source: VirusTotal)
+- See if an IP contains any fingerprints for common C2 frameworks (Source: Shodan and various research articles; See Credit and Thank You Notes Section)
 
 ## Install
 
