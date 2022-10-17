@@ -41,6 +41,68 @@ The countries you can search for are the ones listed in the [MITRE Groups](https
 
 This works very similiarly to `TTPs by Country`. However, instead of looking at the groups by country of origin/affiliation, it only pulls the TTPs for groups that target the country/sector provided with `-t, --target`.
 
+##### Targets Supported
+
+- Countries, Continents, and Regions
+    - Africa
+    - Asia
+    - China
+    - Columbia
+    - Europe
+    - Germany
+    - Hong Kong
+    - India
+    - Iran
+    - Isreal
+    - Japan
+    - Jordan
+    - Kuwait
+    - Laos
+    - Middle East
+    - Nepal
+    - North America
+    - Romania
+    - United Kingdom
+    - United States
+    - Russia
+    - Saudia Arabia
+    - South America
+    - South Korea
+    - Taiwan
+    - Turkey
+    - Vietnam
+
+- Sectors
+    - Aerospace
+    - Aviation
+    - Biotechnology
+    - Chemical
+    - Construction
+    - Defense
+    - Eletronics
+    - Energy
+    - Engineering
+    - Financial
+    - Government
+    - Healthcare
+    - Human Rights
+    - Humanitarian Aid
+    - Hospitality
+    - Law
+    - Manufacturing
+    - Mining
+    - Petroleum
+    - Semiconductor
+    - Technology
+    - Telecommunications
+    - Transportation
+    - Travel
+    - Infrastructure
+    - Video Game
+
+- Miscellaneous
+    - High Profile Persons
+
 #### Examples
 
 `python .\openhunt.py -m ttp -c russia`
@@ -52,6 +114,12 @@ This works very similiarly to `TTPs by Country`. However, instead of looking at 
 `python .\openhunt.py -m ttp -c russia -f .\groups.csv --limit 20`
 - Pulls top 20 most common instead of top 10 (default)
 - `--limit` is also compatible with live info (omit `-f, --file`)
+
+`python .\openhunt.py -m ttp -t energy -f .\groups.csv`
+- Pulls top 10 techniques seen used by groups targeting the energy sector
+
+`python .\openhunt.py -m ttp -t asia -f .\groups.csv`
+- Pulls top 10 techniques seen used by groups targeting companies/organizations in Asia
 
 ## IOC Mode
 
