@@ -39,7 +39,7 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 The main functionality of this was ported from [this MITRE ATT&CK script](https://github.com/mitre-attack/attack-scripts/blob/master/scripts/technique_mappings_to_csv.py). Provided a country with `--origin` it downloads the current MITRE STIX data to `groups.csv` and then parses it for all TTPs used by groups affiliated to the country provided and prints them out along with a count of how many threat groups are seen using that Technique. 
 
-It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above.
+It is also possible to use `-f, --file` to designate a file to parse. It expects a CSV file exported from the MITRE ATT&CK script mentioned above. One is provided with the repo.
 
 ##### Countries Supported
 
@@ -239,7 +239,7 @@ An easy way to see if the the MITRE Groups information is up-to-date is by hashi
 
 It should match the checksum above.
 
-As MITRE releases more information, I plan on keeping the script current and will update the date and checksum above.
+As MITRE releases more information, I plan on keeping the script and `groups.csv` current; I will update the date and checksum above each time MITRE info changes.
 
 ## Credit and Thank You Notes
 
