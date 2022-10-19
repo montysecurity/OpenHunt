@@ -25,10 +25,6 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
-- Do the same but rename one of the paragraphs
-
-
-
 ## Usage
 
 ### TTP Mode
