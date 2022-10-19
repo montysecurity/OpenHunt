@@ -21,6 +21,12 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 - Get top 10 most common TTPs used by any group from any `--origin` targeting any sector in `--target`: `python .\openhunt.py -m ttp --origin Russia --origin China --origin "Middle East" --target Aviation --target "United States" -f .\groups.csv`
     - e.g. this returns the techniques of any group affiliated with Russia, China, or the Middle East if they have been documented targeting *either* any organization in the US *or* the Aviation industry in any country. For more information read *Combining Filters* below.
 
+- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+
+- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+
+- Do the same but rename one of the paragraphs
+
 
 
 ## Usage
