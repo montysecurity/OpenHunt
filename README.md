@@ -6,6 +6,12 @@ TTP mode is used to parse MITRE info for common techniques threat actors use giv
 
 IOC mode is designed to give you related artifacts to a given IOC using the VirusTotal/Shodan APIs. It focuses on arifacts that can be found in most SIEM/EDR tech stacks such has file hash, name, remote IP, and domain (and a few more).
 
+## Requirements
+
+- Python3
+- VirusTotal API Key (free; IOC mode only)
+- Shodan API Key (free; IOC mode only)
+
 ## Install
 
 `pip install -r requirements.txt`
