@@ -1,15 +1,27 @@
 # OpenHunt
 
-OpenHunt is designed to aid in lead-driven and lead-less threat hunting. Here are some example use cases:
-- List top 10 most common techniques used by Chinese threat actors (Source: MITRE)
-- List top 20 techniques used against the aerospace industry (Source: MITRE)
-- Create Sigma rule to hunt for dropped files/contacted domains of a given file hash (Source: VirusTotal)
-- Create Sigma rule to hunt for referral and communcating file of a domain/ip (Source: VirusTotal)
-- See if an IP contains any fingerprints for common C2 frameworks (Source: Shodan and various research articles; See Credit and Thank You Notes Section)
+OpenHunt is designed to give SOC analysts/threat hunters information that allows them to make more informed hunts. It runs in 2 modes (designated by `-m, --mode`): `ttp` and `ioc`.
+
+TTP mode is used to parse MITRE info for common techniques threat actors use given a country of origin/affiliation (`--origin`) or a region/business sector they have targeted (`--target`).
+
+IOC mode is designed to give you related artifacts to a given IOC using the VirusTotal/Shodan APIs. It focuses on arifacts that can be found in most SIEM/EDR tech stacks such has file hash, name, remote IP, and domain (and a few more).
 
 ## Install
 
 `pip install -r requirements.txt`
+
+## Cheat Sheet
+
+- Get top 10 most common TTPs used out of all MITRE Groups: `python .\openhunt.py -m ttp --origin all -f .\groups.csv`
+
+- Get top 10 most common TTPs used by threat actors affiliated with Russia: `python .\openhunt.py -m ttp --origin Russia -f .\groups.csv`
+
+- Get top 15 most common TTPs used by threat actors targeting government organizations: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
+
+- Get top 10 most common TTPs used by any group from any `--origin` targeting any sector in `--target`: `python .\openhunt.py -m ttp --origin Russia --origin China --origin "Middle East" --target Aviation --target "United States" -f .\groups.csv`
+    - e.g. this returns the techniques of any group affiliated with Russia, China, or the Middle East if they have been documented targeting *either* any organization in the US *or* the Aviation industry industry in any country. For more information read *Combining Filters* below.
+
+
 
 ## Usage
 
@@ -131,12 +143,11 @@ This works very similiarly to `TTPs by Country`. However, instead of looking at 
 
 #### Combining Filters
 
-The filters may not be intuitive at first.
+Combining filters may not be intuitive at first.
 
-For example, take the command above `python .\openhunt.py -m ttp --filter "United States" --filter Russia --filter Government -f .\groups.csv`. In plain English, this filter means "show me all groups that target any organization in the United States, any organization in Russia, and Government targets in any country".This is different from saying they target "United States and Russian Government" entities.
+For example, take the command above `python .\openhunt.py -m ttp --target "United States" --target Russia --target Government -f .\groups.csv`. In plain English, this filter means "show me all groups that target any organization in the United States, any organization in Russia, and Government targets in any country". This is different from saying they target "United States and Russian Government" entities.
 
 I plan on implementing a way to strictly combine filters later so you can ask it to show only groups that target specific sectors of specific countries.
-
 
 ## IOC Mode
 
@@ -162,6 +173,21 @@ If the field names in the Sigma rule do not match the field names in your SIEM/E
 
 - Max of 10 values per relationship
 - For domains and IPs, the `downloaded_files` relationship is not implemented because it requires a Premium API key
+
+## Is this information up-to-date?
+
+Last Update: October 2022
+Checksum: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
+
+To update the MITRE TTP info from MITRE at execution, just omit `-f, --filter`. This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
+
+An easy way to see if the the MITRE Groups information is up-to-date is by hashing the MITRE groups page.
+
+`Invoke-WebRequest -UseBasicParsing https://attack.mitre.org/groups/ -OutFile tmp.html; Get-FileHash tmp.html; Remove-Item tmp.html`
+
+It should have match the checksum above.
+
+As MITRE releases more information, I plan on keeping the script current and will update the date and checksum above.
 
 ## Credit and Thank You Notes
 
