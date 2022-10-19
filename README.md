@@ -238,3 +238,8 @@ As MITRE releases more information, I plan on keeping the script current and wil
 
 - [MITRE](https://attack.mitre.org/) for their research and [ATT&CK scripts](https://github.com/mitre-attack/attack-scripts/)
 - [Bank Security on Medium](https://bank-security.medium.com/hunting-cobalt-strike-servers-385c5bedda7b) for their work on Cobalt Strike fingerprints
+
+## Planned Fixes and Enhancements
+
+- Group targets (e.g. all groups seen targeting Pakistan will be added to the list of groups targeting the Middle East) (for business sectors too)
+- Add a way to strictly combine filters (group targeted X sector in Y region)
