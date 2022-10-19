@@ -400,36 +400,29 @@ def mitre(affiliations_from_input, target, limit, filename):
             "Infrastructure": ["ALLANITE", "Dragonfly", "Machete", "TEMP.Veles"],
             "Weapons": ["Mofang"],
             # Misc.
-            "High Profile Persons": ["Confucius", "Darkhotel"],
-            "Persian-speaking Indivduals": ["Ferocious Kitten"],
-            "Syrian Opposition": ["Group5"],
-            "Infectious Disease Researchers": ["HAFNIUM"],
-            "Think Tanks": ["APT29", "BlackOasis", "Kimsuky", "Patchwork", "HAFNIUM"],
-            "Experts in Various Un-Named Fields": ["Kimsuky"],
-            "Journalists": ["Magic Hound"],
-            "World Health Organization": ["Magic Hound"],
-            "Turkish Individuals": ["NEODYMIUM"],
-            "Individuals": ["Nomadic Octopus"],
-            "Organisation for the Prohibition of Chemical Weapons":["Sandworm Team", "APT28"],
-            "Presedential Elections of France": ["Sandworm Team"],
-            "Presedential Elections of the United States": ["APT28", "ZIRCONIUM"],
-            "World Anti-Doping Agency": ["APT28"],
-            "US Anti-Doping Agency": ["APT28"],
-            "Minority Rights Activists": ["Scarlet Mimic"],
             "Emirati Persons": ["Stealth Falcon"],
             "English Speakers":["TA551"],
+            "Experts in Various Un-Named Fields": ["Kimsuky"],
             "German Speakers": ["TA551"],
+            "High Profile Persons": ["Confucius", "Darkhotel"],
+            "Individuals": ["Nomadic Octopus"],
             "Italian Speakers":["TA551"],
+            "Infectious Disease Researchers": ["HAFNIUM"],
             "Japanese Speakers":["TA551"],
-            "Leaders in International Affairs": ["ZIRCONIUM"]
+            "Journalists": ["Magic Hound"],
+            "Leaders in International Affairs": ["ZIRCONIUM"],
+            "Minority Rights Activists": ["Scarlet Mimic"],
+            "Organisation for the Prohibition of Chemical Weapons":["Sandworm Team", "APT28"],
+            "Persian-speaking Indivduals": ["Ferocious Kitten"],
+            "Presedential Elections of France": ["Sandworm Team"],
+            "Presedential Elections of the United States": ["APT28", "ZIRCONIUM"],
+            "United States Anti-Doping Agency": ["APT28"],
+            "Syrian Opposition": ["Group5"],
+            "Think Tanks": ["APT29", "BlackOasis", "Kimsuky", "Patchwork", "HAFNIUM"],
+            "Turkish Individuals": ["NEODYMIUM"],
+            "World Health Organization": ["Magic Hound"],
+            "World Anti-Doping Agency": ["APT28"]
         }
-        
-        for c in affiliations:
-            print(c)
-        print()
-        for c in targets:
-            print(c)
-        exit()
 
         if filename == None:
             data_source = build_taxii_source()

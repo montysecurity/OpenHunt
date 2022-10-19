@@ -167,25 +167,28 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
     - Weapons
 
 - Miscellaneous
-    - High Profile Persons
-    - Persian-speaking Indivduals
-    - Syrian Opposition
-    - Infectious Disease Researchers
-    - Think Tanks
-    - Experts in Various Un-Named Fields
-    - Journalists
-    - World Health Organization
-    - Turkish Individuals
-    - Individuals
-    - Organisation for the Prohibition of Chemical Weapons
-    - Presedential Elections of France
-    - Presedential Elections of the United States
-    - World Anti-Doping Agency
-    - US Anti-Doping Agency
-    - Minority Rights Activists
     - Emirati Persons
     - English Speakers
+    - Experts in Various Un-Named Fields
     - German Speakers
+    - High Profile Persons
+    - Individuals
+    - Italian Speakers
+    - Infectious Disease Researchers
+    - Japanese Speakers
+    - Journalists
+    - Leaders in International Affairs
+    - Minority Rights Activists
+    - Organisation for the Prohibition of Chemical Weapons
+    - Persian-speaking Indivduals
+    - Presedential Elections of France
+    - Presedential Elections of the United States
+    - United States Anti-Doping Agency
+    - Syrian Opposition
+    - Think Tanks
+    - Turkish Individuals
+    - World Health Organization
+    - World Anti-Doping Agency
 
 #### Combining Filters
 
