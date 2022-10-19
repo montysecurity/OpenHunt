@@ -4,7 +4,7 @@ from taxii2client.v20 import Collection
 from collections import Counter
 import vt, requests, json, re, argparse, csv, io, tqdm
 
-parser = argparse.ArgumentParser(description="SOC Companion")
+parser = argparse.ArgumentParser(description="OpenHunt: Tailored Threat Hunting Information")
 parser.add_argument("-m", "--mode", type=str, help="TTP or IOC")
 parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPS insteald of exporting MITRE current info")
 parser.add_argument("--origin", action="append", type=str, help="Filter on the threat actors' affiliation or country of origin")
