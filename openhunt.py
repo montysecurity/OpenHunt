@@ -423,6 +423,13 @@ def mitre(affiliations_from_input, target, limit, filename):
             "Japanese Speakers":["TA551"],
             "Leaders in International Affairs": ["ZIRCONIUM"]
         }
+        
+        for c in affiliations:
+            print(c)
+        print()
+        for c in targets:
+            print(c)
+        exit()
 
         if filename == None:
             data_source = build_taxii_source()
