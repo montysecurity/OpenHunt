@@ -202,21 +202,17 @@ I plan on implementing a way to strictly combine filters later so you can ask it
 
 Provided an IOC (MD5, SHA1, SHA256, IP, Domain) it pulls the IOCs relationships via the VirusTotal API and creates a SIGMA rule based on these.
 
-For each IP address seen in the SIGMA rule (whether the IOC itself or a relationship), it looks it up in Shodan and compares it to a number of fingerprints and prints to screen if something is found
+For each IP address seen in the SIGMA rule (whether the IOC itself or a relationship), it looks it up in Shodan and compares it to a number of fingerprints and prints to screen if something is found.
 
 Fingerprints Supported:
 - Cobalt Strike Servers (Default Values)
 
-If the field names in the Sigma rule do not match the field names in your SIEM/EDR platform then you can rename them (see `python openhunt.py -h`)
+If the field names in the Sigma rule do not match the field names in your SIEM/EDR platform then you can rename them (see `python openhunt.py -h`).
 
 #### Requirements
 
 - VirusTotal API Key
 - Shodan API Key
-
-#### Examples
-
-`python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 58.33.204.180`
 
 #### Limitations
 
@@ -229,13 +225,13 @@ Last Update: October 2022
 
 Checksum: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
 
-To update the MITRE TTP info from MITRE at execution, just omit `-f, --filter`. This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
+To update the MITRE TTP info from MITRE at execution, just omit `-f, --file`. This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
 
 An easy way to see if the the MITRE Groups information is up-to-date is by hashing the MITRE groups page.
 
 `Invoke-WebRequest -UseBasicParsing https://attack.mitre.org/groups/ -OutFile tmp.html; Get-FileHash tmp.html; Remove-Item tmp.html`
 
-It should have match the checksum above.
+It should match the checksum above.
 
 As MITRE releases more information, I plan on keeping the script current and will update the date and checksum above.
 
