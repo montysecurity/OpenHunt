@@ -1,0 +1,118 @@
+title: Auto-Generated IOC Rule
+id:
+status: experimental
+description: Artifacts Related to IOC
+author: SOC Companion
+date: 
+references: 
+logsource:
+    product:
+    service:
+detection:
+    selectionReplaceMe:
+        ParentImageSHA256ReplaceMe:
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+            - 'ParentImageSHA256ReplaceMe'
+    selection2ReplaceMe:
+        ImageNameReplaceMe:
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+            - 'ImageNameReplaceMe'
+    selection3ReplaceMe:
+        ImageHashesReplaceMe:
+            - 'IOCMD5ReplaceMe'
+            - 'IOCSHA1ReplaceMe'
+            - 'IOCSHA256ReplaceMe'
+    selection4ReplaceMe:
+        TargetFileHashReplaceMe:
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+            - 'TargetFileHashReplaceMe'
+    selection5ReplaceMe:
+        ContactedDomainReplaceMe:
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+            - 'ContactedDomainReplaceMe'
+    selection6ReplaceMe:
+        ContactedIPsReplaceMe:
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+            - 'ContactedIPsReplaceMe'
+    selection7ReplaceMe:
+        ReferrerFilesReplaceMe:
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+            - 'ReferrerFilesReplaceMe'
+    selection8ReplaceMe:
+        CommunicatingFilesReplaceMe:
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+            - 'CommunicatingFilesReplaceMe'
+    selection9ReplaceMe:
+        DownloadedFilesReplaceMe:
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+            - 'DownloadedFilesReplaceMe'
+    condition: 1 of selection*
+    falsepositives:
+        - unknown
+    tags:

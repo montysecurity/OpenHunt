@@ -42,128 +42,13 @@ affiliations_from_input = args.origin
 filename = args.file
 targets_from_input = args.target
 
-sigma_template ="""
-title: Auto-Generated IOC Rule
-id:
-status: experimental
-description: Artifacts Related to IOC
-author: SOC Companion
-date: 
-references: 
-logsource:
-    product:
-    service:
-detection:
-    selectionReplaceMe:
-        ParentImageSHA256ReplaceMe:
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-            - 'ParentImageSHA256ReplaceMe'
-    selection2ReplaceMe:
-        ImageNameReplaceMe:
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-            - 'ImageNameReplaceMe'
-    selection3ReplaceMe:
-        ImageHashesReplaceMe:
-            - 'IOCMD5ReplaceMe'
-            - 'IOCSHA1ReplaceMe'
-            - 'IOCSHA256ReplaceMe'
-    selection4ReplaceMe:
-        TargetFileHashReplaceMe:
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-            - 'TargetFileHashReplaceMe'
-    selection5ReplaceMe:
-        ContactedDomainReplaceMe:
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-            - 'ContactedDomainReplaceMe'
-    selection6ReplaceMe:
-        ContactedIPsReplaceMe:
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-            - 'ContactedIPsReplaceMe'
-    selection7ReplaceMe:
-        ReferrerFilesReplaceMe:
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-            - 'ReferrerFilesReplaceMe'
-    selection8ReplaceMe:
-        CommunicatingFilesReplaceMe:
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-            - 'CommunicatingFilesReplaceMe'
-    selection9ReplaceMe:
-        DownloadedFilesReplaceMe:
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-            - 'DownloadedFilesReplaceMe'
-    condition: 1 of selection*
-    falsepositives:
-        - unknown
-    tags:
-"""
+sigma_data = ""
+sigma_file = open("sigma/template.yaml")
+lines = sigma_file.readlines()
+for line in lines:
+    sigma_data += line
 
-def mitre(affiliations_from_input, target, limit, filename):
+def mitre(affiliations_from_input, targets_from_input, limit, filename):
     # Adapted from https://github.com/mitre-attack/attack-scripts
     def build_taxii_source():
         """Downloads latest Enterprise or Mobile ATT&CK content from MITRE TAXII Server."""
@@ -179,7 +64,6 @@ def mitre(affiliations_from_input, target, limit, filename):
         # Create an in-memory source (to prevent multiple web requests)
         return MemorySource(stix_data=taxii_ds.query())
 
-
     def get_all_techniques(src, source_name, tactic=None):
         """Filters data source by attack-pattern which extracts all ATT&CK Techniques"""
         filters = [
@@ -191,7 +75,6 @@ def mitre(affiliations_from_input, target, limit, filename):
 
         results = src.query(filters)
         return remove_deprecated(results)
-
 
     def filter_for_term_relationships(src, relationship_type, object_id, target=True):
         """Filters data source by type, relationship_type and source or target"""
@@ -207,7 +90,6 @@ def mitre(affiliations_from_input, target, limit, filename):
         results = src.query(filters)
         return remove_deprecated(results)
 
-
     def filter_by_type_and_id(src, object_type, object_id, source_name):
         """Filters data source by id and type"""
         filters = [
@@ -218,13 +100,11 @@ def mitre(affiliations_from_input, target, limit, filename):
         results = src.query(filters)
         return remove_deprecated(results)
 
-
     def grab_external_id(stix_object, source_name):
         """Grab external id from STIX2 object"""
         for external_reference in stix_object.get("external_references", []):
             if external_reference.get("source_name") == source_name:
                 return external_reference["external_id"]
-
 
     def remove_deprecated(stix_objects):
         """Will remove any revoked or deprecated objects from queries made to the data source"""
@@ -237,13 +117,11 @@ def mitre(affiliations_from_input, target, limit, filename):
             )
         )
 
-
     def escape_chars(a_string):
         """Some characters create problems when written to file"""
         return a_string.translate(str.maketrans({
             "\n": r"\\n",
         }))
-
 
     def do_mapping(ds, fieldnames, relationship_type, type_filter, source_name, sorting_keys, tactic=None):
         """Main logic to map techniques to mitigations, groups or software"""
@@ -505,7 +383,7 @@ def shodan(ioc, shodan_api_key):
             if cobalt_strike_sigantures[signature] in str(j):
                 return str(ioc + " is believed to be a Cobalt Strike Server because of its " + signature)
 
-def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
+def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_data):
     client = vt.Client(virustotal_api_key)
     cobalt_strike_servers = []
     if (len(ioc) == 32 or len(ioc) == 40 or len(ioc) == 64) and "." not in ioc:
@@ -516,22 +394,22 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
         sha256 = file.get("sha256")
         names = file.get("names")
         if len(names) > 0:
-            for NAME in names:
-                sigma_template = sigma_template.replace("'ImageNameReplaceMe'", str(NAME), 1)
-                sigma_template = sigma_template.replace("ImageNameReplaceMe:", " ImageName:")
-                sigma_template = sigma_template.replace("selection2ReplaceMe", "selection2")
+            for name in names:
+                sigma_data = sigma_data.replace("'ImageNameReplaceMe'", str(name), 1)
+                sigma_data = sigma_data.replace("ImageNameReplaceMe:", " ImageName:")
+                sigma_data = sigma_data.replace("selection2ReplaceMe", "selection2")
         if md5:
-            sigma_template = sigma_template.replace("'IOCMD5ReplaceMe'", md5)
-            sigma_template = sigma_template.replace("ImageHashesReplaceMe", global_IH)
-            sigma_template = sigma_template.replace("selection3ReplaceMe", "selection3")
+            sigma_data = sigma_data.replace("'IOCMD5ReplaceMe'", md5)
+            sigma_data = sigma_data.replace("ImageHashesReplaceMe", global_IH)
+            sigma_data = sigma_data.replace("selection3ReplaceMe", "selection3")
         if sha1:
-            sigma_template = sigma_template.replace("'IOCSHA1ReplaceMe'", sha1)
-            sigma_template = sigma_template.replace("ImageHashesReplaceMe", global_IH)
-            sigma_template = sigma_template.replace("selection3ReplaceMe", "selection3")
+            sigma_data = sigma_data.replace("'IOCSHA1ReplaceMe'", sha1)
+            sigma_data = sigma_data.replace("ImageHashesReplaceMe", global_IH)
+            sigma_data = sigma_data.replace("selection3ReplaceMe", "selection3")
         if sha256:
-            sigma_template = sigma_template.replace("'IOCSHA256ReplaceMe'", sha256)
-            sigma_template = sigma_template.replace("ImageHashesReplaceMe", global_IH)
-            sigma_template = sigma_template.replace("selection3ReplaceMe", "selection3")
+            sigma_data = sigma_data.replace("'IOCSHA256ReplaceMe'", sha256)
+            sigma_data = sigma_data.replace("ImageHashesReplaceMe", global_IH)
+            sigma_data = sigma_data.replace("selection3ReplaceMe", "selection3")
         virustotal_relationships = ["dropped_files", "execution_parents", "contacted_domains", "contacted_ips"]
         for relationship in virustotal_relationships:
             url = "https://www.virustotal.com/api/v3/files/" + hash + "/" + relationship + "?limit=100"
@@ -551,25 +429,25 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
             if len(relationship_values) > 0:
                 for value in relationship_values:
                     if relationship == "dropped_files":
-                        sigma_template = sigma_template.replace("TargetFileHashReplaceMe:", str(global_TF) + ":")
-                        sigma_template = sigma_template.replace("selection4ReplaceMe", "selection4")
-                        sigma_template = sigma_template.replace("'TargetFileHashReplaceMe'", value, 1)
+                        sigma_data = sigma_data.replace("TargetFileHashReplaceMe:", str(global_TF) + ":")
+                        sigma_data = sigma_data.replace("selection4ReplaceMe", "selection4")
+                        sigma_data = sigma_data.replace("'TargetFileHashReplaceMe'", value, 1)
                     if relationship == "execution_parents":
-                        sigma_template = sigma_template.replace("ParentImageSHA256ReplaceMe:", str(global_PI) + ":")
-                        sigma_template = sigma_template.replace("selectionReplaceMe", "selection")
-                        sigma_template = sigma_template.replace("'ParentImageSHA256ReplaceMe'", value, 1)
+                        sigma_data = sigma_data.replace("ParentImageSHA256ReplaceMe:", str(global_PI) + ":")
+                        sigma_data = sigma_data.replace("selectionReplaceMe", "selection")
+                        sigma_data = sigma_data.replace("'ParentImageSHA256ReplaceMe'", value, 1)
                     if relationship == "contacted_domains":
-                        sigma_template = sigma_template.replace("ContactedDomainReplaceMe:", str(global_CD) + ":")
-                        sigma_template = sigma_template.replace("selection5ReplaceMe", "selection5")
-                        sigma_template = sigma_template.replace("'ContactedDomainReplaceMe'", "\"" + value + "\"", 1)
+                        sigma_data = sigma_data.replace("ContactedDomainReplaceMe:", str(global_CD) + ":")
+                        sigma_data = sigma_data.replace("selection5ReplaceMe", "selection5")
+                        sigma_data = sigma_data.replace("'ContactedDomainReplaceMe'", "\"" + value + "\"", 1)
                     if relationship == "contacted_ips":
                         c2_status = shodan(value, shodan_api_key)
                         if c2_status != None and c2_status != 0:
                             if "Cobalt Strike" in c2_status:
                                 cobalt_strike_servers.append(str(c2_status))
-                        sigma_template = sigma_template.replace("ContactedIPsReplaceMe:", str(global_CI) + ":")
-                        sigma_template = sigma_template.replace("selection6ReplaceMe", "selection6")
-                        sigma_template = sigma_template.replace("'ContactedIPsReplaceMe'", "\"" + value + "\"", 1)
+                        sigma_data = sigma_data.replace("ContactedIPsReplaceMe:", str(global_CI) + ":")
+                        sigma_data = sigma_data.replace("selection6ReplaceMe", "selection6")
+                        sigma_data = sigma_data.replace("'ContactedIPsReplaceMe'", "\"" + value + "\"", 1)
     else:
         # downloaded_files requires Premium
         virustotal_relationships = ["referrer_files", "communicating_files"]
@@ -599,18 +477,18 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
             if len(relationship_values) > 0:
                 for relationship_value in relationship_values:
                     if relationship == "referrer_files":
-                        sigma_template = sigma_template.replace("ReferrerFilesReplaceMe:", str(global_RF) + ":")
-                        sigma_template = sigma_template.replace("selection7ReplaceMe", "selection7")
-                        sigma_template = sigma_template.replace("'ReferrerFilesReplaceMe'", relationship_value, 1)
+                        sigma_data = sigma_data.replace("ReferrerFilesReplaceMe:", str(global_RF) + ":")
+                        sigma_data = sigma_data.replace("selection7ReplaceMe", "selection7")
+                        sigma_data = sigma_data.replace("'ReferrerFilesReplaceMe'", relationship_value, 1)
                     if relationship == "communicating_files":
-                        sigma_template = sigma_template.replace("CommunicatingFilesReplaceMe:", str(global_CF) + ":")
-                        sigma_template = sigma_template.replace("selection8ReplaceMe", "selection8")
-                        sigma_template = sigma_template.replace("'CommunicatingFilesReplaceMe'", relationship_value, 1)
+                        sigma_data = sigma_data.replace("CommunicatingFilesReplaceMe:", str(global_CF) + ":")
+                        sigma_data = sigma_data.replace("selection8ReplaceMe", "selection8")
+                        sigma_data = sigma_data.replace("'CommunicatingFilesReplaceMe'", relationship_value, 1)
                     if relationship == "downloaded_files":
-                        sigma_template = sigma_template.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
-                        sigma_template = sigma_template.replace("selection9ReplaceMe", "selection9")
-                        sigma_template = sigma_template.replace("'DownloadedFilesReplaceMe'", "\"" + relationship_value + "\"", 1)
-    for line in sigma_template.splitlines():
+                        sigma_data = sigma_data.replace("DownloadedFilesReplaceMe:", str(global_DF) + ":")
+                        sigma_data = sigma_data.replace("selection9ReplaceMe", "selection9")
+                        sigma_data = sigma_data.replace("'DownloadedFilesReplaceMe'", "\"" + relationship_value + "\"", 1)
+    for line in sigma_data.splitlines():
         if "ReplaceMe" not in line:
            print(line)
     print()
@@ -619,7 +497,7 @@ def virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template):
             print(server)
 
 if mode == "ioc":
-    virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_template)
+    virusTotal(virustotal_api_key, shodan_api_key, ioc, sigma_data)
 elif mode == "ttp":
     mitre(affiliations_from_input, targets_from_input, limit, filename)
 else:
