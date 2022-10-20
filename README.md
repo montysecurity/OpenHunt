@@ -251,5 +251,4 @@ As MITRE releases more information, I plan on keeping the script and `groups.csv
 
 - Group targets (e.g. all groups seen targeting Pakistan will be added to the list of groups targeting the Middle East) (for business sectors too)
 - Add a way to strictly combine filters (group targeted X sector in Y region)
-- Read the API keys from a file instead on inline
 - Add more fingerprints for Shodan to check against
