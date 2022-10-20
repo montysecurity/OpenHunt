@@ -10,8 +10,6 @@ parser.add_argument("-f", "--file", type=str, help="Use CSV file of TTPS insteal
 parser.add_argument("--origin", action="append", type=str, help="Filter on the threat actors' affiliation or country of origin")
 parser.add_argument("--target", action="append", type=str, help="Filter on the threat actors' targets")
 parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
-parser.add_argument("-vt", "--virustotal-api-key", type=str, help="VirusTotal API Key")
-parser.add_argument("-s", "--shodan-api-key", type=str, help="Shodan API Key")
 parser.add_argument("-i", "--ioc", type=str, help="IOC value")
 parser.add_argument("-pi", "--parent-images", type=str, help="Rename the ParentImageSHA256 field", default="ParentImageSHA256")
 parser.add_argument("-in", "--image-names", type=str, help="Rename the Image field", default="ImageNames")
@@ -25,8 +23,6 @@ parser.add_argument("-df", "--downloaded-files", type=str, help="Rename the Down
 
 args = parser.parse_args()
 mode = args.mode
-virustotal_api_key = args.virustotal_api_key
-shodan_api_key = args.shodan_api_key
 ioc = args.ioc
 global_PI = args.parent_images
 global_IN = args.image_names
@@ -41,6 +37,10 @@ limit = args.limit
 affiliations_from_input = args.origin
 filename = args.file
 targets_from_input = args.target
+
+keys = json.load(open("keys.json"))
+virustotal_api_key = str(keys["api_keys"]["virustotal"])
+shodan_api_key = str(keys["api_keys"]["shodan"])
 
 sigma_data = ""
 sigma_file = open("sigma/template.yaml")
