@@ -1,0 +1,39 @@
+{
+    "targets":
+    {
+        "countries":
+        {
+            "Afghanistan": ["Sidewinder"]
+        },
+        "continents":
+        {
+            "Asia":
+            {
+                "countries":
+                [
+                    "Afghanistan"
+                ],
+                "groups":
+                [
+                    "BlackTech", "Sidewinder", "Tonto Team", "Lotus Blossom", "Nomadic Octopus", "APT39", "Dust Storm", "Orangeworm", "Sowbug", "IndigoZebra", "Naikon", "APT29", "CostaRicto", "Machete", "PLATINUM", "Rancor", "Darkhotel", "Thrip", "Inception", "BackdoorDiplomacy", "APT32"
+                ]
+            }
+        },
+        "regions":
+        {
+
+        },
+        "sectors":
+        {
+
+        },
+        "miscellaneous":
+        {
+
+        },
+        "combined":
+        {
+
+        }
+    }
+}

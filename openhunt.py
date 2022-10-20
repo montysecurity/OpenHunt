@@ -38,7 +38,7 @@ affiliations_from_input = args.origin
 filename = args.file
 targets_from_input = args.target
 
-keys = json.load(open("keys.json"))
+keys = json.load(open("json/keys.json"))
 virustotal_api_key = str(keys["api_keys"]["virustotal"])
 shodan_api_key = str(keys["api_keys"]["shodan"])
 
@@ -301,6 +301,20 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             "World Health Organization": ["Magic Hound"],
             "World Anti-Doping Agency": ["APT28"]
         }
+        targeti = "Afghanistan"
+
+        targets = json.load(open("json/targets.json"))
+        print(targets)
+        tmp = []
+        
+        for i in targets["targets"]["continents"]["Asia"]["countries"]:
+            tmp.append(i)
+        print(i)
+        for i in tmp:
+            for g in targets["targets"]["countries"][i]:
+                print(g)
+        for i in targets["targets"]["countries"]:
+        exit()
 
         if filename == None:
             data_source = build_taxii_source()
