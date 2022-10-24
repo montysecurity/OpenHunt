@@ -3,7 +3,347 @@
     {
         "countries":
         {
-            "Afghanistan": ["Sidewinder"]
+            "Afghanistan":
+            [
+                "Sidewinder"
+            ],
+            "Argentina":
+            [
+                "Honeybee"
+            ],
+            "Australia":
+            [
+                "CostaRicto",
+                "Fox Kitten"
+            ],
+            "Asia":
+            [
+                "BlackTech",
+                "Sidewinder",
+                "Tonto Team",
+                "Lotus Blossom",
+                "Nomadic Octopus",
+                "APT39",
+                "Dust Storm",
+                "Orangeworm",
+                "Sowbug",
+                "IndigoZebra",
+                "Naikon",
+                "APT29",
+                "CostaRicto",
+                "Machete",
+                "PLATINUM",
+                "Rancor",
+                "Darkhotel",
+                "Thrip",
+                "Inception",
+                "BackdoorDiplomacy",
+                "APT32"
+            ],
+            "Belarus":
+            [
+                "TA459"
+            ],
+            "Belgium":
+            [
+                "Strider"
+            ],
+            "Cambodia":
+            [
+                "APT32"
+            ],
+            "Canada":
+            [
+                "Honeybee"
+            ],
+            "Caribbean":
+            [
+                "Ke3chang"
+            ],
+            "Central America":
+            [
+                "Ke3chang"
+            ],
+            "China":
+            [
+                "APT37",
+                "Higaisa",
+                "Operation Wocao",
+                "Sidewinder",
+                "Strider"
+            ],
+            "Columbia":
+            [
+                "APT-C-36"
+            ],
+            "Europe":
+            [
+                "APT29",
+                "APT39",
+                "BackdoorDiplomacy",
+                "CostaRicto",
+                "DarkVishnya",
+                "Dust Storm",
+                "Fox Kitten",
+                "Inception",
+                "Ke3chang",
+                "Kimsuky",
+                "Machete",
+                "Molerats",
+                "MuddyWater",
+                "Mustang Panda",
+                "Orangeworm",
+                "RTM",
+                "Tonto Team",
+                "WIRTE"
+            ],
+            "France":
+            [
+                "Operation Wocao"
+            ],
+            "Germany":
+            [
+                "CopyKittens",
+                "Operation Wocao"
+            ],
+            "Hong Kong":
+            [
+                "Tropic Trooper",
+                "APT3",
+                "BlackTech"
+            ],
+            "India":
+            [
+                "APT37"
+            ],
+            "Indonesia":
+            [
+                "Honeybee"
+            ],
+            "Iran":
+            [
+                "APT39",
+                "Strider"
+            ],
+            "Isreal":
+            [
+                "CopyKittens"
+            ],
+            "Japan":
+            [
+                "BRONZE BUTLER",
+                "APT16",
+                "APT37",
+                "BlackTech",
+                "DragonOK",
+                "Dust Storm",
+                "Higaisa",
+                "Honeybee",
+                "menuPass",
+                "Tonto Team"
+            ],
+            "Jordan":
+            [
+                "CopyKittens"
+            ],
+            "Kuwait":
+            [
+                "APT37",
+                "HEXANE"
+            ],
+            "Latin America":
+            [
+                "Machete"
+            ],
+            "Laos":
+            [
+                "APT32"
+            ],
+            "Mongolia":
+            [
+                "Mustang Panda",
+                "TA459"
+            ],
+            "Middle East":
+            [
+                "OilRig",
+                "APT29",
+                "APT37",
+                "BackdoorDiplomacy",
+                "Bouncing Golf",
+                "DarkHydrus",
+                "Fox Kitten",
+                "Gallmaker",
+                "HEXANE",
+                "Inception",
+                "Leafminer",
+                "Magic Hound",
+                "Molerats",
+                "MuddyWater",
+                "Mustang Panda",
+                "Windshift",
+                "WIRTE"
+            ],
+            "Myanmar":
+            [
+                "Mofang",
+                "Mustang Panda"
+            ],
+            "Nepal":
+            [
+                "APT37",
+                "Sidewinder"
+            ],
+            "North America":
+            [
+                "APT29",
+                "APT39",
+                "CostaRicto",
+                "FIN10",
+                "Fox Kitten",
+                "Ke3chang",
+                "MuddyWater"
+            ],
+            "North Korea":
+            [
+                "Higaisa"
+            ],
+            "Pakistan":
+            [
+                "Mustang Panda",
+                "Sidewinder",
+                "The White Company"
+            ],
+            "Philippines":
+            [
+                "Tropic Trooper",
+                "APT32"
+            ],
+            "Poland":
+            [
+                "Higaisa"
+            ],
+            "Romania":
+            [
+                "APT37"
+            ],
+            "Russia":
+            [
+                "Silence",
+                "APT37",
+                "Gorgon Group",
+                "Higaisa",
+                "Inception",
+                "Kimsuky",
+                "Machete",
+                "Strider",
+                "TA459"
+            ],
+            "Rwanda":
+            [
+                "Strider"
+            ],
+            "Saudi Arabia":
+            [
+                "APT33",
+                "CopyKittens",
+                "RTM"
+            ],
+            "Singapore":
+            [
+                "Honeybee",
+                "Whitefly"
+            ],
+            "Spain":
+            [
+                "Gorgon Group"
+            ],
+            "South America":
+            [
+                "CostaRicto",
+                "Ke3chang",
+                "Sowbug"
+            ],
+            "South Korea":
+            [
+                "Andariel",
+                "APT33",
+                "APT37",
+                "Dust Storm",
+                "Kimsuky",
+                "Tonto Team"
+            ],
+            "Sweden":
+            [
+                "Strider"
+            ],
+            "Taiwan":
+            [
+                "Tropic Trooper",
+                "APT16",
+                "BlackTech",
+                "Chimera",
+                "Tonto Team"
+            ],
+            "Turkey":
+            [
+                "PROMETHIUM",
+                "CopyKittens"
+            ],
+            "Ukraine":
+            [
+                "Gamaredon Group",
+                "Sandworm Team"
+            ],
+            "United Kingdom":
+            [
+                "ALLANITE",
+                "Gorgon Group",
+                "Operation Wocao"
+            ],
+            "United Nations":
+            [
+                "Kimsuky",
+                "Operation Wocao"
+            ],
+            "United States":
+            [
+                "HAFNIUM",
+                "ALLANITE",
+                "Ajax Security Team",
+                "APT17",
+                "APT28",
+                "APT3",
+                "APT33",
+                "BlackTech",
+                "CopyKittens",
+                "Dust Storm",
+                "Elderwood",
+                "FIN7",
+                "Gorgon Group",
+                "Inception",
+                "Kimsuky",
+                "Lazarus Group",
+                "Machete",
+                "Magic Hound",
+                "Molerats",
+                "Mustang Panda",
+                "Orangeworm",
+                "Patchwork",
+                "Thrip",
+                "Tonto Team"
+            ],
+            "Venezuela":
+            [
+                "Machete"
+            ],
+            "Vietnam":
+            [
+                "APT32",
+                "APT37",
+                "Honeybee",
+                "Mustang Panda"
+            ]
         },
         "continents":
         {
@@ -15,7 +355,27 @@
                 ],
                 "groups":
                 [
-                    "BlackTech", "Sidewinder", "Tonto Team", "Lotus Blossom", "Nomadic Octopus", "APT39", "Dust Storm", "Orangeworm", "Sowbug", "IndigoZebra", "Naikon", "APT29", "CostaRicto", "Machete", "PLATINUM", "Rancor", "Darkhotel", "Thrip", "Inception", "BackdoorDiplomacy", "APT32"
+                    "BlackTech",
+                    "Sidewinder",
+                    "Tonto Team",
+                    "Lotus Blossom",
+                    "Nomadic Octopus",
+                    "APT39",
+                    "Dust Storm",
+                    "Orangeworm",
+                    "Sowbug",
+                    "IndigoZebra",
+                    "Naikon",
+                    "APT29",
+                    "CostaRicto",
+                    "Machete",
+                    "PLATINUM",
+                    "Rancor",
+                    "Darkhotel",
+                    "Thrip",
+                    "Inception",
+                    "BackdoorDiplomacy",
+                    "APT32"
                 ]
             }
         },

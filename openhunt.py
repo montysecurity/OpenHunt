@@ -259,11 +259,11 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             "Non-Profits": ["Gamaredon Group", "Mustang Panda"],
             "Nuclear": ["Sharpshooter"],
             "Power": ["Machete"],
-            "Public": ["Higaisa"],
+            "Public Organizations": ["Higaisa"],
             "Petroleum": ["APT-C-36", "Fox Kitten", "HEXANE", "Ke3chang", "MuddyWater"],
             "Pharmaceutical": ["APT19", "FIN4", "Turla"],
             "Religious Organizations": ["Mustang Panda"],
-            "Research": ["Transparent Tribe", "Turla"],
+            "Research Organizations": ["Transparent Tribe", "Turla"],
             "Restaurant": ["FIN5", "FIN7", "FIN8"],
             "Retail": ["FIN6", "FIN7", "FIN8"],
             "Satellite Communications": ["Thrip"],
@@ -301,19 +301,29 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             "World Health Organization": ["Magic Hound"],
             "World Anti-Doping Agency": ["APT28"]
         }
-        targeti = "Afghanistan"
-
+        targets_input = ["Afghanistan", "Asia"]
+        targets_array = []
+        types = json.load(open("json/types.json"))
         targets = json.load(open("json/targets.json"))
-        print(targets)
-        tmp = []
+        groups = []
         
-        for i in targets["targets"]["continents"]["Asia"]["countries"]:
-            tmp.append(i)
-        print(i)
-        for i in tmp:
-            for g in targets["targets"]["countries"][i]:
-                print(g)
-        for i in targets["targets"]["countries"]:
+        for target_input in targets_from_input:
+            for type in types["data"]["type"]:
+                if target_input in types["data"]["type"][type]:
+                    targets_array.append(target_input)
+                    if type == "continent":
+                        for group in targets["targets"]["continents"][target_input]["groups"]:
+                            groups.append(group)
+                            print(group)
+                        for country in targets["targets"]["continents"][target_input]["countries"]:
+                            targets_array.append(country)
+                    if type == "country":
+                        for group in targets["targets"]["countries"][target_input]:
+                            print(group)
+                            groups.append(group)
+        print(groups)
+        groups = set(groups)
+        print(groups)
         exit()
 
         if filename == None:
