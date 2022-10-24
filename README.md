@@ -106,7 +106,7 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
     - Romania
     - Russia
     - Rwanda
-    - Saudia Arabia
+    - Saudi Arabia
     - Singapore
     - Spain
     - South America

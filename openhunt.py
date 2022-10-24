@@ -212,7 +212,7 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             "Romania": ["APT37"],
             "Russia": ["Silence", "APT37", "Gorgon Group", "Higaisa", "Inception", "Kimsuky", "Machete", "Strider", "TA459"],
             "Rwanda": ["Strider"],
-            "Saudia Arabia": ["APT33", "CopyKittens", "RTM"],
+            "Saudi Arabia": ["APT33", "CopyKittens", "RTM"],
             "Singapore": ["Honeybee", "Whitefly"],
             "Spain": ["Gorgon Group"],
             "South America": ["CostaRicto", "Ke3chang", "Sowbug"],

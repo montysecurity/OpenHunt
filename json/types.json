@@ -1,0 +1,71 @@
+{
+    "data": {
+        "type": {
+            "country": [
+                "Afghanistan",
+                "Argentina",
+                "Australia",
+                "Belarus",
+                "Belgium",
+                "Cambodia",
+                "Canada",
+                "China",
+                "Columbia",
+                "France",
+                "Germany",
+                "Hong Kong",
+                "India",
+                "Indonesia",
+                "Iran",
+                "Israel",
+                "Japan",
+                "Jordan",
+                "Kuwait",
+                "Laos",
+                "Mongolia",
+                "Myanmar",
+                "Nepal",
+                "North Korea",
+                "Pakistan",
+                "Philippines",
+                "Poland",
+                "Romania",
+                "Russia",
+                "Rwanda",
+                "Saudi Arabia",
+                "Singapore",
+                "Spain",
+                "South Korea",
+                "Sweden",
+                "Taiwan",
+                "Turkey",
+                "Ukraine",
+                "United Kingdom",
+                "United States",
+                "Venezuela",
+                "Vietnam"
+            ],
+            "continent": [
+                "Africa",
+                "Asia",
+                "Europe",
+                "North America",
+                "South America"
+            ],
+            "region": [
+                "Caribbean",
+                "Central America",
+                "Latin America",
+                "Middle East"
+            ],
+            "other" : [
+                "United Nations"
+            ],
+            "sector": {
+                "Aerospace": ["Aviation"]
+            },
+                "Automotive",
+            ]
+        }
+    }
+}
