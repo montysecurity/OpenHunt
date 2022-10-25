@@ -381,14 +381,117 @@
         },
         "regions":
         {
-
+            "Caribbean":
+            [
+                "Ke3chang"
+            ],
+            "Central America":
+            [
+                "Ke3chang"
+            ],
+            "Latin America":
+            [
+                "Machete"
+            ],
+            "Middle East":
+            [
+                "OilRig",
+                "APT29",
+                "APT37",
+                "BackdoorDiplomacy",
+                "Bouncing Golf",
+                "DarkHydrus",
+                "Fox Kitten",
+                "Gallmaker",
+                "HEXANE",
+                "Inception",
+                "Leafminer",
+                "Magic Hound",
+                "Molerats",
+                "MuddyWater",
+                "Mustang Panda",
+                "Windshift",
+                "WIRTE"
+            ]
         },
         "sectors":
         {
+            "Aerospace": ["Axiom", "Leviathan", "menuPass", "Threat Group-3390"],
+            "Automotive": ["Mofang"],
+            "Aviation": ["APT33", "Chimera", "Dragonfly", "LazyScripter", "Leviathan"],
+            "Biotechnology": ["BRONZE BUTLER", "menuPass"],
+            "Chemical": ["BRONZE BUTLER", "OilRig"],
+            "Civil": ["Naikon"],
+            "Construction": ["BlackTech"],
+            "Critical Infrastructure":["Mofang"],
+            "Defense": ["Machete", "APT19", "Ajax Security Team", "Andariel", "APT17", "APT28", "Axiom", "Confucius", "Deep Panda", "Dragonfly", "Elderwood", "Fox Kitten", "Gallmaker", "Gamaredon Group", "HAFNIUM", "Ke3chang", "Leviathan", "Lotus Blossom", "Magic Hound", "menuPass", "Mofang", "Naikon", "Sharpshooter", "Sidewinder", "The White Company", "Threat Group-3390", "Thrip", "Transparent Tribe", "Turla", "WIRTE"],
+            "Diplomatic": ["Ke3chang", "Nomadic Octopus", "Patchwork", "Transparent Tribe", "WIRTE"],
+            "Education": ["SilverTerrier", "APT39", "DarkHydrus", "HAFNIUM", "Leviathan", "Silent Librarian", "Turla"],
+            "Electrical": ["Sandworm Team"],
+            "Electronics": ["BlackTech", "BRONZE BUTLER"],
+            "Energy": ["APT33", "menuPass", "OilRig", "Operation Wocao", "Sharpshooter", "Threat Group-3390"],
+            "Engineering": ["BlackTech", "Fox Kitten"],
+            "Financial": ["APT-C-36", "Carbanak", "CostaRicto", "OilRig", "Silence", "admin@338", "APT19", "APT38", "BlackTech", "Cobalt Group", "DarkVishnya", "Deep Panda", "FIN4", "GCMAN", "menuPass", "RTM", "Sharpshooter", "WIRTE"],
+            "Gambling": ["Threat Group-3390"],
+            "Government": ["Mofang", "OilRig", "Deep Panda", "Andariel", "Ke3chang", "Inception", "Turla", "Magic Hound", "Gallmaker", "Mustang Panda", "Elderwood", "Sandworm Team", "Tropic Trooper", "Dragonfly", "MuddyWater", "APT12", "APT18", "Nomadic Octopus", "Silent Librarian", "Leviathan", "Sidewinder", "Lotus Blossom", "DarkHydrus", "Axiom", "Gorgon Group", "APT32", "Naikon", "Higaisa", "APT19", "Aquatic Panda", "Kimsuky", "Confucius", "BackdoorDiplomacy", "Leafminer", "Operation Wocao", "Fox Kitten", "APT28", "BRONZE BUTLER", "Sowbug", "Machete", "Threat Group-3390", "PLATINUM", "IndigoZebra", "Windshift", "WIRTE", "Patchwork"],
+            "Healthcare": ["Tropic Trooper", "APT18", "APT19", "APT41", "Deep Panda", "FIN4", "Fox Kitten", "Leviathan", "menuPass", "Operation Wocao", "Orangeworm", "Whitefly"],
+            "Human Rights":["APT18", "Elderwood"],
+            "Humanitarian Aid": ["Honeybee"],
+            "Hospitality": ["APT39", "FIN5", "FIN6", "FIN7", "FIN8"],
+            "Gaming": ["APT41", "FIN5", "Winnti Group"],
+            "Legal": ["APT17", "APT19", "Gamaredon Group", "HAFNIUM", "WIRTE"],
+            "Manufacturing": ["APT-C-36", "SilverTerrier", "APT18", "APT19", "Axiom", "BRONZE BUTLER", "Fox Kitten", "Leviathan", "menuPass", "Threat Group-3390"],
+            "Maritime": ["Lazarus Group", "menuPass"],
+            "Media": ["APT12", "APT32", "BlackOasis", "BlackTech", "Chimera"],
+            "Mining": ["APT17", "menuPass"],
+            "NGOs": ["Elderwood", "Gamaredon Group", "HAFNIUM", "Ke3chang", "Mustang Panda"],
+            "Non-Profits": ["Gamaredon Group", "Mustang Panda"],
+            "Nuclear": ["Sharpshooter"],
+            "Power": ["Machete"],
+            "Public Organizations": ["Higaisa"],
+            "Petroleum": ["APT-C-36", "Fox Kitten", "HEXANE", "Ke3chang", "MuddyWater"],
+            "Pharmaceutical": ["APT19", "FIN4", "Turla"],
+            "Religious Organizations": ["Mustang Panda"],
+            "Research Organizations": ["Transparent Tribe", "Turla"],
+            "Restaurant": ["FIN5", "FIN7", "FIN8"],
+            "Retail": ["FIN6", "FIN7", "FIN8"],
+            "Satellite Communications": ["Thrip"],
+            "Semiconductor": ["Chimera"],
+            "Supply Chain": ["Elderwood"],
+            "Technology": ["SilverTerrier", "Tropic Trooper", "APT12", "APT18", "APT17", "APT19", "APT29", "APT41", "Aquatic Panda", "Chimera", "Elderwood", "Fox Kitten", "Lazarus Group", "menuPass", "MuddyWater", "Operation Wocao", "Threat Group-3390", "WIRTE"],
+            "Telecommunications": ["Machete", "APT19", "APT29", "APT39", "APT41", "Aquatic Panda", "Deep Panda", "GALLIUM", "HEXANE", "MuddyWater", "OilRig", "Thrip"],
+            "Trade": ["Higaisa"],
+            "Transportation": ["Tropic Trooper"],
+            "Travel": ["APT39"],
+            "ICS": ["ALLANITE", "HEXANE"],
+            "Infrastructure": ["ALLANITE", "Dragonfly", "Machete", "TEMP.Veles"],
+            "Weapons": ["Mofang"]
 
         },
         "miscellaneous":
         {
+            "Emirati Persons": ["Stealth Falcon"],
+            "English Speakers":["TA551"],
+            "Experts in Various Un-Named Fields": ["Kimsuky"],
+            "German Speakers": ["TA551"],
+            "High Profile Persons": ["Confucius", "Darkhotel"],
+            "Individuals": ["Nomadic Octopus"],
+            "Italian Speakers":["TA551"],
+            "Infectious Disease Researchers": ["HAFNIUM"],
+            "Japanese Speakers":["TA551"],
+            "Journalists": ["Magic Hound"],
+            "Leaders in International Affairs": ["ZIRCONIUM"],
+            "Minority Rights Activists": ["Scarlet Mimic"],
+            "Organisation for the Prohibition of Chemical Weapons":["Sandworm Team", "APT28"],
+            "Persian-speaking Indivduals": ["Ferocious Kitten"],
+            "Presedential Elections of France": ["Sandworm Team"],
+            "Presedential Elections of the United States": ["APT28", "ZIRCONIUM"],
+            "United States Anti-Doping Agency": ["APT28"],
+            "Syrian Opposition": ["Group5"],
+            "Think Tanks": ["APT29", "BlackOasis", "Kimsuky", "Patchwork", "HAFNIUM"],
+            "Turkish Individuals": ["NEODYMIUM"],
+            "World Health Organization": ["Magic Hound"],
+            "World Anti-Doping Agency": ["APT28"]
 
         },
         "combined":

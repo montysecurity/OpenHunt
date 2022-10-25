@@ -1,0 +1,26 @@
+{
+    "Aerospace": "Aviation",
+    "Critical Infrastructure":
+    [
+        "Energy",
+        "Electrical",
+        "Power",
+        "Petroleum",
+        "Nuclear",
+        "ICS",
+        "Telecommunications"
+    ],
+    "Government": [
+        "Defense",
+        "Diplomatic"
+    ],
+    "Financial": "Gambling",
+    "Supply Chain": [
+        "Manufacturing",
+        "Semiconductor",
+        "Maritime"
+    ],
+    "Healthcare": "Pharmaceutical",
+    "Technology": "Biotechnology",
+    "Standalone": ["Automotive", "Chemical", "Civil", "Construction", "Education", "Eletronics", "Engineering", "Gaming", "Legal", "Human Rights", "Humanitarian Aid", "Hospitality", "Media", "Mining", "NGOs", "Non-profits", "Public Organizations", "Religious Organizations", "Research Organizations", "Restaurant", "Retail", "Satellite Communications", "Trade", "Transportation", "Travel", "Weapons"]
+}

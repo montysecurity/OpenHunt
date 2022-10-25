@@ -157,174 +157,56 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
         # File Hash: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
+        targets_array = []
         groups = []
         ttps = []
-        affiliations = {
-            "Russia": ["ALLANITE", "APT28", "APT29", "Dragonfly", "Gamaredon Group", "Indrik Spider", "Sandworm Team", "TEMP.Veles", "Turla", "Wizard Spider", "ZIRCONIUM"],
-            "China": ["admin@338", "APT1", "APT12", "APT16", "APT17", "APT19", "APT3", "APT30", "APT41", "Aquatic Panda", "Axiom", "BlackTech", "BRONZE BUTLER", "Chimera", "Deep Panda", "Elderwood", "GALLIUM", "HAFNIUM", "IndigoZebra", "Ke3chang", "Leviathan", "menuPass", "Moafee", "Mofang", "Mustang Panda", "Naikon", "Operation Wocao", "PittyTiger", "Putter Panda", "Rocke", "Suckfly", "TA459", "Threat Group-3390", "Tonto Team", "Winnti Group"],
-            "Iran": ["Ajax Security Team", "APT33", "APT39", "Cleaver", "CopyKittens", "Fox Kitten", "Group5", "Leafminer", "Magic Hound", "MuddyWater", "OilRig", "Silent Librarian"],
-            "North Korea": ["Andariel", "APT37", "APT38", "Kimsuky", "Lazarus Group"],
-            "South Korea": ["Darkhotel", "Higaisa"],
-            "Nigeria": ["SilverTerrier"],
-            "Vietnam": ["APT32"],
-            "Lebanon": ["Dark Caracal", "Volatile Cedar"],
-            "Pakistan": ["Gorgon Group", "Transparent Tribe"],
-            "Unknown": ["APT18", "APT-C-36", "BackdoorDiplomacy", "BlackOasis", "Blue Mockingbird", "Bouncing Golf", "Carbanak", "Cobalt Group", "Confucius", "CostaRicto", "DarkHydrus", "DarkVishnya", "DragonOK", "Dust Storm", "Equation", "Evilnum", "Ferocious Kitten", "FIN10", "FIN4", "FIN5", "FIN6", "FIN7", "FIN8", "Frankenstein", "Gallmaker", "GCMAN", "GOLD SOUTHFIELD", "HEXANE", "Honeybee", "Inception", "LazyScripter", "Lotus Blossom", "Machete", "Molerats", "NEODYMIUM", "Night Dragon", "Nomadic Octopus", "Orangeworm", "Patchwork", "PLATINUM", "Poseidon Group", "PROMETHIUM", "Rancor", "RTM", "Scarlet Mimic", "Sharpshooter", "Sidewinder", "Silence", "Sowbug", "Stealth Falcon", "Strider", "TA505", "TA551", "TeamTNT", "The White Company", "Threat Group-1314", "Thrip", "Tropic Trooper", "Whitefly", "Windigo", "Windshift", "WIRTE"]
-        }
-        targets = {
-            # Countries/Regions
-            # How to capture Poseidon Group?
-            "Afghanistan": ["Sidewinder"],
-            "Africa": ["APT39", "BackdoorDiplomacy", "CostaRicto", "Fox Kitten", "Inception"],
-            "Argentina": ["Honeybee"],
-            "Australia": ["CostaRicto", "Fox Kitten"],
-            "Asia": ["BlackTech", "Sidewinder", "Tonto Team", "Lotus Blossom", "Nomadic Octopus", "APT39", "Dust Storm", "Orangeworm", "Sowbug", "IndigoZebra", "Naikon", "APT29", "CostaRicto", "Machete", "PLATINUM", "Rancor", "Darkhotel", "Thrip", "Inception", "BackdoorDiplomacy", "APT32"],
-            "Belarus": ["TA459"],
-            "Belgium":["Strider"],
-            "Cambodia": ["APT32"],
-            "Canada": ["Honeybee"],
-            "Caribbean": ["Ke3chang"],
-            "Central America": ["Ke3chang"],
-            "China": ["APT37", "Higaisa", "Operation Wocao", "Sidewinder", "Strider"],
-            "Columbia": ["APT-C-36"],
-            "Europe": ["APT29", "APT39", "BackdoorDiplomacy", "CostaRicto", "DarkVishnya", "Dust Storm", "Fox Kitten", "Inception", "Ke3chang", "Kimsuky", "Machete", "Molerats", "MuddyWater", "Mustang Panda", "Orangeworm", "RTM", "Tonto Team", "WIRTE"],
-            "France":["Operation Wocao"],
-            "Germany": ["CopyKittens", "Operation Wocao"],
-            "Hong Kong": ["Tropic Trooper", "APT3", "BlackTech"],
-            "India": ["APT37"],
-            "Indonesia": ["Honeybee"],
-            "Iran": ["APT39", "Strider"],
-            "Isreal": ["CopyKittens"],
-            "Japan": ["BRONZE BUTLER", "APT16", "APT37", "BlackTech", "DragonOK", "Dust Storm", "Higaisa", "Honeybee", "menuPass", "Tonto Team"],
-            "Jordan": ["CopyKittens"],
-            "Kuwait": ["APT37", "HEXANE"],
-            "Latin America": ["Machete"],
-            "Laos": ["APT32"],
-            "Mongolia":["Mustang Panda", "TA459"],
-            "Middle East": ["OilRig", "APT29", "APT37", "BackdoorDiplomacy", "Bouncing Golf", "DarkHydrus", "Fox Kitten", "Gallmaker", "HEXANE", "Inception", "Leafminer", "Magic Hound", "Molerats", "MuddyWater", "Mustang Panda", "Windshift", "WIRTE"],
-            "Myanmar": ["Mofang", "Mustang Panda"],
-            "Nepal": ["APT37", "Sidewinder"],
-            "North America": ["APT29", "APT39", "CostaRicto", "FIN10", "Fox Kitten", "Ke3chang", "MuddyWater"],
-            "North Korea": ["Higaisa"],
-            "Pakistan":["Mustang Panda", "Sidewinder", "The White Company"],
-            "Philippines": ["Tropic Trooper", "APT32"],
-            "Poland": ["Higaisa"],
-            "Romania": ["APT37"],
-            "Russia": ["Silence", "APT37", "Gorgon Group", "Higaisa", "Inception", "Kimsuky", "Machete", "Strider", "TA459"],
-            "Rwanda": ["Strider"],
-            "Saudi Arabia": ["APT33", "CopyKittens", "RTM"],
-            "Singapore": ["Honeybee", "Whitefly"],
-            "Spain": ["Gorgon Group"],
-            "South America": ["CostaRicto", "Ke3chang", "Sowbug"],
-            "South Korea": ["Andariel", "APT33", "APT37", "Dust Storm", "Kimsuky", "Tonto Team"],
-            "Sweden":["Strider"],
-            "Taiwan": ["Tropic Trooper", "APT16", "BlackTech", "Chimera", "Tonto Team"],
-            "Turkey": ["PROMETHIUM", "CopyKittens"],
-            "Ukraine": ["Gamaredon Group", "Sandworm Team"],
-            "United Kingdom": ["ALLANITE", "Gorgon Group", "Operation Wocao"],
-            "United Nations": ["Kimsuky", "Operation Wocao"],
-            "United States": ["HAFNIUM", "ALLANITE", "Ajax Security Team", "APT17", "APT28", "APT3", "APT33", "BlackTech", "CopyKittens", "Dust Storm", "Elderwood", "FIN7", "Gorgon Group", "Inception", "Kimsuky", "Lazarus Group", "Machete", "Magic Hound", "Molerats", "Mustang Panda", "Orangeworm", "Patchwork", "Thrip", "Tonto Team"],
-            "Venezuela": ["Machete"],
-            "Vietnam": ["APT32", "APT37", "Honeybee", "Mustang Panda"],
-            # Sectors
-            "Aerospace": ["Axiom", "Leviathan", "menuPass", "Threat Group-3390"],
-            "Automotive": ["Mofang"],
-            "Aviation": ["APT33", "Chimera", "Dragonfly", "LazyScripter", "Leviathan"],
-            "Biotechnology": ["BRONZE BUTLER", "menuPass"],
-            "Chemical": ["BRONZE BUTLER", "OilRig"],
-            "Civil": ["Naikon"],
-            "Construction": ["BlackTech"],
-            "Critical Infrstructure":["Mofang"],
-            "Defense": ["Machete", "APT19", "Ajax Security Team", "Andariel", "APT17", "APT28", "Axiom", "Confucius", "Deep Panda", "Dragonfly", "Elderwood", "Fox Kitten", "Gallmaker", "Gamaredon Group", "HAFNIUM", "Ke3chang", "Leviathan", "Lotus Blossom", "Magic Hound", "menuPass", "Mofang", "Naikon", "Sharpshooter", "Sidewinder", "The White Company", "Threat Group-3390", "Thrip", "Transparent Tribe", "Turla", "WIRTE"],
-            "Diplomatic": ["Ke3chang", "Nomadic Octopus", "Patchwork", "Transparent Tribe", "WIRTE"],
-            "Education": ["SilverTerrier", "APT39", "DarkHydrus", "HAFNIUM", "Leviathan", "Silent Librarian", "Turla"],
-            "Electrical": ["Sandworm Team"],
-            "Electronics": ["BlackTech", "BRONZE BUTLER"],
-            "Energy": ["APT33", "menuPass", "OilRig", "Operation Wocao", "Sharpshooter", "Threat Group-3390"],
-            "Engineering": ["BlackTech", "Fox Kitten"],
-            "Financial": ["APT-C-36", "Carbanak", "CostaRicto", "OilRig", "Silence", "admin@338", "APT19", "APT38", "BlackTech", "Cobalt Group", "DarkVishnya", "Deep Panda", "FIN4", "GCMAN", "menuPass", "RTM", "Sharpshooter", "WIRTE"],
-            "Gambling": ["Threat Group-3390"],
-            "Government": ["Mofang", "OilRig", "Deep Panda", "Andariel", "Ke3chang", "Inception", "Turla", "Magic Hound", "Gallmaker", "Mustang Panda", "Elderwood", "Sandworm Team", "Tropic Trooper", "Dragonfly", "MuddyWater", "APT12", "APT18", "Nomadic Octopus", "Silent Librarian", "Leviathan", "Sidewinder", "Lotus Blossom", "DarkHydrus", "Axiom", "Gorgon Group", "APT32", "Naikon", "Higaisa", "APT19", "Aquatic Panda", "Kimsuky", "Confucius", "BackdoorDiplomacy", "Leafminer", "Operation Wocao", "Fox Kitten", "APT28", "BRONZE BUTLER", "Sowbug", "Machete", "Threat Group-3390", "PLATINUM", "IndigoZebra", "Windshift", "WIRTE", "Patchwork"],
-            "Healthcare": ["Tropic Trooper", "APT18", "APT19", "APT41", "Deep Panda", "FIN4", "Fox Kitten", "Leviathan", "menuPass", "Operation Wocao", "Orangeworm", "Whitefly"],
-            "Human Rights":["APT18", "Elderwood"],
-            "Humanitarian Aid": ["Honeybee"],
-            "Hospitality": ["APT39", "FIN5", "FIN6", "FIN7", "FIN8"],
-            "Gaming": ["APT41", "FIN5", "Winnti Group"],
-            "Legal": ["APT17", "APT19", "Gamaredon Group", "HAFNIUM", "WIRTE"],
-            "Manufacturing": ["APT-C-36", "SilverTerrier", "APT18", "APT19", "Axiom", "BRONZE BUTLER", "Fox Kitten", "Leviathan", "menuPass", "Threat Group-3390"],
-            "Maritime": ["Lazarus Group", "menuPass"],
-            "Media": ["APT12", "APT32", "BlackOasis", "BlackTech", "Chimera"],
-            "Mining": ["APT17", "menuPass"],
-            "NGOs": ["Elderwood", "Gamaredon Group", "HAFNIUM", "Ke3chang", "Mustang Panda"],
-            "Non-Profits": ["Gamaredon Group", "Mustang Panda"],
-            "Nuclear": ["Sharpshooter"],
-            "Power": ["Machete"],
-            "Public Organizations": ["Higaisa"],
-            "Petroleum": ["APT-C-36", "Fox Kitten", "HEXANE", "Ke3chang", "MuddyWater"],
-            "Pharmaceutical": ["APT19", "FIN4", "Turla"],
-            "Religious Organizations": ["Mustang Panda"],
-            "Research Organizations": ["Transparent Tribe", "Turla"],
-            "Restaurant": ["FIN5", "FIN7", "FIN8"],
-            "Retail": ["FIN6", "FIN7", "FIN8"],
-            "Satellite Communications": ["Thrip"],
-            "Semiconductor": ["Chimera"],
-            "Supply Chain": ["Elderwood"],
-            "Technology": ["SilverTerrier", "Tropic Trooper", "APT12", "APT18", "APT17", "APT19", "APT29", "APT41", "Aquatic Panda", "Chimera", "Elderwood", "Fox Kitten", "Lazarus Group", "menuPass", "MuddyWater", "Operation Wocao", "Threat Group-3390", "WIRTE"],
-            "Telecommunications": ["Machete", "APT19", "APT29", "APT39", "APT41", "Aquatic Panda", "Deep Panda", "GALLIUM", "HEXANE", "MuddyWater", "OilRig", "Thrip"],
-            "Trade": ["Higaisa"],
-            "Transportation": ["Tropic Trooper"],
-            "Travel": ["APT39"],
-            "ICS": ["ALLANITE", "HEXANE"],
-            "Infrastructure": ["ALLANITE", "Dragonfly", "Machete", "TEMP.Veles"],
-            "Weapons": ["Mofang"],
-            # Misc.
-            "Emirati Persons": ["Stealth Falcon"],
-            "English Speakers":["TA551"],
-            "Experts in Various Un-Named Fields": ["Kimsuky"],
-            "German Speakers": ["TA551"],
-            "High Profile Persons": ["Confucius", "Darkhotel"],
-            "Individuals": ["Nomadic Octopus"],
-            "Italian Speakers":["TA551"],
-            "Infectious Disease Researchers": ["HAFNIUM"],
-            "Japanese Speakers":["TA551"],
-            "Journalists": ["Magic Hound"],
-            "Leaders in International Affairs": ["ZIRCONIUM"],
-            "Minority Rights Activists": ["Scarlet Mimic"],
-            "Organisation for the Prohibition of Chemical Weapons":["Sandworm Team", "APT28"],
-            "Persian-speaking Indivduals": ["Ferocious Kitten"],
-            "Presedential Elections of France": ["Sandworm Team"],
-            "Presedential Elections of the United States": ["APT28", "ZIRCONIUM"],
-            "United States Anti-Doping Agency": ["APT28"],
-            "Syrian Opposition": ["Group5"],
-            "Think Tanks": ["APT29", "BlackOasis", "Kimsuky", "Patchwork", "HAFNIUM"],
-            "Turkish Individuals": ["NEODYMIUM"],
-            "World Health Organization": ["Magic Hound"],
-            "World Anti-Doping Agency": ["APT28"]
-        }
-        targets_input = ["Afghanistan", "Asia"]
-        targets_array = []
         types = json.load(open("json/types.json"))
         targets = json.load(open("json/targets.json"))
-        groups = []
+        relationships = json.load(open("json/target-relationships.json"))
+        affiliations = json.load(open("json/origins.json"))
+
+        if affiliations_from_input != None:
+            for affiliation_input in affiliations_from_input:
+                for group in affiliations["origins"]["countries"][affiliation_input]:
+                    r = " originates from " + affiliation_input
+                    groups.append(group)
+                    #print(group + r)
         
-        for target_input in targets_from_input:
-            for type in types["data"]["type"]:
-                if target_input in types["data"]["type"][type]:
-                    targets_array.append(target_input)
-                    if type == "continent":
-                        for group in targets["targets"]["continents"][target_input]["groups"]:
-                            groups.append(group)
-                            print(group)
-                        for country in targets["targets"]["continents"][target_input]["countries"]:
-                            targets_array.append(country)
-                    if type == "country":
-                        for group in targets["targets"]["countries"][target_input]:
-                            print(group)
-                            groups.append(group)
-        print(groups)
-        groups = set(groups)
-        print(groups)
-        exit()
+        if targets_from_input != None:
+            for target_input in targets_from_input:
+                r = " targets " + target_input
+                for type in types["data"]["type"]:
+                    if target_input in types["data"]["type"][type]:
+                        targets_array.append(target_input)
+                        if type == "continent":
+                            for group in targets["targets"]["continents"][target_input]["groups"]:
+                                groups.append(group)
+                                #print(group + r)
+                            for country in targets["targets"]["continents"][target_input]["countries"]:
+                                targets_array.append(country)
+                        if type == "country":
+                            for group in targets["targets"]["countries"][target_input]:
+                                #print(group + r)
+                                groups.append(group)
+                        if type == "sector":
+                            if target_input in relationships["Standalone"]:
+                                for group in targets["targets"]["sectors"][target_input]:
+                                    #print(group + r)
+                                    groups.append(group)
+                            else:
+                                parent_sectors = []
+                                for s in relationships:
+                                    if s != "Standalone":
+                                        parent_sectors.append(s)
+                                for s in parent_sectors:
+                                    if target_input == s:
+                                        for c in relationships[s]:
+                                            #print(group + r)
+                                            targets_array.append(target_input)
+                                            targets_array.append(s)
+                                            targets_array.append(c)
+                                            for group in targets["targets"]["sectors"][s]:
+                                                groups.append(group)
 
         if filename == None:
             data_source = build_taxii_source()
@@ -340,49 +222,6 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 writer.writerows(rowdicts)
-        # If both --origin and --target are used
-        if targets_from_input != None and affiliations_from_input != None:
-            for affiliation_from_input in affiliations_from_input:
-                for affiliation in affiliations:
-                    if affiliation.lower() == affiliation_from_input.lower() or affiliation_from_input.lower() == "all":
-                        for target_country_or_sector_from_input in targets_from_input:
-                            for group in affiliations[affiliation]:
-                                for group2 in targets[target_country_or_sector_from_input]:
-                                    if group == group2:
-                                        print("Origin: " + affiliation_from_input)
-                                        print("Target: " + target_country_or_sector_from_input)
-                                        print("Group: " + group)
-                                        groups.append(group)
-                                        print()
-            groups = set(groups)
-        # This conditional covers the case where only --origin is used
-        elif affiliations_from_input != None:
-            if len(affiliations_from_input) == 1 and str(affiliations_from_input[0]).lower() == "all":
-                with open(filename, newline='', encoding='utf-8') as csvfile:
-                    for row in csv.reader(csvfile):
-                        ttps.append(row[1])
-                for country in affiliations:
-                    for group in affiliations[country]:
-                        groups.append(group)
-            else:
-                for affiliation_from_input in affiliations_from_input:
-                    for country in affiliations:
-                        if country.lower() == affiliation_from_input.lower():
-                            for group in affiliations[country]:
-                                groups.append(group)
-        # If only --target
-        elif targets_from_input != None:
-            # From argparse
-            for target_from_input in targets_from_input:
-                # From List
-                for target in targets:
-                    if target_from_input.lower() == target.lower():
-                        for group in targets[target]:
-                            groups.append(group)
-            groups = set(groups)     
-        else:
-            print("Invalid option")
-            exit()
         
         with open(filename, newline='', encoding='utf-8') as csvfile:
             for row in csv.reader(csvfile):
