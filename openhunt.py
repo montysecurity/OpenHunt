@@ -1,3 +1,5 @@
+from ast import Store
+from numpy import append
 from shodan import Shodan
 from stix2 import TAXIICollectionSource, MemorySource, Filter
 from taxii2client.v20 import Collection
@@ -11,6 +13,7 @@ parser.add_argument("--origin", action="append", type=str, help="Filter on the t
 parser.add_argument("--target", action="append", type=str, help="Filter on the threat actors' targets")
 parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
 parser.add_argument("-i", "--ioc", type=str, help="IOC value")
+parser.add_argument("--logical-and", action="store_true", default=False, help="Only match on groups that satisfy all of the parameters" )
 parser.add_argument("-pi", "--parent-images", type=str, help="Rename the ParentImageSHA256 field", default="ParentImageSHA256")
 parser.add_argument("-in", "--image-names", type=str, help="Rename the Image field", default="ImageNames")
 parser.add_argument("-ih", "--image-hashes", type=str, help="Rename the Image field", default="ImageHashes")
@@ -37,6 +40,7 @@ limit = args.limit
 affiliations_from_input = args.origin
 filename = args.file
 targets_from_input = args.target
+logical_and = args.logical_and
 
 keys = json.load(open("json/keys.json"))
 virustotal_api_key = str(keys["api_keys"]["virustotal"])
@@ -153,60 +157,63 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
 
-    def main(affiliations_from_input, targets_from_input, limit, filename):
+    def main(affiliations_from_input, targets_from_input, logical_and, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
         # File Hash: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
         targets_array = []
         groups = []
+        strict_groups = []
         ttps = []
+        num_args = 0
         types = json.load(open("json/types.json"))
         targets = json.load(open("json/targets.json"))
         relationships = json.load(open("json/target-relationships.json"))
         affiliations = json.load(open("json/origins.json"))
 
         if affiliations_from_input != None:
+            num_args += len(affiliations_from_input)
             for affiliation_input in affiliations_from_input:
                 for group in affiliations["origins"]["countries"][affiliation_input]:
-                    r = " originates from " + affiliation_input
                     groups.append(group)
-                    #print(group + r)
         
         if targets_from_input != None:
-            for target_input in targets_from_input:
-                r = " targets " + target_input
+            num_args += len(targets_from_input)
+            for target_input in targets_from_input:                
                 for type in types["data"]["type"]:
                     if target_input in types["data"]["type"][type]:
                         targets_array.append(target_input)
                         if type == "continent":
                             for group in targets["targets"]["continents"][target_input]["groups"]:
                                 groups.append(group)
-                                #print(group + r)
                             for country in targets["targets"]["continents"][target_input]["countries"]:
                                 targets_array.append(country)
                         if type == "country":
                             for group in targets["targets"]["countries"][target_input]:
-                                #print(group + r)
                                 groups.append(group)
                         if type == "sector":
                             if target_input in relationships["Standalone"]:
                                 for group in targets["targets"]["sectors"][target_input]:
-                                    #print(group + r)
                                     groups.append(group)
                             else:
                                 parent_sectors = []
-                                for s in relationships:
-                                    if s != "Standalone":
-                                        parent_sectors.append(s)
-                                for s in parent_sectors:
-                                    if target_input == s:
-                                        for c in relationships[s]:
-                                            #print(group + r)
-                                            targets_array.append(target_input)
-                                            targets_array.append(s)
-                                            targets_array.append(c)
-                                            for group in targets["targets"]["sectors"][s]:
+                                for sector in relationships:
+                                    if sector != "Standalone":
+                                        parent_sectors.append(sector)
+                                for sector in parent_sectors:
+                                    if target_input == sector:
+                                        targets_array.append(sector)
+                                        for group in targets["targets"]["sectors"][sector]:
+                                            groups.append(group)
+                                        for sub_sector in relationships[sector]:
+                                            targets_array.append(sub_sector)
+                                            for group in targets["targets"]["sectors"][sub_sector]:
                                                 groups.append(group)
+        if logical_and == True:
+            for group in groups:
+                if groups.count(group) == num_args:
+                    strict_groups.append(group)
+            groups = set(strict_groups)
 
         if filename == None:
             data_source = build_taxii_source()
@@ -232,7 +239,7 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
         for element in Counter(ttps).most_common(limit):
                 print(str(element).strip("('").strip(")").replace("',", ":"))
 
-    main(affiliations_from_input, targets_from_input, limit, filename)
+    main(affiliations_from_input, targets_from_input, logical_and, limit, filename)
 
 def shodan(ioc, shodan_api_key):
         api = Shodan(shodan_api_key)
