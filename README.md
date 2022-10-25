@@ -23,10 +23,11 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Get top 10 most common TTPs used by threat actors affiliated with Russia: `python .\openhunt.py -m ttp --origin Russia -f .\groups.csv`
 
-- Get top 15 most common TTPs used by threat actors targeting government organizations: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
+- Get top 15 most common TTPs used by threat actors targeting government organizations in any country: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
 
-- Get top 10 most common TTPs used by any group from any `--origin` targeting any sector in `--target`: `python .\openhunt.py -m ttp --origin Russia --origin China --origin "Middle East" --target Aviation --target "United States" -f .\groups.csv`
-    - e.g. this returns the techniques of any group affiliated with Russia, China, or the Middle East if they have been documented targeting *either* any organization in the US *or* the Aviation industry in any country. For more information read *Combining Filters* below.
+- Get top 15 most common TTPs used by threat actors targeting any sector in the US or government entities in any country `python .\openhunt.py -m ttp --target "United States" --target Government --limit 15 -f .\groups.csv` 
+
+- Get top 15 most common TTPs used by threat actors targeting United States related government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
 
 - Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
@@ -66,6 +67,65 @@ The countries you can search for are the ones listed in the [MITRE Groups](https
 This works very similiarly to *TTPs by Origin*. However, instead of looking at the groups by country of origin/affiliation, it only pulls the TTPs for groups that target the country/sector provided with `--target`.
 
 ##### Targets Supported
+
+###### Countries, Continents, and Regions
+
+- Asia
+    - Afghanistan
+    - Cambodia
+    - China
+        - Hong Kong
+    - India
+    - Indonesia
+    - Middle East
+        - Iran
+        - Isreal
+        - Jordan
+        - Kuwait
+    - Japan
+
+- Europe
+    - Belarus
+    - Belgium
+    - Spain
+    - France
+    - Germany
+- South America
+    - Argentina
+- Australia
+- Caribbean
+- Central America
+- North America
+    - Canada
+    - United States
+- South America
+
+- Japan
+- Latin America
+- Laos
+- Mongolia
+- Middle East
+- Myanmar
+- Nepal
+- North Korea
+- Pakistan
+- Philippines
+- Poland
+- Romania
+- Russia
+- Rwanda
+- Saudi Arabia
+- Singapore
+- Spain
+- South America
+- South Korea
+- Sweden
+- Taiwan
+- Turkey
+- Ukraine
+- United Kingdom
+- Venezuela
+- Vietnam
 
 - Countries, Continents, and Regions
     - Afghanistan

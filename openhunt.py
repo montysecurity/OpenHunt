@@ -172,6 +172,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
         affiliations = json.load(open("json/origins.json"))
 
         if affiliations_from_input != None:
+            if len(affiliations_from_input) == 1 and affiliations_from_input[0] == "all":
+                affiliations_from_input = affiliations["origins"]["countries"]
             num_args += len(affiliations_from_input)
             for affiliation_input in affiliations_from_input:
                 for group in affiliations["origins"]["countries"][affiliation_input]:

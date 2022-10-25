@@ -301,11 +301,6 @@
                 "Gorgon Group",
                 "Operation Wocao"
             ],
-            "United Nations":
-            [
-                "Kimsuky",
-                "Operation Wocao"
-            ],
             "United States":
             [
                 "HAFNIUM",
@@ -491,8 +486,12 @@
             "Think Tanks": ["APT29", "BlackOasis", "Kimsuky", "Patchwork", "HAFNIUM"],
             "Turkish Individuals": ["NEODYMIUM"],
             "World Health Organization": ["Magic Hound"],
-            "World Anti-Doping Agency": ["APT28"]
-
+            "World Anti-Doping Agency": ["APT28"],
+            "United Nations":
+            [
+                "Kimsuky",
+                "Operation Wocao"
+            ]
         },
         "combined":
         {

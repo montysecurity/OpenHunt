@@ -5,7 +5,17 @@
         {
             "Russia":
             [
-                "ALLANITE", "APT28", "APT29", "Dragonfly", "Gamaredon Group", "Indrik Spider", "Sandworm Team", "TEMP.Veles", "Turla", "Wizard Spider", "ZIRCONIUM"
+                "ALLANITE",
+                "APT28",
+                "APT29",
+                "Dragonfly",
+                "Gamaredon Group",
+                "Indrik Spider",
+                "Sandworm Team",
+                "TEMP.Veles",
+                "Turla",
+                "Wizard Spider",
+                "ZIRCONIUM"
             ],
             "China":
             [
