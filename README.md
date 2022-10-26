@@ -29,9 +29,9 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Get top 15 most common TTPs used by threat actors targeting United States related government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
 
-- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
-- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
 ## Usage
 
@@ -70,6 +70,12 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
 
 ###### Countries, Continents, and Regions
 
+
+
+- Africa
+    - Rwanda
+    - Spain
+- Australia
 - Asia
     - Afghanistan
     - Cambodia
@@ -82,104 +88,40 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
         - Isreal
         - Jordan
         - Kuwait
+        - Pakistan
+        - Saudi Arabia
+        - Turkey
     - Japan
-
+    - Laos
+    - Mongolia
+    - Myanmar
+    - Nepal
+    - North Korea
+    - Philippines
+    - Romania
+    - Russia
+    - Singapore
+    - South Korea
+    - Taiwan
+    - Vietnam
 - Europe
     - Belarus
     - Belgium
     - Spain
     - France
     - Germany
+    - Poland
+    - Sweden
+    - United Kingdom
 - South America
     - Argentina
-- Australia
-- Caribbean
-- Central America
+    - Venezuela
 - North America
     - Canada
     - United States
-- South America
-
-- Japan
-- Latin America
-- Laos
-- Mongolia
-- Middle East
-- Myanmar
-- Nepal
-- North Korea
-- Pakistan
-- Philippines
-- Poland
-- Romania
-- Russia
-- Rwanda
-- Saudi Arabia
-- Singapore
-- Spain
-- South America
-- South Korea
-- Sweden
-- Taiwan
-- Turkey
-- Ukraine
-- United Kingdom
-- Venezuela
-- Vietnam
-
-- Countries, Continents, and Regions
-    - Afghanistan
-    - Africa
-    - Argentina
-    - Australia
-    - Asia
-    - Belarus
-    - Belgium
-    - Cambodia
-    - Canada
     - Caribbean
-    - Central America
-    - China
-    - Columbia
-    - Europe
-    - France
-    - Germany
-    - Hong Kong
-    - India
-    - Indonesia
-    - Iran
-    - Isreal
-    - Japan
-    - Jordan
-    - Kuwait
-    - Latin America
-    - Laos
-    - Mongolia
-    - Middle East
-    - Myanmar
-    - Nepal
-    - North America
-    - North Korea
-    - Pakistan
-    - Philippines
-    - Poland
-    - Romania
-    - Russia
-    - Rwanda
-    - Saudi Arabia
-    - Singapore
-    - Spain
-    - South America
-    - South Korea
-    - Sweden
-    - Taiwan
-    - Turkey
-    - Ukraine
-    - United Kingdom
-    - United Nations
-    - United States
-    - Venezuela
-    - Vietnam
+- Central America
+- Latin America
 
 - Sectors
     - Aerospace
