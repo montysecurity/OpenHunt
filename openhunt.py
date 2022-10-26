@@ -161,54 +161,102 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
         # File Hash: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
-        targets_array = []
         groups = []
         strict_groups = []
         ttps = []
         num_args = 0
-        types = json.load(open("json/types.json"))
-        targets = json.load(open("json/targets.json"))
-        relationships = json.load(open("json/target-relationships.json"))
-        affiliations = json.load(open("json/origins.json"))
+        mappings = json.load(open("json/mappings.json"))
 
         if affiliations_from_input != None:
+            if len(affiliations_from_input) == 1 and affiliations_from_input[0] == "all":
+                affiliations_from_input = mappings["origins"]["countries"]
             num_args += len(affiliations_from_input)
             for affiliation_input in affiliations_from_input:
-                for group in affiliations["origins"]["countries"][affiliation_input]:
+                for group in mappings["origins"]["countries"][affiliation_input]:
                     groups.append(group)
-        
+        # Continents contain "countries or regions" which contain territories
         if targets_from_input != None:
             num_args += len(targets_from_input)
-            for target_input in targets_from_input:                
-                for type in types["data"]["type"]:
-                    if target_input in types["data"]["type"][type]:
-                        targets_array.append(target_input)
-                        if type == "continent":
-                            for group in targets["targets"]["continents"][target_input]["groups"]:
+            for target_from_input in targets_from_input:
+                for continent in mappings["targets"]["continents"]:
+                    # if target is a continent
+                    if target_from_input == continent:
+                        # add direct groups
+                        for group in mappings["targets"]["continents"][continent]["groups"]:
+                            groups.append(group)
+                        try:
+                            # if target has sub-regions
+                            if mappings["targets"]["continents"][continent]["countries_or_regions"]:
+                                for country_or_region in mappings["targets"]["continents"][continent]["countries_or_regions"]:
+                                    # add sub-regions groups
+                                    for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["groups"]:
+                                        groups.append(group)
+                                    try:
+                                        # if sub-region has a territory
+                                        if mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                            for territory in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                                # add territory's groups
+                                                for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]:
+                                                    groups.append(group)
+                                    except KeyError:
+                                        pass
+                        except KeyError:
+                            pass
+                    try:
+                        # if target is a country or region
+                        if target_from_input in mappings["targets"]["continents"][continent]["countries_or_regions"]:
+                            for country_or_region in mappings["targets"]["continents"][continent]["countries_or_regions"]:
+                                if target_from_input == country_or_region:
+                                    for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["groups"]:
+                                        groups.append(group)
+                                    try:
+                                        # add groups for territories
+                                        if mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                            for territory in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                                for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]["groups"]:
+                                                    groups.append(group)
+                                    except KeyError:
+                                        pass
+                    except KeyError:
+                        pass
+                    # if target is a territory
+                    try:
+                        if mappings["targets"]["continents"][continent]["countries_or_regions"]:
+                            for country_or_region in mappings["targets"]["continents"][continent]["countries_or_regions"]:
+                                try:
+                                    if mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                        for territory in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                            if target_from_input == territory:
+                                                for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]["groups"]:
+                                                    groups.append(group)
+                                except KeyError:
+                                    pass
+                    except KeyError:
+                        pass
+
+                for sector in mappings["targets"]["sectors"]:
+                    if target_from_input == sector:
+                        try:
+                            for group in mappings["targets"]["sectors"][sector]["groups"]:
                                 groups.append(group)
-                            for country in targets["targets"]["continents"][target_input]["countries"]:
-                                targets_array.append(country)
-                        if type == "country":
-                            for group in targets["targets"]["countries"][target_input]:
-                                groups.append(group)
-                        if type == "sector":
-                            if target_input in relationships["Standalone"]:
-                                for group in targets["targets"]["sectors"][target_input]:
-                                    groups.append(group)
-                            else:
-                                parent_sectors = []
-                                for sector in relationships:
-                                    if sector != "Standalone":
-                                        parent_sectors.append(sector)
-                                for sector in parent_sectors:
-                                    if target_input == sector:
-                                        targets_array.append(sector)
-                                        for group in targets["targets"]["sectors"][sector]:
-                                            groups.append(group)
-                                        for sub_sector in relationships[sector]:
-                                            targets_array.append(sub_sector)
-                                            for group in targets["targets"]["sectors"][sub_sector]:
-                                                groups.append(group)
+                        except KeyError:
+                            pass
+                        try:
+                            if mappings["targets"]["sectors"][sector]["subsectors"]:
+                                for subsector in mappings["targets"]["sectors"][sector]["subsectors"]:
+                                    for group in mappings["targets"]["sectors"][sector]["subsectors"][subsector]["groups"]:
+                                        groups.append(group)
+                        except KeyError:
+                            pass
+                    else:
+                        try:
+                            for subsector in mappings["targets"]["sectors"][sector]["subsectors"]:
+                                if target_from_input == subsector:
+                                    for group in mappings["targets"]["sectors"][sector]["subsectors"][subsector]["groups"]:
+                                        groups.append(group)
+                        except KeyError:
+                            pass
+
         if logical_and == True:
             for group in groups:
                 if groups.count(group) == num_args:

@@ -23,14 +23,15 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Get top 10 most common TTPs used by threat actors affiliated with Russia: `python .\openhunt.py -m ttp --origin Russia -f .\groups.csv`
 
-- Get top 15 most common TTPs used by threat actors targeting government organizations: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
+- Get top 15 most common TTPs used by threat actors targeting government organizations in any country: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
 
-- Get top 10 most common TTPs used by any group from any `--origin` targeting any sector in `--target`: `python .\openhunt.py -m ttp --origin Russia --origin China --origin "Middle East" --target Aviation --target "United States" -f .\groups.csv`
-    - e.g. this returns the techniques of any group affiliated with Russia, China, or the Middle East if they have been documented targeting *either* any organization in the US *or* the Aviation industry in any country. For more information read *Combining Filters* below.
+- Get top 15 most common TTPs used by threat actors targeting any sector in the US or government entities in any country `python .\openhunt.py -m ttp --target "United States" --target Government --limit 15 -f .\groups.csv` 
 
-- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+- Get top 15 most common TTPs used by threat actors targeting United States related government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
 
-- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+
+- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
 ## Usage
 
@@ -67,135 +68,133 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
 
 ##### Targets Supported
 
-- Countries, Continents, and Regions
+Targets include the info of those indented below it. So `Asia` includes `China`, which in-turn includes `Hong Kong`. You can also query for indented children on their one (e.g. `--target "Hong Kong"`)
+
+- Africa
+    - Rwanda
+    - Spain
+- Australia
+- Asia
     - Afghanistan
-    - Africa
-    - Argentina
-    - Australia
-    - Asia
-    - Belarus
-    - Belgium
     - Cambodia
-    - Canada
-    - Caribbean
-    - Central America
     - China
-    - Columbia
-    - Europe
-    - France
-    - Germany
-    - Hong Kong
+        - Hong Kong
     - India
     - Indonesia
-    - Iran
-    - Isreal
+    - Middle East
+        - Iran
+        - Isreal
+        - Jordan
+        - Kuwait
+        - Pakistan
+        - Saudi Arabia
+        - Turkey
     - Japan
-    - Jordan
-    - Kuwait
-    - Latin America
     - Laos
     - Mongolia
-    - Middle East
     - Myanmar
     - Nepal
-    - North America
     - North Korea
-    - Pakistan
     - Philippines
-    - Poland
     - Romania
     - Russia
-    - Rwanda
-    - Saudi Arabia
     - Singapore
-    - Spain
-    - South America
     - South Korea
-    - Sweden
     - Taiwan
-    - Turkey
-    - Ukraine
-    - United Kingdom
-    - United Nations
-    - United States
-    - Venezuela
     - Vietnam
+- Europe
+    - Belarus
+    - Belgium
+    - Spain
+    - France
+    - Germany
+    - Poland
+    - Sweden
+    - United Kingdom
+- South America
+    - Argentina
+    - Venezuela
+- North America
+    - Canada
+    - United States
+    - Caribbean
+- Central America
+- Latin America
 
-- Sectors
-    - Aerospace
-    - Automotive
+- Aerospace
     - Aviation
-    - Biotechnology
-    - Chemical
-    - Civil
-    - Construction
-    - Critical Infrstructure
+- Automotive
+- Critical Infrstructure
+    - Energy
+    - Electrical
+    - Power
+    - Petroleum
+    - Nuclear
+    - ICS
+    - Telecommunications
+- Government
     - Defense
     - Diplomatic
-    - Education
-    - Electrical
-    - Electronics
-    - Energy
-    - Engineering
-    - Financial
+- Financial
     - Gambling
-    - Government
-    - Healthcare
-    - Human Rights
-    - Humanitarian Aid
-    - Hospitality
-    - Gaming
-    - Legal
-    - Manufacturing
-    - Maritime
-    - Media
-    - Mining
-    - NGOs
-    - Non-Profits
-    - Nuclear
-    - Power
-    - Public
-    - Petroleum
-    - Pharmaceutical
-    - Religious Organizations
-    - Research
-    - Restaurant
-    - Retail
-    - Satellite Communications
+- Supply Chain
+    - Manufactoring
     - Semiconductor
-    - Supply Chain
-    - Technology
-    - Telecommunications
-    - Trade
-    - Transportation
+    - Maritime
+- Healthcare
+    - Pharmaceutical
+- Technology
+    - Biotechnology
+    - Gaming
+    - Eletronics
+- Automotive
+- Chemical
+- Civil
+- Construction
+- Education
+- Electronics
+- Engineering
+- Human Rights
+- Humanitarian Aid
+- Hospitality
     - Travel
-    - ICS
-    - Infrastructure
-    - Weapons
-
-- Miscellaneous
-    - Emirati Persons
-    - English Speakers
-    - Experts in Various Un-Named Fields
-    - German Speakers
-    - High Profile Persons
-    - Individuals
-    - Italian Speakers
-    - Infectious Disease Researchers
-    - Japanese Speakers
-    - Journalists
-    - Leaders in International Affairs
-    - Minority Rights Activists
-    - Organisation for the Prohibition of Chemical Weapons
-    - Persian-speaking Indivduals
-    - Presedential Elections of France
-    - Presedential Elections of the United States
-    - United States Anti-Doping Agency
-    - Syrian Opposition
-    - Think Tanks
-    - Turkish Individuals
-    - World Health Organization
-    - World Anti-Doping Agency
+- Legal
+- Media
+- Mining
+- NGOs
+- Non-profits
+- Public Organizations
+- Religious Organizations
+- Research Organizations
+- Restaurants
+- Retail
+- Satellite Communications
+- Trade
+- Transportation
+- Weapons
+- Emirati Persons
+- English Speakers
+- Experts in Various Un-Named Fields
+- German Speakers
+- High Profile Persons
+- Individuals
+- Italian Speakers
+- Infectious Disease Researchers
+- Japanese Speakers
+- Journalists
+- Leaders in International Affairs
+- Minority Rights Activists
+- Organisation for the Prohibition of Chemical Weapons
+- Persian-speaking Individuals
+- Presedential Elections of France
+- Presedential Elections of the United States
+- United States Anti-Doping Agency
+- Syrian Opposition
+- Think Tanks
+- Turkish Individuals
+- World Health Organization
+- World Anti-Doping Agency
+- United Nations
 
 #### Combining Filters
 
@@ -203,7 +202,7 @@ Combining filters may not be intuitive at first.
 
 For example, take the command `python .\openhunt.py -m ttp --target "United States" --target Russia --target Government -f .\groups.csv`. In plain English, this filter means "show me all groups that target any organization in the United States, any organization in Russia, and Government targets in any country". This is different from saying they target "United States and Russian Government" entities.
 
-I plan on implementing a way to strictly combine filters later so you can ask it to show only groups that target specific sectors of specific countries.
+To search for techniques related to groups that target "United States and Russian Government" entities, add `--logical-and`: `python .\openhunt.py -m ttp --target "United States" --target Russia --target Government --logical-and  -f .\groups.csv`
 
 ## IOC Mode
 
