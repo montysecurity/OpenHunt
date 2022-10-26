@@ -845,6 +845,14 @@
                             "BRONZE BUTLER",
                             "menuPass"
                         ]
+                    },
+                    "Gaming":
+                    {
+                        "groups": ["APT41", "FIN5", "Winnti Group"]
+                    },
+                    "Electronics":
+                    {
+                        "groups": ["BlackTech", "BRONZE BUTLER"]
                     }
                 }
             },
@@ -890,13 +898,6 @@
                     "Turla"
                 ]
             },
-            "Electronics":
-            {
-                "groups": ["BlackTech", "BRONZE BUTLER"]
-            },
-            "Energy":{
-                "groups": ["APT33", "menuPass", "OilRig", "Operation Wocao", "Sharpshooter", "Threat Group-3390"]
-            },
             "Engineering":{
                 "groups": ["BlackTech", "Fox Kitten"]
             },
@@ -910,22 +911,17 @@
             },
             "Hospitality":
             {
-                "groups":  ["APT39", "FIN5", "FIN6", "FIN7", "FIN8"]
-            },
-            "Gaiming":
-            {
-                "groups": ["APT41", "FIN5", "Winnti Group"]
+                "groups":  ["APT39", "FIN5", "FIN6", "FIN7", "FIN8"],
+                "subsectors":{
+                    "Travel":
+                    {
+                        "groups": ["APT39"]
+                    }
+                }
             },
             "Legal":
             {
                 "groups":  ["APT17", "APT19", "Gamaredon Group", "HAFNIUM", "WIRTE"]
-            },
-            "Manufacturing":
-            {
-                "groups": ["APT-C-36", "SilverTerrier", "APT18", "APT19", "Axiom", "BRONZE BUTLER", "Fox Kitten", "Leviathan", "menuPass", "Threat Group-3390"]
-            },
-            "Maritime":{
-                "groups":  ["Lazarus Group", "menuPass"]
             },
             "Media":{
                 "groups":  ["APT12", "APT32", "BlackOasis", "BlackTech", "Chimera"]
@@ -945,10 +941,6 @@
             {
                 "groups": ["Higaisa"]
             },
-            "Petroleum":
-            {
-                "groups": ["APT-C-36", "Fox Kitten", "HEXANE", "Ke3chang", "MuddyWater"]
-            },
             "Religious Organizations":
             {
                 "groups": ["Mustang Panda"]
@@ -957,7 +949,7 @@
             {
                 "groups": ["Transparent Tribe", "Turla"]
             },
-            "Restaurant":
+            "Restaurants":
             {
                 "groups": ["FIN5", "FIN7", "FIN8"]
             },
@@ -977,10 +969,7 @@
             {
                 "groups": ["Tropic Trooper"]
             },
-            "Travel":
-            {
-                "groups": ["APT39"]
-            },
+
             "Weapons":
             {
                 "groups": ["Mofang"]
