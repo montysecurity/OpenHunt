@@ -133,61 +133,63 @@
                             "Windshift",
                             "WIRTE"
                         ],
-                        "Iran":
-                        {
-                            "groups":
-                            [
-                                "APT39",
-                                "Strider"
-                            ]
-                        },
-                        "Isreal":
-                        {
-                            "groups":
-                            [
-                                "CopyKittens"
-                            ]
-                        },
-                        "Jordan":
-                        {
-                            "groups":
-                            [
-                                "CopyKittens"
-                            ]
-                        },
-                        "Kuwait":
-                        {
-                            "groups":
-                            [
-                                "APT37",
-                                "HEXANE"
-                            ]
-                        },
-                        "Pakistan":
-                        {
-                            "groups":
-                            [
-                                "Mustang Panda",
-                                "Sidewinder",
-                                "The White Company"
-                            ]
-                        },
-                        "Saudi Arabia":
-                        {
-                            "groups":
-                            [
-                                "APT33",
-                                "CopyKittens",
-                                "RTM"
-                            ]
-                        },
-                        "Turkey":
-                        {
-                            "groups":
-                            [
-                                "PROMETHIUM",
-                                "CopyKittens"
-                            ]
+                        "territories":{
+                            "Iran":
+                            {
+                                "groups":
+                                [
+                                    "APT39",
+                                    "Strider"
+                                ]
+                            },
+                            "Isreal":
+                            {
+                                "groups":
+                                [
+                                    "CopyKittens"
+                                ]
+                            },
+                            "Jordan":
+                            {
+                                "groups":
+                                [
+                                    "CopyKittens"
+                                ]
+                            },
+                            "Kuwait":
+                            {
+                                "groups":
+                                [
+                                    "APT37",
+                                    "HEXANE"
+                                ]
+                            },
+                            "Pakistan":
+                            {
+                                "groups":
+                                [
+                                    "Mustang Panda",
+                                    "Sidewinder",
+                                    "The White Company"
+                                ]
+                            },
+                            "Saudi Arabia":
+                            {
+                                "groups":
+                                [
+                                    "APT33",
+                                    "CopyKittens",
+                                    "RTM"
+                                ]
+                            },
+                            "Turkey":
+                            {
+                                "groups":
+                                [
+                                    "PROMETHIUM",
+                                    "CopyKittens"
+                                ]
+                            }
                         }
                     },
                     "Japan":

@@ -189,8 +189,15 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                     print(country_or_region)
                                     for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["groups"]:
                                         groups.append(group)
+                                    try:
+                                        if mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                            for territory in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
+                                                for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]:
+                                                    groups.append(group)
+                                    except KeyError:
+                                        pass
                         except KeyError:
-                            continue
+                            pass
                     else:
                         try:
                             if target_from_input in mappings["targets"]["continents"][continent]["countries_or_regions"]:
@@ -200,6 +207,7 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                             groups.append(group)
                         except KeyError:
                             pass
+                    # Add another for Middle East territories and Hong Kong
                 for sector in mappings["targets"]["sectors"]:
                     if target_from_input == sector:
                         try:
