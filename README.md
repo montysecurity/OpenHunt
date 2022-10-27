@@ -23,14 +23,18 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Get top 10 most common TTPs used by threat actors affiliated with Russia: `python .\openhunt.py -m ttp --origin Russia -f .\groups.csv`
 
-- Get top 15 most common TTPs used by threat actors targeting government organizations: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
+- Get top 15 most common TTPs used by threat actors targeting government organizations in any country: `python .\openhunt.py -m ttp --target Government --limit 15 -f .\groups.csv`
 
-- Get top 10 most common TTPs used by any group from any `--origin` targeting any sector in `--target`: `python .\openhunt.py -m ttp --origin Russia --origin China --origin "Middle East" --target Aviation --target "United States" -f .\groups.csv`
-    - e.g. this returns the techniques of any group affiliated with Russia, China, or the Middle East if they have been documented targeting *either* any organization in the US *or* the Aviation industry in any country. For more information read *Combining Filters* below.
+- Get top 15 most common TTPs used by threat actors targeting any sector in the US or government entities in any country `python .\openhunt.py -m ttp --target "United States" --target Government --limit 15 -f .\groups.csv` 
 
-- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+- Get top 15 most common TTPs used by threat actors targeting the United States and government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
+    - While this may not always be true, the assumption is that if a group targets the United States and Government entities, then they are targeting US Government entities
 
-- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -vt {VirusTotal API Key} -s {Shodan API Key} -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+- Get top 15 most common TTPs used by threat actors targeting United States related government organizations, and print the group names: `python .\openhunt.py -m ttp -v --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
+
+- Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
+
+- Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
 ## Usage
 
@@ -67,135 +71,136 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
 
 ##### Targets Supported
 
-- Countries, Continents, and Regions
+Targets include the info of those indented below it. So `Asia` includes `China`, which in-turn includes `Hong Kong`. You can also query for indented children on their one (e.g. `--target "Hong Kong"`)
+
+- Africa
+    - Rwanda
+    - Spain
+- Australia
+- Asia
     - Afghanistan
-    - Africa
-    - Argentina
-    - Australia
-    - Asia
-    - Belarus
-    - Belgium
     - Cambodia
-    - Canada
-    - Caribbean
-    - Central America
     - China
-    - Columbia
-    - Europe
-    - France
-    - Germany
-    - Hong Kong
+        - Hong Kong
     - India
     - Indonesia
-    - Iran
-    - Isreal
+    - Middle East
+        - Iran
+        - Isreal
+        - Jordan
+        - Kuwait
+        - Pakistan
+        - Saudi Arabia
+        - Turkey
     - Japan
-    - Jordan
-    - Kuwait
-    - Latin America
     - Laos
     - Mongolia
-    - Middle East
     - Myanmar
     - Nepal
-    - North America
     - North Korea
-    - Pakistan
     - Philippines
-    - Poland
     - Romania
     - Russia
-    - Rwanda
-    - Saudi Arabia
     - Singapore
-    - Spain
-    - South America
     - South Korea
-    - Sweden
     - Taiwan
-    - Turkey
-    - Ukraine
-    - United Kingdom
-    - United Nations
-    - United States
-    - Venezuela
     - Vietnam
+- Europe
+    - Belarus
+    - Belgium
+    - Spain
+    - France
+    - Germany
+    - Poland
+    - Sweden
+    - United Kingdom
+- South America
+    - Argentina
+    - Venezuela
+- North America
+    - Canada
+    - United States
+    - Caribbean
+- Central America
+- Latin America
 
-- Sectors
-    - Aerospace
-    - Automotive
+- Aerospace
     - Aviation
-    - Biotechnology
-    - Chemical
-    - Civil
-    - Construction
-    - Critical Infrstructure
+- Automotive
+- Critical Infrstructure
+    - Energy
+    - Electrical
+    - Power
+    - Petroleum
+    - Nuclear
+    - ICS
+    - Telecommunications
+- Government
     - Defense
     - Diplomatic
-    - Education
-    - Electrical
-    - Electronics
-    - Energy
-    - Engineering
-    - Financial
+- Financial
     - Gambling
-    - Government
-    - Healthcare
-    - Human Rights
-    - Humanitarian Aid
-    - Hospitality
-    - Gaming
-    - Legal
-    - Manufacturing
-    - Maritime
-    - Media
-    - Mining
-    - NGOs
-    - Non-Profits
-    - Nuclear
-    - Power
-    - Public
-    - Petroleum
-    - Pharmaceutical
-    - Religious Organizations
-    - Research
-    - Restaurant
-    - Retail
-    - Satellite Communications
+- Supply Chain
+    - Manufactoring
     - Semiconductor
-    - Supply Chain
-    - Technology
-    - Telecommunications
-    - Trade
-    - Transportation
+    - Maritime
+- Healthcare
+    - Pharmaceutical
+- Technology
+    - Biotechnology
+    - Gaming
+    - Eletronics
+- Automotive
+- Chemical
+- Civil
+- Construction
+- Education
+- Electronics
+- Engineering
+- Human Rights
+- Humanitarian Aid
+- Hospitality
     - Travel
-    - ICS
-    - Infrastructure
-    - Weapons
+- Legal
+- Media
+- Mining
+- NGOs
+- Non-profits
+- Public Organizations
+- Religious Organizations
+- Research Organizations
+- Restaurants
+- Retail
+- Satellite Communications
+- Trade
+- Transportation
+- Weapons
 
-- Miscellaneous
+- Individuals
     - Emirati Persons
+    - Turkish Persons
     - English Speakers
-    - Experts in Various Un-Named Fields
-    - German Speakers
-    - High Profile Persons
-    - Individuals
     - Italian Speakers
-    - Infectious Disease Researchers
+    - Persian Speakers
     - Japanese Speakers
+    - German Speakers
+    - Infectious Disease Researchers
     - Journalists
     - Leaders in International Affairs
     - Minority Rights Activists
-    - Organisation for the Prohibition of Chemical Weapons
-    - Persian-speaking Indivduals
-    - Presedential Elections of France
-    - Presedential Elections of the United States
-    - United States Anti-Doping Agency
-    - Syrian Opposition
-    - Think Tanks
-    - Turkish Individuals
-    - World Health Organization
-    - World Anti-Doping Agency
+    - High Profile Persons
+    - Experts in Various Un-Named Fields
+
+
+- Organisation for the Prohibition of Chemical Weapons
+- Presedential Elections of France
+- Presedential Elections of the United States
+- United States Anti-Doping Agency
+- Syrian Opposition
+- Think Tanks
+- World Health Organization
+- World Anti-Doping Agency
+- United Nations
 
 #### Combining Filters
 
@@ -203,7 +208,7 @@ Combining filters may not be intuitive at first.
 
 For example, take the command `python .\openhunt.py -m ttp --target "United States" --target Russia --target Government -f .\groups.csv`. In plain English, this filter means "show me all groups that target any organization in the United States, any organization in Russia, and Government targets in any country". This is different from saying they target "United States and Russian Government" entities.
 
-I plan on implementing a way to strictly combine filters later so you can ask it to show only groups that target specific sectors of specific countries.
+To search for techniques related to groups that target "United States and Russian Government" entities, add `--logical-and`: `python .\openhunt.py -m ttp --target "United States" --target Russia --target Government --logical-and  -f .\groups.csv`
 
 ## IOC Mode
 
@@ -228,11 +233,15 @@ If the field names in the Sigma rule do not match the field names in your SIEM/E
 
 ## Is the MITRE information up-to-date?
 
-Last Update: October 2022
+This script was built using MITRE v11. MITRE v12 came out in the midst of development which replaced some groups with campaigns.
+
+Working on updating the script to support MITRE v12. The `groups.csv` with this repo was downloaded using v11. It is recommended to use it as downloading v12 may cause unintended bugs. 
+
+Last Update: October 2022 (prior to v12)
 
 Checksum: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
 
-To update the MITRE TTP info from MITRE at execution, just omit `-f, --file`. This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
+To update the MITRE TTP info from MITRE at execution, just omit `-f, --file` (not recommended until the script supports v12). This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
 
 An easy way to see if the the MITRE Groups information is up-to-date is by hashing the MITRE groups page.
 
@@ -249,6 +258,5 @@ As MITRE releases more information, I plan on keeping the script and `groups.csv
 
 ## Planned Fixes and Enhancements
 
-- Group targets (e.g. all groups seen targeting Pakistan will be added to the list of groups targeting the Middle East) (for business sectors too)
-- Add a way to strictly combine filters (group targeted X sector in Y region)
+- Update to support MITRE v12
 - Add more fingerprints for Shodan to check against

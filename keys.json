@@ -1,7 +1,0 @@
-{
-    "api_keys":
-    {
-        "virustotal": "PUT_KEY_HERE",
-        "shodan": "PUT_KEY_HERE"
-    }
-}

@@ -1,0 +1,1420 @@
+{
+    "targets":
+    {
+        "continents": 
+        {
+            "Africa":
+            {
+                "groups": [],
+                "countries_or_regions":
+                {
+                    "Rwanda":
+                    {
+                        "groups":
+                        [
+                            "Strider"
+                        ]
+                    },
+                    "Spain":
+                    {
+                        "groups":
+                        [
+                            "Gorgon Group"
+                        ]
+                    }
+                }
+            },
+            "Australia":
+            {
+                "groups":
+                [
+                    "CostaRicto",
+                    "Fox Kitten"
+                ]
+            },
+            "Asia":
+            {
+                "groups":
+                [
+                    "BlackTech",
+                    "Sidewinder",
+                    "Tonto Team",
+                    "Lotus Blossom",
+                    "Nomadic Octopus",
+                    "APT39",
+                    "Dust Storm",
+                    "Orangeworm",
+                    "Sowbug",
+                    "IndigoZebra",
+                    "Naikon",
+                    "APT29",
+                    "CostaRicto",
+                    "Machete",
+                    "PLATINUM",
+                    "Rancor",
+                    "Darkhotel",
+                    "Thrip",
+                    "Inception",
+                    "BackdoorDiplomacy",
+                    "APT32"
+                ],
+                "countries_or_regions":
+                {
+                    "Afghanistan":
+                    {
+                        "groups":
+                        [
+                            "Sidewinder"
+                        ]
+                    },
+                    "Cambodia":
+                    {
+                        "groups":
+                        [
+                            "APT32"
+                        ]
+                    },
+                    "China":
+                    {
+                        "groups":
+                        [
+                            "APT37",
+                            "Higaisa",
+                            "Operation Wocao",
+                            "Sidewinder",
+                            "Strider"
+                        ],
+                        "territories":
+                        {
+                            "Hong Kong":
+                            {
+                                "groups":
+                                [
+                                    "Tropic Trooper",
+                                    "APT3",
+                                    "BlackTech"
+                                ]
+                            }
+                        }
+                    },
+                    "India":
+                    {
+                        "groups":
+                        [
+                            "APT37"
+                        ]
+                    },
+                    "Indonesia":
+                    {
+                        "groups":
+                        [
+                            "Honeybee"
+                        ]
+                    },
+                    "Middle East":
+                    {
+                        "groups":
+                        [
+                            "OilRig",
+                            "APT29",
+                            "APT37",
+                            "BackdoorDiplomacy",
+                            "Bouncing Golf",
+                            "DarkHydrus",
+                            "Fox Kitten",
+                            "Gallmaker",
+                            "HEXANE",
+                            "Inception",
+                            "Leafminer",
+                            "Magic Hound",
+                            "Molerats",
+                            "MuddyWater",
+                            "Mustang Panda",
+                            "Windshift",
+                            "WIRTE"
+                        ],
+                        "territories":{
+                            "Iran":
+                            {
+                                "groups":
+                                [
+                                    "APT39",
+                                    "Strider"
+                                ]
+                            },
+                            "Isreal":
+                            {
+                                "groups":
+                                [
+                                    "CopyKittens"
+                                ]
+                            },
+                            "Jordan":
+                            {
+                                "groups":
+                                [
+                                    "CopyKittens"
+                                ]
+                            },
+                            "Kuwait":
+                            {
+                                "groups":
+                                [
+                                    "APT37",
+                                    "HEXANE"
+                                ]
+                            },
+                            "Pakistan":
+                            {
+                                "groups":
+                                [
+                                    "Mustang Panda",
+                                    "Sidewinder",
+                                    "The White Company"
+                                ]
+                            },
+                            "Saudi Arabia":
+                            {
+                                "groups":
+                                [
+                                    "APT33",
+                                    "CopyKittens",
+                                    "RTM"
+                                ]
+                            },
+                            "Turkey":
+                            {
+                                "groups":
+                                [
+                                    "PROMETHIUM",
+                                    "CopyKittens"
+                                ]
+                            }
+                        }
+                    },
+                    "Japan":
+                    {
+                        "groups":
+                        [
+                            "BRONZE BUTLER",
+                            "APT16",
+                            "APT37",
+                            "BlackTech",
+                            "DragonOK",
+                            "Dust Storm",
+                            "Higaisa",
+                            "Honeybee",
+                            "menuPass",
+                            "Tonto Team"
+                        ]
+                    },
+                    "Laos":
+                    {
+                        "groups":
+                        [
+                            "APT32"
+                        ]
+                    },
+                    "Mongolia":
+                    {
+                        "groups":
+                        [
+                            "Mustang Panda",
+                            "TA459"
+                        ]
+                    },
+                    "Myanmar":
+                    {
+                        "groups":
+                        [
+                            "Mofang",
+                            "Mustang Panda"
+                        ]
+                    },
+                    "Nepal":
+                    {
+                        "groups":
+                        [
+                            "APT37",
+                            "Sidewinder"
+                        ]
+                    },
+                    "North Korea":
+                    {
+                        "groups":
+                        [
+                            "Higaisa"
+                        ]
+                    },
+                    "Philippines":
+                    {
+                        "groups":
+                        [
+                            "Tropic Trooper",
+                            "APT32"
+                        ]
+                    },
+                    "Romania":
+                    {
+                        "groups":
+                        [
+                            "APT37"
+                        ]
+                    },
+                    "Russia":
+                    {
+                        "groups":
+                        [
+                            "Silence",
+                            "APT37",
+                            "Gorgon Group",
+                            "Higaisa",
+                            "Inception",
+                            "Kimsuky",
+                            "Machete",
+                            "Strider",
+                            "TA459"
+                        ]
+                    },
+                    "Singapore":
+                    {
+                        "groups":
+                        [
+                            "Honeybee",
+                            "Whitefly"
+                        ]
+                    },
+                    "South Korea":
+                    {
+                        "groups":
+                        [
+                            "Andariel",
+                            "APT33",
+                            "APT37",
+                            "Dust Storm",
+                            "Kimsuky",
+                            "Tonto Team"
+                        ]
+                    },
+                    "Taiwan":
+                    {
+                        "groups":
+                        [
+                            "Tropic Trooper",
+                            "APT16",
+                            "BlackTech",
+                            "Chimera",
+                            "Tonto Team"
+                        ]
+                    },
+                    "Vietnam":
+                    {
+                        "groups":
+                        [
+                            "APT32",
+                            "APT37",
+                            "Honeybee",
+                            "Mustang Panda"
+                        ]
+                    }
+                }
+            },
+            "Europe":
+            {
+                "groups":
+                [
+                    "APT29",
+                    "APT39",
+                    "BackdoorDiplomacy",
+                    "CostaRicto",
+                    "DarkVishnya",
+                    "Dust Storm",
+                    "Fox Kitten",
+                    "Inception",
+                    "Ke3chang",
+                    "Kimsuky",
+                    "Machete",
+                    "Molerats",
+                    "MuddyWater",
+                    "Mustang Panda",
+                    "Orangeworm",
+                    "RTM",
+                    "Tonto Team",
+                    "WIRTE"
+                ],
+                "countries_or_regions":
+                {
+                    "Belarus":
+                    {
+                        "groups":
+                        [
+                            "TA459"
+                        ]
+                    },
+                    "Belgium":
+                    {
+                        "groups":
+                        [
+                            "Strider"
+                        ]
+                    },
+                    "Spain":
+                    {
+                        "groups":
+                        [
+                            "Gorgon Group"
+                        ]
+                    },
+                    "France":
+                    {
+                        "groups":
+                        [
+                            "Operation Wocao"
+                        ]
+                    },
+                    "Germany":
+                    {
+                        "groups":
+                        [
+                            "CopyKittens",
+                            "Operation Wocao"
+                        ]
+                    },
+                    "Poland":
+                    {
+                        "groups":
+                        [
+                            "Higaisa"
+                        ]
+                    },
+                    "Sweden":
+                    {
+                        "groups":
+                        [
+                            "Strider"
+                        ]
+                    },
+                    "United Kingdom":
+                    {
+                        "groups":
+                        [
+                            "ALLANITE",
+                            "Gorgon Group",
+                            "Operation Wocao"
+                        ]
+                    }
+                }
+            },
+            "South America":
+            {
+                "groups":
+                [
+                    "CostaRicto",
+                    "Ke3chang",
+                    "Sowbug"
+                ],
+                "countries_or_regions":
+                {
+                    "Argentina":
+                    {
+                        "groups":
+                        [
+                            "Honeybee"
+                        ]
+                    },
+                    "Venezuela":
+                    {
+                        "groups":
+                        [
+                            "Machete"
+                        ]
+                    }
+                }
+            },
+            "North America":
+            {
+                "groups":
+                [
+                    "APT29",
+                    "APT39",
+                    "CostaRicto",
+                    "FIN10",
+                    "Fox Kitten",
+                    "Ke3chang",
+                    "MuddyWater"
+                ],
+                "countries_or_regions":
+                {
+                    "Canada":
+                    {
+                        "groups":
+                        [
+                            "Honeybee"
+                        ]
+                    },
+                    "United States":
+                    {
+                        "groups":
+                        [
+                            "HAFNIUM",
+                            "ALLANITE",
+                            "Ajax Security Team",
+                            "APT17",
+                            "APT28",
+                            "APT3",
+                            "APT33",
+                            "BlackTech",
+                            "CopyKittens",
+                            "Dust Storm",
+                            "Elderwood",
+                            "FIN7",
+                            "Gorgon Group",
+                            "Inception",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "Mustang Panda",
+                            "Orangeworm",
+                            "Patchwork",
+                            "Thrip",
+                            "Tonto Team"
+                        ]
+                    },
+                    "Caribbean":
+                    {
+                        "groups":
+                        [
+                            "Ke3chang"
+                        ]
+                    }
+                }
+            },
+            "Central America":
+            {
+                "groups":
+                [
+                    "Ke3chang"
+                ]
+            },
+            "Latin America":
+            {
+                "groups":
+                [
+                    "Machete"
+                ]
+            }
+        },
+        "sectors":
+        {
+            "Aerospace":
+            {
+                "groups":
+                [
+                    "Axiom",
+                    "Leviathan",
+                    "menuPass",
+                    "Threat Group-3390"
+                ],
+                "subsectors":
+                {
+                    "Aviation":
+                    {
+                        "groups": 
+                        [
+                            "APT33",
+                            "Chimera",
+                            "Dragonfly",
+                            "LazyScripter",
+                            "Leviathan"
+                        ]
+                    }
+                }
+            },
+            "Critical Infrastructure":
+            {
+                "groups":
+                [
+                    "Mofang"
+                ],
+                "subsectors":
+                {
+                    "Energy":
+                    {
+                        "groups":
+                        [
+                            "APT33",
+                            "menuPass",
+                            "OilRig",
+                            "Operation Wocao",
+                            "Sharpshooter",
+                            "Threat Group-3390"
+                        ]
+                    },
+                    "Electrical":
+                    {
+                        "groups":
+                        [
+                            "Sandorm Team"
+                        ]
+                    },
+                    "Power":
+                    {
+                        "groups":
+                        [
+                            "Machete"
+                        ]
+                    },
+                    "Petroleum":
+                    {
+                        "groups":
+                        [
+                            "APT-C-36",
+                            "Fox Kitten",
+                            "HEXANE",
+                            "Ke3chang",
+                            "MuddyWater"
+                        ]
+                    },
+                    "Nuclear":
+                    {
+                        "groups":
+                        [
+                            "Sharpshooter"
+                        ]
+                    },
+                    "ICS":
+                    {
+                        "groups":
+                        [
+                            "ALLANITE",
+                            "HEXANE"
+                        ]
+                    },
+                    "Telecommunications":
+                    {
+                        "groups":
+                        [
+                            "Machete",
+                            "APT19",
+                            "APT29",
+                            "APT39",
+                            "APT41",
+                            "Aquatic Panda",
+                            "Deep Panda",
+                            "GALLIUM",
+                            "HEXANE",
+                            "MuddyWater",
+                            "OilRig",
+                            "Thrip"
+                        ]
+                    }
+                }
+            },
+            "Government":
+            {
+                "groups":
+                [
+                    "Mofang",
+                    "OilRig",
+                    "Deep Panda",
+                    "Andariel",
+                    "Ke3chang",
+                    "Inception",
+                    "Turla",
+                    "Magic Hound",
+                    "Gallmaker",
+                    "Mustang Panda",
+                    "Elderwood",
+                    "Sandworm Team",
+                    "Tropic Trooper",
+                    "Dragonfly",
+                    "MuddyWater",
+                    "APT12",
+                    "APT18",
+                    "Nomadic Octopus",
+                    "Silent Librarian",
+                    "Leviathan",
+                    "Sidewinder",
+                    "Lotus Blossom",
+                    "DarkHydrus",
+                    "Axiom",
+                    "Gorgon Group",
+                    "APT32",
+                    "Naikon",
+                    "Higaisa",
+                    "APT19",
+                    "Aquatic Panda",
+                    "Kimsuky",
+                    "Confucius",
+                    "BackdoorDiplomacy",
+                    "Leafminer",
+                    "Operation Wocao",
+                    "Fox Kitten",
+                    "APT28",
+                    "BRONZE BUTLER",
+                    "Sowbug",
+                    "Machete",
+                    "Threat Group-3390",
+                    "PLATINUM",
+                    "IndigoZebra",
+                    "Windshift",
+                    "WIRTE",
+                    "Patchwork"
+                ],
+                "subsectors":
+                {
+                    "Defense":
+                    {
+                        "groups":
+                        [
+                            "Machete",
+                            "APT19",
+                            "Ajax Security Team",
+                            "Andariel",
+                            "APT17",
+                            "APT28",
+                            "Axiom",
+                            "Confucius",
+                            "Deep Panda",
+                            "Dragonfly",
+                            "Elderwood",
+                            "Fox Kitten",
+                            "Gallmaker",
+                            "Gamaredon Group",
+                            "HAFNIUM",
+                            "Ke3chang",
+                            "Leviathan",
+                            "Lotus Blossom",
+                            "Magic Hound",
+                            "menuPass",
+                            "Mofang",
+                            "Naikon",
+                            "Sharpshooter",
+                            "Sidewinder",
+                            "The White Company",
+                            "Threat Group-3390",
+                            "Thrip",
+                            "Transparent Tribe",
+                            "Turla",
+                            "WIRTE"
+                        ]
+                    },
+                    "Diplomatic":
+                    {
+                        "groups":
+                        [
+                            "Ke3chang",
+                            "Nomadic Octopus",
+                            "Patchwork",
+                            "Transparent Tribe",
+                            "WIRTE"
+                        ]
+                    }
+                }
+            },
+            "Financial":
+            {
+                "groups":
+                [
+                    "APT-C-36",
+                    "Carbanak",
+                    "CostaRicto",
+                    "OilRig",
+                    "Silence",
+                    "admin@338",
+                    "APT19",
+                    "APT38",
+                    "BlackTech",
+                    "Cobalt Group",
+                    "DarkVishnya",
+                    "Deep Panda",
+                    "FIN4",
+                    "GCMAN",
+                    "menuPass",
+                    "RTM",
+                    "Sharpshooter",
+                    "WIRTE"
+                ],
+                "subsectors":
+                {
+                    "Gambling":
+                    {
+                        "groups":
+                        [
+                            "Threat Group-3390"
+                        ]
+                    }
+                }
+            },
+            "Supply Chain":
+            {
+                "groups":
+                [
+                    "Elderwood"
+                ],
+                "subsectors":
+                {
+                    "Manufacturing":
+                    {
+                        "groups":
+                        [
+                            "APT-C-36",
+                            "SilverTerrier",
+                            "APT18",
+                            "APT19",
+                            "Axiom",
+                            "BRONZE BUTLER",
+                            "Fox Kitten",
+                            "Leviathan",
+                            "menuPass",
+                            "Threat Group-3390"
+                        ]
+                    },
+                    "Semiconductor":
+                    {
+                        "groups":
+                        [
+                            "Chimera"
+                        ]
+                    },
+                    "Maritime":
+                    {
+                        "groups":
+                        [
+                            "Lazarus Group",
+                            "menuPass"
+                        ]
+                    }
+                }
+            },
+            "Healthcare":
+            {
+                "groups":
+                [
+                    "Tropic Trooper",
+                    "APT18",
+                    "APT19",
+                    "APT41",
+                    "Deep Panda",
+                    "FIN4",
+                    "Fox Kitten",
+                    "Leviathan",
+                    "menuPass",
+                    "Operation Wocao",
+                    "Orangeworm",
+                    "Whitefly"
+                ],
+                "subsectors":
+                {
+                    "Pharmaceutical":
+                    {
+                        "groups":
+                        [
+                            "APT19",
+                            "FIN4",
+                            "Turla"
+                        ]
+                    }
+                }
+            },
+            "Technology":
+            {
+                "groups":
+                [
+                    "SilverTerrier",
+                    "Tropic Trooper",
+                    "APT12",
+                    "APT18",
+                    "APT17",
+                    "APT19",
+                    "APT29",
+                    "APT41",
+                    "Aquatic Panda",
+                    "Chimera",
+                    "Elderwood",
+                    "Fox Kitten",
+                    "Lazarus Group",
+                    "menuPass",
+                    "MuddyWater",
+                    "Operation Wocao",
+                    "Threat Group-3390",
+                    "WIRTE"
+                ],
+                "subsectors":
+                {
+                    "Biotechnology":
+                    {
+                        "groups":
+                        [
+                            "BRONZE BUTLER",
+                            "menuPass"
+                        ]
+                    },
+                    "Gaming":
+                    {
+                        "groups":
+                        [
+                            "APT41",
+                            "FIN5",
+                            "Winnti Group"
+                        ]
+                    },
+                    "Electronics":
+                    {
+                        "groups":
+                        [
+                            "BlackTech",
+                            "BRONZE BUTLER"
+                        ]
+                    }
+                }
+            },
+            "Automotive":
+            {
+                "groups":
+                [
+                    "Mofang"
+                ]
+            },
+            "Chemical":
+            {
+                "groups":
+                [
+                    "BRONZE BUTLER",
+                    "OilRig"
+                ]
+            },
+            "Civil":
+            {
+                "groups":
+                [
+                    "Naikon"
+                ]
+            },
+            "Construction":
+            {
+                "groups":
+                [
+                    "BlackTech"
+                ]
+            },
+            "Education":
+            {
+                "groups":
+                [
+                    "SilverTerrier",
+                    "APT39",
+                    "DarkHydrus",
+                    "HAFNIUM",
+                    "Leviathan",
+                    "Silent Librarian",
+                    "Turla"
+                ]
+            },
+            "Engineering":
+            {
+                "groups":
+                [
+                    "BlackTech",
+                    "Fox Kitten"
+                ]
+            },
+            "Human Rights":
+            {
+                "groups":
+                [
+                    "APT18",
+                    "Elderwood"
+                ]
+            },
+            "Humanitarian Aid":
+            {
+                "groups":
+                [
+                    "Honeybee"
+                ]
+            },
+            "Hospitality":
+            {
+                "groups":
+                [
+                    "APT39",
+                    "FIN5",
+                    "FIN6",
+                    "FIN7",
+                    "FIN8"
+                ],
+                "subsectors":
+                {
+                    "Travel":
+                    {
+                        "groups":
+                        [
+                            "APT39"
+                        ]
+                    }
+                }
+            },
+            "Legal":
+            {
+                "groups":
+                [
+                    "APT17",
+                    "APT19",
+                    "Gamaredon Group",
+                    "HAFNIUM",
+                    "WIRTE"
+                ]
+            },
+            "Media":
+            {
+                "groups":
+                [
+                    "APT12",
+                    "APT32",
+                    "BlackOasis",
+                    "BlackTech",
+                    "Chimera"
+                ]
+            },
+            "Mining":{
+                "groups":
+                [
+                    "APT17",
+                    "menuPass"
+                ]
+            },
+            "NGOs":
+            {
+                "groups":
+                [
+                    "Elderwood",
+                    "Gamaredon Group",
+                    "HAFNIUM",
+                    "Ke3chang",
+                    "Mustang Panda"
+                ]
+            },
+            "Non-Profits":
+            {
+                "groups":
+                [
+                    "Gamaredon Group",
+                    "Mustang Panda"
+                ]
+            },
+            "Public Organizations":
+            {
+                "groups":
+                [
+                    "Higaisa"
+                ]
+            },
+            "Religious Organizations":
+            {
+                "groups":
+                [
+                    "Mustang Panda"
+                ]
+            },
+            "Research Organizations":
+            {
+                "groups":
+                [
+                    "Transparent Tribe",
+                    "Turla"
+                ]
+            },
+            "Restaurants":
+            {
+                "groups":
+                [
+                    "FIN5",
+                    "FIN7",
+                    "FIN8"
+                ]
+            },
+            "Retail":
+            {
+                "groups":
+                [
+                    "FIN6",
+                    "FIN7",
+                    "FIN8"
+                ]
+            },
+            "Satellite Communications":
+            {
+                "groups":
+                [
+                    "Thrip"
+                ]
+            },
+            "Trade":
+            {
+                "groups":
+                [
+                    "Higaisa"
+                ]
+            },
+            "Transportation":
+            {
+                "groups":
+                [
+                    "Tropic Trooper"
+                ]
+            },
+
+            "Weapons":
+            {
+                "groups":
+                [
+                    "Mofang"
+                ]
+            },
+            "Individuals":
+            {
+                "groups":
+                [
+                    "Nomadic Octopus"
+                ],
+                "subsectors":
+                {
+                    "Emirati Persons":
+                    {
+                        "groups":
+                        [
+                            "Stealth Falcon"
+                        ]
+                    },
+                    "Turkish Persons":
+                    {
+                        "groups":
+                        [
+                            "NEODYMIUM"
+                        ]
+                    },
+                    "English Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "Italian Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "Persian Speakers":
+                    {
+                        "groups":
+                        [
+                            "Ferocious Kitten"
+                        ]
+                    },
+                    "Japanese Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "German Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "Infectious Disease Researchers":
+                    {
+                        "groups":
+                        [
+                            "HAFNIUM"
+                        ]
+                    },
+                    "Journalists":
+                    {
+                        "groups":
+                        [
+                            "Magic Hound"
+                        ]
+                    },
+                    "Leaders in International Affairs":
+                    {
+                        "groups":
+                        [
+                            "ZIRCONIUM"
+                        ]
+                    },
+                    "Minority Rights Activists":
+                    {
+                        "groups":
+                        [
+                            "Scarlet Mimic"
+                        ]
+                    },
+                    "High Profile Persons":
+                    {
+                        "groups":
+                        [
+                            "Confucius",
+                            "Darkhotel"
+                        ]
+                    },
+                    "Experts in Various Un-Named Fields":
+                    {
+                        "groups":
+                        [
+                            "Kimsuky"
+                        ]
+                    }
+                }
+            },
+            "Organisation for the Prohibition of Chemical Weapons":
+            {
+                "groups":
+                [
+                    "Sandworm Team",
+                    "APT28"
+                ]
+            },
+            "Presedential Elections of France":
+            {
+                "groups":
+                [
+                    "Sandworm Team"
+                ]
+            },
+            "Presedential Elections of the United States":
+            {
+                "groups":
+                [
+                    "APT28",
+                    "ZIRCONIUM"
+                ]
+            },
+            "United States Anti-Doping Agency":
+            {
+                "groups":
+                [
+                    "APT28"
+                ]
+            },
+            "Syrian Opposition":
+            {
+                "groups":
+                [
+                    "Group5"
+                ]
+            },
+            "Think Tanks":
+            {
+                "groups":
+                [
+                    "APT29",
+                    "BlackOasis",
+                    "Kimsuky",
+                    "Patchwork",
+                    "HAFNIUM"
+                ]
+            },
+            "World Health Organization":
+            {
+                "groups":
+                [
+                    "Magic Hound"
+                ]
+            },
+            "World Anti-Doping Agency":
+            {
+                "groups":
+                [
+                    "APT28"
+                ]
+            },
+            "United Nations":
+            {
+                "groups":
+                [
+                    "Kimsuky",
+                    "Operation Wocao"
+                ]
+            }
+        }
+    },
+    "origins":
+    {
+        "countries":
+        {
+            "Russia":
+            [
+                "ALLANITE",
+                "APT28",
+                "APT29",
+                "Dragonfly",
+                "Gamaredon Group",
+                "Indrik Spider",
+                "Sandworm Team",
+                "TEMP.Veles",
+                "Turla",
+                "Wizard Spider",
+                "ZIRCONIUM"
+            ],
+            "China":
+            [
+                "admin@338",
+                "APT1",
+                "APT12",
+                "APT16",
+                "APT17",
+                "APT19",
+                "APT3",
+                "APT30",
+                "APT41",
+                "Aquatic Panda",
+                "Axiom",
+                "BlackTech",
+                "BRONZE BUTLER",
+                "Chimera",
+                "Deep Panda",
+                "Elderwood",
+                "GALLIUM",
+                "HAFNIUM",
+                "IndigoZebra",
+                "Ke3chang",
+                "Leviathan",
+                "menuPass",
+                "Moafee",
+                "Mofang",
+                "Mustang Panda",
+                "Naikon",
+                "Operation Wocao",
+                "PittyTiger",
+                "Putter Panda",
+                "Rocke",
+                "Suckfly",
+                "TA459",
+                "Threat Group-3390",
+                "Tonto Team",
+                "Winnti Group"
+            ],
+            "Iran":
+            [
+                "Ajax Security Team",
+                "APT33",
+                "APT39",
+                "Cleaver",
+                "CopyKittens",
+                "Fox Kitten",
+                "Group5",
+                "Leafminer",
+                "Magic Hound",
+                "MuddyWater",
+                "OilRig",
+                "Silent Librarian"
+            ],
+            "North Korea":
+            [
+                "Andariel",
+                "APT37",
+                "APT38",
+                "Kimsuky",
+                "Lazarus Group"
+            ],
+            "South Korea":
+            [
+                "Darkhotel",
+                "Higaisa"
+            ],
+            "Nigeria":
+            [
+                "SilverTerrier"
+            ],
+            "Vietnam":
+            [
+                "APT32"
+            ],
+            "Lebanon":
+            [
+                "Dark Caracal",
+                "Volatile Cedar"
+            ],
+            "Pakistan":
+            [
+                "Gorgon Group",
+                "Transparent Tribe"
+            ],
+            "Unknown":
+            [
+                "APT18",
+                "APT-C-36",
+                "BackdoorDiplomacy",
+                "BlackOasis",
+                "Blue Mockingbird",
+                "Bouncing Golf",
+                "Carbanak",
+                "Cobalt Group",
+                "Confucius",
+                "CostaRicto",
+                "DarkHydrus",
+                "DarkVishnya",
+                "DragonOK",
+                "Dust Storm",
+                "Equation",
+                "Evilnum",
+                "Ferocious Kitten",
+                "FIN10",
+                "FIN4",
+                "FIN5",
+                "FIN6",
+                "FIN7",
+                "FIN8",
+                "Frankenstein",
+                "Gallmaker",
+                "GCMAN",
+                "GOLD SOUTHFIELD",
+                "HEXANE",
+                "Honeybee",
+                "Inception",
+                "LazyScripter",
+                "Lotus Blossom",
+                "Machete",
+                "Molerats",
+                "NEODYMIUM",
+                "Night Dragon",
+                "Nomadic Octopus",
+                "Orangeworm",
+                "Patchwork",
+                "PLATINUM",
+                "Poseidon Group",
+                "PROMETHIUM",
+                "Rancor",
+                "RTM",
+                "Scarlet Mimic",
+                "Sharpshooter",
+                "Sidewinder",
+                "Silence",
+                "Sowbug",
+                "Stealth Falcon",
+                "Strider",
+                "TA505",
+                "TA551",
+                "TeamTNT",
+                "The White Company",
+                "Threat Group-1314",
+                "Thrip",
+                "Tropic Trooper",
+                "Whitefly",
+                "Windigo",
+                "Windshift",
+                "WIRTE"
+            ]  
+        }
+    }
+}
