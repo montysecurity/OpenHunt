@@ -413,19 +413,22 @@
                     "Ke3chang",
                     "Sowbug"
                 ],
-                "Argentina":
+                "countries_or_regions":
                 {
-                    "groups":
-                    [
-                        "Honeybee"
-                    ]
-                },
-                "Venezuela":
-                {
-                    "groups":
-                    [
-                        "Machete"
-                    ]
+                    "Argentina":
+                    {
+                        "groups":
+                        [
+                            "Honeybee"
+                        ]
+                    },
+                    "Venezuela":
+                    {
+                        "groups":
+                        [
+                            "Machete"
+                        ]
+                    }
                 }
             },
             "North America":
@@ -440,49 +443,52 @@
                     "Ke3chang",
                     "MuddyWater"
                 ],
-                "Canada":
+                "countries_or_regions":
                 {
-                    "groups":
-                    [
-                        "Honeybee"
-                    ]
-                },
-                "United States":
-                {
-                    "groups":
-                    [
-                        "HAFNIUM",
-                        "ALLANITE",
-                        "Ajax Security Team",
-                        "APT17",
-                        "APT28",
-                        "APT3",
-                        "APT33",
-                        "BlackTech",
-                        "CopyKittens",
-                        "Dust Storm",
-                        "Elderwood",
-                        "FIN7",
-                        "Gorgon Group",
-                        "Inception",
-                        "Kimsuky",
-                        "Lazarus Group",
-                        "Machete",
-                        "Magic Hound",
-                        "Molerats",
-                        "Mustang Panda",
-                        "Orangeworm",
-                        "Patchwork",
-                        "Thrip",
-                        "Tonto Team"
-                    ]
-                },
-                "Caribbean":
-                {
-                    "groups":
-                    [
-                        "Ke3chang"
-                    ]
+                    "Canada":
+                    {
+                        "groups":
+                        [
+                            "Honeybee"
+                        ]
+                    },
+                    "United States":
+                    {
+                        "groups":
+                        [
+                            "HAFNIUM",
+                            "ALLANITE",
+                            "Ajax Security Team",
+                            "APT17",
+                            "APT28",
+                            "APT3",
+                            "APT33",
+                            "BlackTech",
+                            "CopyKittens",
+                            "Dust Storm",
+                            "Elderwood",
+                            "FIN7",
+                            "Gorgon Group",
+                            "Inception",
+                            "Kimsuky",
+                            "Lazarus Group",
+                            "Machete",
+                            "Magic Hound",
+                            "Molerats",
+                            "Mustang Panda",
+                            "Orangeworm",
+                            "Patchwork",
+                            "Thrip",
+                            "Tonto Team"
+                        ]
+                    },
+                    "Caribbean":
+                    {
+                        "groups":
+                        [
+                            "Ke3chang"
+                        ]
+                    }
                 }
             },
             "Central America":

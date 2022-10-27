@@ -13,7 +13,8 @@ parser.add_argument("--origin", action="append", type=str, help="Filter on the t
 parser.add_argument("--target", action="append", type=str, help="Filter on the threat actors' targets")
 parser.add_argument("-l", "--limit", type=int, default=10, help="Top X most common techniques where X is the input (default: 10)")
 parser.add_argument("-i", "--ioc", type=str, help="IOC value")
-parser.add_argument("--logical-and", action="store_true", default=False, help="Only match on groups that satisfy all of the parameters" )
+parser.add_argument("--logical-and", action="store_true", default=False, help="Only match on groups that satisfy all of the parameters")
+parser.add_argument("-v", "--verbose", action="store_true", default=False, help="Increase verbosity")
 parser.add_argument("-pi", "--parent-images", type=str, help="Rename the ParentImageSHA256 field", default="ParentImageSHA256")
 parser.add_argument("-in", "--image-names", type=str, help="Rename the Image field", default="ImageNames")
 parser.add_argument("-ih", "--image-hashes", type=str, help="Rename the Image field", default="ImageHashes")
@@ -36,6 +37,7 @@ global_CI = args.contacted_ips
 global_RF = args.referrer_files
 global_CF = args.communicating_files
 global_DF = args.downloaded_files
+global_verbose = args.verbose
 limit = args.limit
 affiliations_from_input = args.origin
 filename = args.file
@@ -174,6 +176,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             for affiliation_input in affiliations_from_input:
                 for group in mappings["origins"]["countries"][affiliation_input]:
                     groups.append(group)
+                    if global_verbose:
+                        print("Found group \"" + group + "\" based on origin: " + affiliation_input)
         # Continents contain "countries or regions" which contain territories
         if targets_from_input != None:
             num_args += len(targets_from_input)
@@ -184,6 +188,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                         # add direct groups
                         for group in mappings["targets"]["continents"][continent]["groups"]:
                             groups.append(group)
+                            if global_verbose:
+                                print("Found group \"" + group + "\" based on target: " + target_from_input)
                         try:
                             # if target has sub-regions
                             if mappings["targets"]["continents"][continent]["countries_or_regions"]:
@@ -191,6 +197,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                     # add sub-regions groups
                                     for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["groups"]:
                                         groups.append(group)
+                                        if global_verbose:
+                                            print("Adding group \"" + group + "\" based on target sub-region: " + country_or_region)
                                     try:
                                         # if sub-region has a territory
                                         if mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
@@ -198,6 +206,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                                 # add territory's groups
                                                 for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]:
                                                     groups.append(group)
+                                                    if global_verbose:
+                                                        print("Adding group \"" + group + "\" based on target sub-region: " + territory)
                                     except KeyError:
                                         pass
                         except KeyError:
@@ -209,12 +219,16 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                 if target_from_input == country_or_region:
                                     for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["groups"]:
                                         groups.append(group)
+                                        if global_verbose:
+                                            print("Found group \"" + group + "\" based on target: " + target_from_input)
                                     try:
                                         # add groups for territories
                                         if mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
                                             for territory in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"]:
                                                 for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]["groups"]:
                                                     groups.append(group)
+                                                    if global_verbose:
+                                                        print("Adding group \"" + group + "\" based on target sub-region: " + territory)
                                     except KeyError:
                                         pass
                     except KeyError:
@@ -229,6 +243,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                             if target_from_input == territory:
                                                 for group in mappings["targets"]["continents"][continent]["countries_or_regions"][country_or_region]["territories"][territory]["groups"]:
                                                     groups.append(group)
+                                                    if global_verbose:
+                                                        print("Found group \"" + group + "\" based on target: " + target_from_input)
                                 except KeyError:
                                     pass
                     except KeyError:
@@ -239,6 +255,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                         try:
                             for group in mappings["targets"]["sectors"][sector]["groups"]:
                                 groups.append(group)
+                                if global_verbose:
+                                    print("Found group \"" + group + "\" based on target: " + target_from_input)
                         except KeyError:
                             pass
                         try:
@@ -246,6 +264,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                 for subsector in mappings["targets"]["sectors"][sector]["subsectors"]:
                                     for group in mappings["targets"]["sectors"][sector]["subsectors"][subsector]["groups"]:
                                         groups.append(group)
+                                        if global_verbose:
+                                            print("Found group \"" + group + "\" based on target: " + target_from_input)
                         except KeyError:
                             pass
                     else:
@@ -254,6 +274,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                 if target_from_input == subsector:
                                     for group in mappings["targets"]["sectors"][sector]["subsectors"][subsector]["groups"]:
                                         groups.append(group)
+                                        if global_verbose:
+                                            print("Found group \"" + group + "\" based on target subsector: " + target_from_input)
                         except KeyError:
                             pass
 
@@ -261,6 +283,8 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             for group in groups:
                 if groups.count(group) == num_args:
                     strict_groups.append(group)
+                    if global_verbose:
+                        print("Found group that satisfies all criteria: " + group)
             groups = set(strict_groups)
 
         if filename == None:
@@ -283,7 +307,10 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                 for group in groups:
                     if group.lower() == row[3].lower():
                         ttps.append(row[1])
-        print(str(len(groups)) + " groups match that search\n")
+        if len(groups) == 1:
+            print("1 group matches that search\n")
+        else:
+            print(str(len(groups)) + " groups match that search\n")
         for element in Counter(ttps).most_common(limit):
                 print(str(element).strip("('").strip(")").replace("',", ":"))
 
