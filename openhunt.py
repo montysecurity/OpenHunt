@@ -283,9 +283,10 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
             for group in groups:
                 if groups.count(group) == num_args:
                     strict_groups.append(group)
-                    if global_verbose:
-                        print("Found group that satisfies all criteria: " + group)
             groups = set(strict_groups)
+            if global_verbose:
+                for group in groups:
+                    print("Found group that satisfies all criteria: " + group)
 
         if filename == None:
             data_source = build_taxii_source()
