@@ -233,7 +233,7 @@ If the field names in the Sigma rule do not match the field names in your SIEM/E
 
 ## Is the MITRE information up-to-date?
 
-This script was built using MITRE v11. MITRE v12 came out in the midst of development which replaced some groups with campaigns.
+This script was built using [MITRE v11](https://attack.mitre.org/versions/v11/). [MITRE v12](https://attack.mitre.org/versions/v12/) came out in the midst of development which replaced some groups with campaigns.
 
 Working on updating the script to support MITRE v12. The `groups.csv` with this repo was downloaded using v11. It is recommended to use it as downloading v12 may cause unintended bugs. 
 
