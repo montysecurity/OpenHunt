@@ -158,7 +158,6 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
 
         return sorted(writable_results, key=lambda x: (x[sorting_keys[0]], x[sorting_keys[1]]))
 
-
     def main(affiliations_from_input, targets_from_input, logical_and, limit, filename):
         # Source: https://attack.mitre.org/groups/
         # 133 Groups on 10/15/2022
