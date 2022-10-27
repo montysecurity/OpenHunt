@@ -29,6 +29,8 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Get top 15 most common TTPs used by threat actors targeting United States related government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
 
+- Get top 15 most common TTPs used by threat actors targeting United States related government organizations, and print the group names: `python .\openhunt.py -m ttp -v --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
+
 - Create Sigma rule for an IOC: `python .\openhunt.py -m ioc -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
 
 - Create Sigma rule for an IOC and rename a field: `python .\openhunt.py -m ioc --contacted-ips dest_ip -i 041e07fbab534fa6e7baaac93fae7f02e1621ed109b6304b147c9261b888b83d`
@@ -172,26 +174,29 @@ Targets include the info of those indented below it. So `Asia` includes `China`,
 - Trade
 - Transportation
 - Weapons
-- Emirati Persons
-- English Speakers
-- Experts in Various Un-Named Fields
-- German Speakers
-- High Profile Persons
+
 - Individuals
-- Italian Speakers
-- Infectious Disease Researchers
-- Japanese Speakers
-- Journalists
-- Leaders in International Affairs
-- Minority Rights Activists
+    - Emirati Persons
+    - Turkish Persons
+    - English Speakers
+    - Italian Speakers
+    - Persian Speakers
+    - Japanese Speakers
+    - German Speakers
+    - Infectious Disease Researchers
+    - Journalists
+    - Leaders in International Affairs
+    - Minority Rights Activists
+    - High Profile Persons
+    - Experts in Various Un-Named Fields
+
+
 - Organisation for the Prohibition of Chemical Weapons
-- Persian-speaking Individuals
 - Presedential Elections of France
 - Presedential Elections of the United States
 - United States Anti-Doping Agency
 - Syrian Opposition
 - Think Tanks
-- Turkish Individuals
 - World Health Organization
 - World Anti-Doping Agency
 - United Nations

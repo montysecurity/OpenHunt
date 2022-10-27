@@ -264,7 +264,7 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                     for group in mappings["targets"]["sectors"][sector]["subsectors"][subsector]["groups"]:
                                         groups.append(group)
                                         if global_verbose:
-                                            print("Found group \"" + group + "\" based on target: " + target_from_input)
+                                            print("Found group \"" + group + "\" based on target subsector: " + subsector)
                         except KeyError:
                             pass
                     else:
@@ -274,7 +274,7 @@ def mitre(affiliations_from_input, targets_from_input, limit, filename):
                                     for group in mappings["targets"]["sectors"][sector]["subsectors"][subsector]["groups"]:
                                         groups.append(group)
                                         if global_verbose:
-                                            print("Found group \"" + group + "\" based on target subsector: " + target_from_input)
+                                            print("Found group \"" + group + "\" based on target subsector: " + subsector)
                         except KeyError:
                             pass
 

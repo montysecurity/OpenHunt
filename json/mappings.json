@@ -854,11 +854,20 @@
                     },
                     "Gaming":
                     {
-                        "groups": ["APT41", "FIN5", "Winnti Group"]
+                        "groups":
+                        [
+                            "APT41",
+                            "FIN5",
+                            "Winnti Group"
+                        ]
                     },
                     "Electronics":
                     {
-                        "groups": ["BlackTech", "BRONZE BUTLER"]
+                        "groups":
+                        [
+                            "BlackTech",
+                            "BRONZE BUTLER"
+                        ]
                     }
                 }
             },
@@ -904,169 +913,330 @@
                     "Turla"
                 ]
             },
-            "Engineering":{
-                "groups": ["BlackTech", "Fox Kitten"]
+            "Engineering":
+            {
+                "groups":
+                [
+                    "BlackTech",
+                    "Fox Kitten"
+                ]
             },
             "Human Rights":
             {
-                "groups": ["APT18", "Elderwood"]
+                "groups":
+                [
+                    "APT18",
+                    "Elderwood"
+                ]
             },
             "Humanitarian Aid":
             {
-                "groups":  ["Honeybee"]
+                "groups":
+                [
+                    "Honeybee"
+                ]
             },
             "Hospitality":
             {
-                "groups":  ["APT39", "FIN5", "FIN6", "FIN7", "FIN8"],
-                "subsectors":{
+                "groups":
+                [
+                    "APT39",
+                    "FIN5",
+                    "FIN6",
+                    "FIN7",
+                    "FIN8"
+                ],
+                "subsectors":
+                {
                     "Travel":
                     {
-                        "groups": ["APT39"]
+                        "groups":
+                        [
+                            "APT39"
+                        ]
                     }
                 }
             },
             "Legal":
             {
-                "groups":  ["APT17", "APT19", "Gamaredon Group", "HAFNIUM", "WIRTE"]
+                "groups":
+                [
+                    "APT17",
+                    "APT19",
+                    "Gamaredon Group",
+                    "HAFNIUM",
+                    "WIRTE"
+                ]
             },
-            "Media":{
-                "groups":  ["APT12", "APT32", "BlackOasis", "BlackTech", "Chimera"]
+            "Media":
+            {
+                "groups":
+                [
+                    "APT12",
+                    "APT32",
+                    "BlackOasis",
+                    "BlackTech",
+                    "Chimera"
+                ]
             },
             "Mining":{
-                "groups":  ["APT17", "menuPass"]
+                "groups":
+                [
+                    "APT17",
+                    "menuPass"
+                ]
             },
             "NGOs":
             {
-                "groups": ["Elderwood", "Gamaredon Group", "HAFNIUM", "Ke3chang", "Mustang Panda"]
+                "groups":
+                [
+                    "Elderwood",
+                    "Gamaredon Group",
+                    "HAFNIUM",
+                    "Ke3chang",
+                    "Mustang Panda"
+                ]
             },
             "Non-Profits":
             {
-                "groups": ["Gamaredon Group", "Mustang Panda"]
+                "groups":
+                [
+                    "Gamaredon Group",
+                    "Mustang Panda"
+                ]
             },
             "Public Organizations":
             {
-                "groups": ["Higaisa"]
+                "groups":
+                [
+                    "Higaisa"
+                ]
             },
             "Religious Organizations":
             {
-                "groups": ["Mustang Panda"]
+                "groups":
+                [
+                    "Mustang Panda"
+                ]
             },
             "Research Organizations":
             {
-                "groups": ["Transparent Tribe", "Turla"]
+                "groups":
+                [
+                    "Transparent Tribe",
+                    "Turla"
+                ]
             },
             "Restaurants":
             {
-                "groups": ["FIN5", "FIN7", "FIN8"]
+                "groups":
+                [
+                    "FIN5",
+                    "FIN7",
+                    "FIN8"
+                ]
             },
             "Retail":
             {
-                "groups": ["FIN6", "FIN7", "FIN8"]
+                "groups":
+                [
+                    "FIN6",
+                    "FIN7",
+                    "FIN8"
+                ]
             },
             "Satellite Communications":
             {
-                "groups": ["Thrip"]
+                "groups":
+                [
+                    "Thrip"
+                ]
             },
             "Trade":
             {
-                "groups": ["Higaisa"]
+                "groups":
+                [
+                    "Higaisa"
+                ]
             },
             "Transportation":
             {
-                "groups": ["Tropic Trooper"]
+                "groups":
+                [
+                    "Tropic Trooper"
+                ]
             },
 
             "Weapons":
             {
-                "groups": ["Mofang"]
-            },
-            "Emirati Persons":
-            {
-                "groups": ["Stealth Falcon"]
-            },
-            "English Speakers":
-            {
-                "groups": ["TA551"]
-            },
-            "Experts in Various Un-Named Fields":
-            {
-                "groups": ["Kimsuky"]
-            },
-            "German Speakers":
-            {
-                "groups": ["TA551"]
-            },
-            "High Profile Persons":
-            {
-                "groups": ["Confucius", "Darkhotel"]
+                "groups":
+                [
+                    "Mofang"
+                ]
             },
             "Individuals":
             {
-                "groups": ["Nomadic Octopus"]
-            },
-            "Italian Speakers":
-            {
-                "groups": ["TA551"]
-            },
-            "Infectious Disease Researchers":
-            {
-                "groups": ["HAFNIUM"]
-            },
-            "Japanese Speakers":
-            {
-                "groups": ["TA551"]
-            },
-            "Journalists":
-            {
-                "groups": ["Magic Hound"]
-            },
-            "Leaders in International Affairs":
-            {
-                "groups": ["ZIRCONIUM"]
-            },
-            "Minority Rights Activists":
-            {
-                "groups": ["Scarlet Mimic"]
+                "groups":
+                [
+                    "Nomadic Octopus"
+                ],
+                "subsectors":
+                {
+                    "Emirati Persons":
+                    {
+                        "groups":
+                        [
+                            "Stealth Falcon"
+                        ]
+                    },
+                    "Turkish Persons":
+                    {
+                        "groups":
+                        [
+                            "NEODYMIUM"
+                        ]
+                    },
+                    "English Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "Italian Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "Persian Speakers":
+                    {
+                        "groups":
+                        [
+                            "Ferocious Kitten"
+                        ]
+                    },
+                    "Japanese Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "German Speakers":
+                    {
+                        "groups":
+                        [
+                            "TA551"
+                        ]
+                    },
+                    "Infectious Disease Researchers":
+                    {
+                        "groups":
+                        [
+                            "HAFNIUM"
+                        ]
+                    },
+                    "Journalists":
+                    {
+                        "groups":
+                        [
+                            "Magic Hound"
+                        ]
+                    },
+                    "Leaders in International Affairs":
+                    {
+                        "groups":
+                        [
+                            "ZIRCONIUM"
+                        ]
+                    },
+                    "Minority Rights Activists":
+                    {
+                        "groups":
+                        [
+                            "Scarlet Mimic"
+                        ]
+                    },
+                    "High Profile Persons":
+                    {
+                        "groups":
+                        [
+                            "Confucius",
+                            "Darkhotel"
+                        ]
+                    },
+                    "Experts in Various Un-Named Fields":
+                    {
+                        "groups":
+                        [
+                            "Kimsuky"
+                        ]
+                    }
+                }
             },
             "Organisation for the Prohibition of Chemical Weapons":
             {
-                "groups": ["Sandworm Team", "APT28"]
-            },
-            "Persian-speaking Indivduals":
-            {
-                "groups": ["Ferocious Kitten"]
+                "groups":
+                [
+                    "Sandworm Team",
+                    "APT28"
+                ]
             },
             "Presedential Elections of France":
             {
-                "groups": ["Sandworm Team"]
+                "groups":
+                [
+                    "Sandworm Team"
+                ]
             },
             "Presedential Elections of the United States":
             {
-                "groups": ["APT28", "ZIRCONIUM"]
+                "groups":
+                [
+                    "APT28",
+                    "ZIRCONIUM"
+                ]
             },
             "United States Anti-Doping Agency":
             {
-                "groups": ["APT28"]
+                "groups":
+                [
+                    "APT28"
+                ]
             },
             "Syrian Opposition":
             {
-                "groups": ["Group5"]
+                "groups":
+                [
+                    "Group5"
+                ]
             },
             "Think Tanks":
             {
-                "groups": ["APT29", "BlackOasis", "Kimsuky", "Patchwork", "HAFNIUM"]
-            },
-            "Turkish Individuals":
-            {
-                "groups": ["NEODYMIUM"]
+                "groups":
+                [
+                    "APT29",
+                    "BlackOasis",
+                    "Kimsuky",
+                    "Patchwork",
+                    "HAFNIUM"
+                ]
             },
             "World Health Organization":
             {
-                "groups": ["Magic Hound"]
+                "groups":
+                [
+                    "Magic Hound"
+                ]
             },
             "World Anti-Doping Agency":
             {
-                "groups": ["APT28"]
+                "groups":
+                [
+                    "APT28"
+                ]
             },
             "United Nations":
             {
