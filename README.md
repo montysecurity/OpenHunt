@@ -27,7 +27,8 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 
 - Get top 15 most common TTPs used by threat actors targeting any sector in the US or government entities in any country `python .\openhunt.py -m ttp --target "United States" --target Government --limit 15 -f .\groups.csv` 
 
-- Get top 15 most common TTPs used by threat actors targeting United States related government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
+- Get top 15 most common TTPs used by threat actors targeting the United States and government organizations: `python .\openhunt.py -m ttp --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
+    - While this may not always be true, the assumption is that if a group targets the United States and Government entities, then they are targeting US Government entities
 
 - Get top 15 most common TTPs used by threat actors targeting United States related government organizations, and print the group names: `python .\openhunt.py -m ttp -v --target "United States" --target Government --logical-and --limit 15 -f .\groups.csv`
 
