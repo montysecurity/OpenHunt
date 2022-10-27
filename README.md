@@ -233,11 +233,15 @@ If the field names in the Sigma rule do not match the field names in your SIEM/E
 
 ## Is the MITRE information up-to-date?
 
-Last Update: October 2022
+This script was built using MITRE v11. MITRE v12 came out in the midst of development which replaced some groups with campaigns.
+
+Working on updating the script to support MITRE v12. The `groups.csv` with this repo was downloaded using v11. It is recommended to use it as downloading v12 may cause unintended bugs. 
+
+Last Update: October 2022 (prior to v12)
 
 Checksum: 79FCC4E1689077298F221F550A41550492A7866BDD1DCFCAF027779E62788134
 
-To update the MITRE TTP info from MITRE at execution, just omit `-f, --file`. This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
+To update the MITRE TTP info from MITRE at execution, just omit `-f, --file` (not recommended until the script supports v12). This updates the techniques mapped to groups on MITREs side and writes it to `groups.csv`. If MITRE adds a new group or modifies their description on [here](https://attack.mitre.org/groups/), that will not be reflected in the script until the script is updated.
 
 An easy way to see if the the MITRE Groups information is up-to-date is by hashing the MITRE groups page.
 
