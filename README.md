@@ -71,7 +71,7 @@ This works very similiarly to *TTPs by Origin*. However, instead of looking at t
 
 ##### Targets Supported
 
-Targets include the info of those indented below it. So `Asia` includes `China`, which in-turn includes `Hong Kong`. You can also query for indented children on their one (e.g. `--target "Hong Kong"`)
+Targets include the info of those indented below it. So `Asia` includes `China`, which in-turn includes `Hong Kong`. You can also query for indented children on their own (e.g. `--target "Hong Kong"`)
 
 - Africa
     - Rwanda
