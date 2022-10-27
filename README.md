@@ -11,7 +11,7 @@ IOC mode is designed to give you related artifacts to a given IOC using the Viru
 - Python3
 - VirusTotal API Key (free; IOC mode only)
 - Shodan API Key (free; IOC mode only)
-- Populate `keys.json` with the API keys
+- Populate `json/keys.json` with the API keys
 
 ## Install
 
