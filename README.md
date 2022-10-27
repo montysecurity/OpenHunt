@@ -260,3 +260,4 @@ As MITRE releases more information, I plan on keeping the script and `groups.csv
 
 - Update to support MITRE v12
 - Add more fingerprints for Shodan to check against
+- Simplify README and create Wiki
